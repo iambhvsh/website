@@ -12,6 +12,14 @@ export default function Home() {
         <p className="mt-4 sm:text-xl">
           Hey there! I&apos;m Bhavesh Patil, the web wizard from Chatrapati Sambhajinagar, currently battling the dragons of a BSC in IT at MGM&apos;s Dr. G. Y. Pathrikar. Based in India, I brew web applications like a caffeinated barista. As an introvert, I thrive in my code cave, enjoying the silent symphonies of coding, music, and horror stories.
         </p>
+        
+        <Link
+          href={`/docs/${page_routes[0].href}`}
+          className={buttonVariants({ className: "px-6 py-3 bg-blue-500 text-white rounded-full", size: "lg" })}
+        >
+          Get Started
+        </Link>
+        
       </header>
       
       <section className="mb-12">
@@ -19,7 +27,7 @@ export default function Home() {
           Skills & Technologies
         </h2>
         <div className="w-screen">
-          <img src="https://skillicons.dev/icons?i=html,css,js,bootstrap,tailwind,md,c,react,next,ts" alt="Languages" />
+          <img src="https://skillicons.dev/icons?i=html,css,js,bootstrap,tailwind,md,c,react,next,ts&theme=light&perline=5" alt="Languages" />
         </div>
       </section>
       
@@ -38,7 +46,7 @@ export default function Home() {
             <p className="text-lg sm:text-xl mb-2">
               <strong>Technologies:</strong>
               <div>
-               <img src="https://skillicons.dev/icons?i=react" alt="React" width={32} height={32} className="inline-block" />
+               <img src="https://skillicons.dev/icons?i=react" alt="React" width={32} height={32} className="inline-block mt-2" />
               </div>
             </p>
             <p className="text-lg sm:text-xl">
@@ -53,7 +61,11 @@ export default function Home() {
               <strong>Description:</strong> This project is a sleek and minimalist YouTube client, developed using HTML, Tailwind CSS, and JavaScript. It leverages the Invidious API to provide a seamless and privacy-focused video browsing experience.
             </p>
             <p className="text-lg sm:text-xl mb-2">
-              <strong>Technologies:</strong> <img src="https://skillicons.dev/icons?i=html,tailwind,js" alt="HTML, Tailwind CSS, JavaScript" width={96} height={32} className="inline-block" />
+              <strong>Technologies:</strong>
+              
+              <div>
+                <img src="https://skillicons.dev/icons?i=html,tailwind,js" alt="HTML, Tailwind CSS, JavaScript" width={96} height={32} className="inline-block mt-2" />
+                </div>
             </p>
             <p className="text-lg sm:text-xl">
               <strong><Link href="https://darkvalor.vercel.app" target="_blank" className="text-blue-500 no-underline">Live Preview ⟩</Link></strong>
@@ -87,11 +99,14 @@ export default function Home() {
         </h2>
         <p className="text-lg sm:text-xl mb-2">
           <strong>Languages to Learn:</strong> 
-          <img src="https://skillicons.dev/icons?i=c,cpp,swift,python" alt="C, C++, Swift, Python" width={128} height={32} className="inline-block"/>
+          <div><img src="https://skillicons.dev/icons?i=c,cpp,swift,python" alt="C, C++, Swift, Python" width={128} height={32} className="inline-block mt-2"/>
+          </div>
         </p>
         <p className="text-lg sm:text-xl mb-2">
           <strong>Technologies to Master:</strong> 
-          <img src="https://skillicons.dev/icons?i=next,react" alt="Next.js, React.js" width={64} height={32} className="inline-block"/>
+          <div>
+            <img src="https://skillicons.dev/icons?i=next,react" alt="Next.js, React.js" width={64} height={32} className="inline-block mt-2"/>
+          </div>
         </p>
         <p className="text-lg sm:text-xl">
           Other Goals: Publish open-source stuff, Play with Node.js and databases, Create a tech blog, Study system design, Contribute to documentation and tutorials, Learn and implement security practices, Try out different state management libraries, Containerize everything with Docker, Build super interactive user experiences, Optimize web performance, Study microservices architecture, Build and deploy multi-platform apps, Master advanced debugging, Help build tools and frameworks for other developers.
@@ -113,9 +128,11 @@ export default function Home() {
           Education
         </h2>
         <p className="text-lg sm:text-xl">
-          BSC in IT from MGM&apos;s Dr. G. Y. Pathrikar, Chatrapati Sambhajinagar<br />
-          SSC from MIT-VGS, Chatrapati Sambhajinagar<br />
-          HSC from DES Highschool, Dharangaon, Malkapur, Buldhana
+          - BSC in IT from MGM&apos;s Dr. G. Y. Pathrikar, Chatrapati Sambhajinagar - 2024<br /><br />
+          
+          - HSC from DES Highschool, Dharangaon, Malkapur, Buldhana - 2024<br /><br />
+          
+          - SSC from MIT-VGS, Chhatrapati Sambhajinagar - 2022
         </p>
       </section>
       
@@ -127,15 +144,6 @@ export default function Home() {
           Always up for a chat about tech, collaboration, or horror stories. Hit me up!
         </p>
       </section>
-      
-      <div className="flex justify-start">
-        <Link
-          href={`/docs/${page_routes[0].href}`}
-          className="px-6 py-3 bg-blue-500 text-white rounded-full"
-        >
-          Get Started
-        </Link>
-      </div>
     </div>
   );
 }
