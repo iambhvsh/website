@@ -20,16 +20,16 @@ export default function Home() {
           Skills & Technologies
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
-          <Image src="https://skillicons.dev/icons?i=html" alt="HTML" width={64} height={64} />
-          <Image src="https://skillicons.dev/icons?i=css" alt="CSS" width={64} height={64} />
-          <Image src="https://skillicons.dev/icons?i=js" alt="JavaScript" width={64} height={64} />
-          <Image src="https://skillicons.dev/icons?i=bootstrap" alt="Bootstrap" width={64} height={64} />
-          <Image src="https://skillicons.dev/icons?i=tailwindcss" alt="Tailwind CSS" width={64} height={64} />
-          <Image src="https://skillicons.dev/icons?i=c" alt="C" width={64} height={64} />
-          <Image src="https://skillicons.dev/icons?i=md" alt="Markdown" width={64} height={64} />
-          <Image src="https://skillicons.dev/icons?i=react" alt="React" width={64} height={64} />
-          <Image src="https://skillicons.dev/icons?i=next" alt="Next.js" width={64} height={64} />
-          <Image src="https://skillicons.dev/icons?i=ts" alt="TypeScript" width={64} height={64} />
+          <img src="https://skillicons.dev/icons?i=html" alt="HTML" width={64} height={64} />
+          <img src="https://skillicons.dev/icons?i=css" alt="CSS" width={64} height={64} />
+          <img src="https://skillicons.dev/icons?i=js" alt="JavaScript" width={64} height={64} />
+          <img src="https://skillicons.dev/icons?i=bootstrap" alt="Bootstrap" width={64} height={64} />
+          <img src="https://skillicons.dev/icons?i=tailwindcss" alt="Tailwind CSS" width={64} height={64} />
+          <img src="https://skillicons.dev/icons?i=c" alt="C" width={64} height={64} />
+          <img src="https://skillicons.dev/icons?i=md" alt="Markdown" width={64} height={64} />
+          <img src="https://skillicons.dev/icons?i=react" alt="React" width={64} height={64} />
+          <img src="https://skillicons.dev/icons?i=next" alt="Next.js" width={64} height={64} />
+          <img src="https://skillicons.dev/icons?i=ts" alt="TypeScript" width={64} height={64} />
         </div>
       </section>
       
@@ -38,7 +38,7 @@ export default function Home() {
           Projects
         </h2>
         <div className="grid gap-8">
-          <div className="p-4 border rounded-md shadow-md">
+          <div>
             <h3 className="text-2xl sm:text-3xl font-bold mb-2">
               1. 🛍️ ThePixelStore
             </h3>
@@ -46,13 +46,13 @@ export default function Home() {
               <strong>Description:</strong> An app store inspired by the iOS App Store. Browse apps like a pro, with reviews and everything.
             </p>
             <p className="text-lg sm:text-xl mb-2">
-              <strong>Technologies:</strong> <Image src="https://skillicons.dev/icons?i=react" alt="React" width={32} height={32} className="inline-block" />
+              <strong>Technologies:</strong> <img src="https://skillicons.dev/icons?i=react" alt="React" width={32} height={32} className="inline-block" />
             </p>
             <p className="text-lg sm:text-xl">
               <strong><Link href="https://thepixelstore.vercel.app" target="_blank" className="underline">Live Preview ⟩</Link></strong>
             </p>
           </div>
-          <div className="p-4 border rounded-md shadow-md">
+          <div>
             <h3 className="text-2xl sm:text-3xl font-bold mb-2">
               2. 🎥 DarkValor
             </h3>
@@ -60,7 +60,7 @@ export default function Home() {
               <strong>Description:</strong> This project is a sleek and minimalist YouTube client, developed using HTML, Tailwind CSS, and JavaScript. It leverages the Invidious API to provide a seamless and privacy-focused video browsing experience.
             </p>
             <p className="text-lg sm:text-xl mb-2">
-              <strong>Technologies:</strong> <Image src="https://skillicons.dev/icons?i=html,tailwind,js" alt="HTML, Tailwind CSS, JavaScript" width={96} height={32} className="inline-block" />
+              <strong>Technologies:</strong> <img src="https://skillicons.dev/icons?i=html,tailwind,js" alt="HTML, Tailwind CSS, JavaScript" width={96} height={32} className="inline-block" />
             </p>
             <p className="text-lg sm:text-xl">
               <strong><Link href="https://darkvalor.vercel.app" target="_blank" className="underline">Live Preview ⟩</Link></strong>
@@ -74,8 +74,8 @@ export default function Home() {
           GitHub Stats & Badges
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <img src="https://github-readme-stats.vercel.app/api?username=iambhvsh&show_icons=true&theme=radical" alt="GitHub Stats" className="shadow-md rounded-md"/>
-          <img src="https://github-readme-streak-stats.herokuapp.com/?user=iambhvsh&theme=radical" alt="GitHub Streak" className="shadow-md rounded-md"/>
+          <Image src="https://github-readme-stats.vercel.app/api?username=iambhvsh&show_icons=true&theme=radical" alt="GitHub Stats"/>
+          <Image src="https://github-readme-streak-stats.herokuapp.com/?user=iambhvsh&theme=radical" alt="GitHub Streak"/>
         </div>
       </section>
       
@@ -94,11 +94,11 @@ export default function Home() {
         </h2>
         <p className="text-lg sm:text-xl mb-2">
           <strong>Languages to Learn:</strong> 
-          <Image src="https://skillicons.dev/icons?i=c,cpp,swift,python" alt="C, C++, Swift, Python" width={128} height={32} className="inline-block"/>
+          <img src="https://skillicons.dev/icons?i=c,cpp,swift,python" alt="C, C++, Swift, Python" width={128} height={32} className="inline-block"/>
         </p>
         <p className="text-lg sm:text-xl mb-2">
           <strong>Technologies to Master:</strong> 
-          <Image src="https://skillicons.dev/icons?i=next,react" alt="Next.js, React.js" width={64} height={32} className="inline-block"/>
+          <img src="https://skillicons.dev/icons?i=next,react" alt="Next.js, React.js" width={64} height={32} className="inline-block"/>
         </p>
         <p className="text-lg sm:text-xl">
           Other Goals: Publish open-source stuff, Play with Node.js and databases, Create a tech blog, Study system design, Contribute to documentation and tutorials, Learn and implement security practices, Try out different state management libraries, Containerize everything with Docker, Build super interactive user experiences, Optimize web performance, Study microservices architecture, Build and deploy multi-platform apps, Master advanced debugging, Help build tools and frameworks for other developers.
