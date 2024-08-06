@@ -11,8 +11,9 @@ export default function Home() {
   </h1>
   <p className="mt-4 text-base sm:text-lg lg:text-xl">
     Hey there! I&apos;m Bhavesh Patil, the web wizard from Chatrapati Sambhajinagar, currently battling the dragons of a BSC in IT at MGM&apos;s Dr. G. Y. Pathrikar. Based in India, I brew web applications like a caffeinated barista. As an introvert, I thrive in my code cave, enjoying the silent symphonies of coding, music, and horror stories.
-
-  <Link href={`/docs/${page_routes[0].href}`} className="mt-4 text-blue-500">Get Started</Link>
+  <div className="mt-4">
+  <Link href={`/docs/${page_routes[0].href}`} className="text-blue-500">Get Started ⟩</Link>
+  </div>
   </p>
 </header>
       
