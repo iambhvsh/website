@@ -1,12 +1,11 @@
 import { buttonVariants } from "@/components/ui/button";
 import { page_routes } from "@/lib/routes-config";
 import Link from "next/link";
-import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="flex sm:min-h-[91vh] min-h-[88vh] flex-col items-center justify-center text-center px-2 py-8">
-      <h1 className="text-3xl font-bold mb-4 sm:text-7xl">
+    <div className="flex sm:min-h-[91vh] min-h-[88vh] flex-col items-center justify-center text-left px-2 py-8">
+      <h1 className="text-4xl sm:text-8xl font-bold mb-4 text-white">
         Bhavesh Patil
       </h1>
       <p className="mb-8 sm:text-xl max-w-[800px] text-muted-foreground">
@@ -15,8 +14,8 @@ export default function Home() {
       <p className="mb-8 sm:text-xl max-w-[800px] text-muted-foreground">
         <strong>Skills & Technologies</strong>
       </p>
-      <div className="mb-8 sm:text-xl max-w-[800px] text-muted-foreground text-center">
-        <Image src="https://skillicons.dev/icons?i=html,css,js,bootstrap,tailwindcss,c,md,react,next,ts&theme=light&perline=5" alt="Languages" height="300" width="300" />
+      <div className="mb-8 sm:text-xl max-w-[800px] text-muted-foreground">
+        <img src="https://skillicons.dev/icons?i=html,css,js,bootstrap,tailwindcss,c,md,react,next,ts&theme=light&perline=5" alt="Languages" className="mx-auto"/>
       </div>
       <p className="mb-8 sm:text-xl max-w-[800px] text-muted-foreground">
         <strong>Projects & Experience</strong>
@@ -32,6 +31,10 @@ export default function Home() {
         <strong>GitHub Stats & Badges</strong><br />
         Check out my GitHub bling:
       </p>
+      <div className="mb-8 sm:text-xl max-w-[800px] text-muted-foreground">
+        <img src="https://github-readme-stats.vercel.app/api?username=iambhvsh&show_icons=true&theme=radical" alt="GitHub Stats" className="mx-auto"/>
+        <img src="https://github-readme-streak-stats.herokuapp.com/?user=iambhvsh&theme=radical" alt="GitHub Streak" className="mx-auto mt-4"/>
+      </div>
       <p className="mb-8 sm:text-xl max-w-[800px] text-muted-foreground">
         <strong>Goals</strong><br />
         Master frontend development and modern tech, Contribute to open-source, Keep up with tech trends, Launch personal projects, Dive into backend development, Tackle coding challenges, Network with tech pros.
