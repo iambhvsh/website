@@ -20,7 +20,7 @@ export default function Home() {
           Skills & Technologies
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
-          <img src="https://skillicons.dev/icons?i=html,css,js,bootstrap,tailwind,md,c,react,next,,ts" alt="HTML" width={200} height={32} />
+          <img src="https://skillicons.dev/icons?i=html,css,js,bootstrap,tailwind,md,c,react,next,ts" alt="Languages" />
         </div>
       </section>
       
@@ -40,7 +40,7 @@ export default function Home() {
               <strong>Technologies:</strong> <img src="https://skillicons.dev/icons?i=react" alt="React" width={32} height={32} className="inline-block" />
             </p>
             <p className="text-lg sm:text-xl">
-              <strong><Link href="https://thepixelstore.vercel.app" target="_blank" className="underline">Live Preview ⟩</Link></strong>
+              <strong><Link href="https://thepixelstore.vercel.app" target="_blank" className="text-blue-500 no-underline">Live Preview ⟩</Link></strong>
             </p>
           </div>
           <div>
@@ -54,7 +54,7 @@ export default function Home() {
               <strong>Technologies:</strong> <img src="https://skillicons.dev/icons?i=html,tailwind,js" alt="HTML, Tailwind CSS, JavaScript" width={96} height={32} className="inline-block" />
             </p>
             <p className="text-lg sm:text-xl">
-              <strong><Link href="https://darkvalor.vercel.app" target="_blank" className="underline">Live Preview ⟩</Link></strong>
+              <strong><Link href="https://darkvalor.vercel.app" target="_blank" className="text-blue-500 no-underline">Live Preview ⟩</Link></strong>
             </p>
           </div>
         </div>
@@ -101,8 +101,8 @@ export default function Home() {
           Contact Me
         </h2>
         <p className="text-lg sm:text-xl">
-          Email: <Link href="mailto:iambhvshh@outlook.com" className="underline">iambhvshh@outlook.com</Link><br />
-          GitHub: <Link href="https://github.com/iambhvsh" target="_blank" className="underline">iambhvsh</Link>
+          Email: <Link href="mailto:iambhvshh@outlook.com" className="text-blue-500 no-underline">iambhvshh@outlook.com</Link><br />
+          GitHub: <Link href="https://github.com/iambhvsh" target="_blank" className="text-blue-500 no-underline">iambhvsh</Link>
         </p>
       </section>
       
@@ -129,7 +129,7 @@ export default function Home() {
       <div className="flex justify-start">
         <Link
           href={`/docs/${page_routes[0].href}`}
-          className={buttonVariants({ className: "px-6 py-3 rounded-full", size: "lg" })}
+          className={buttonVariants({ className: "px-6 py-3 bg-blue-500 text-white rounded-full", size: "lg" })}
         >
           Get Started
         </Link>
