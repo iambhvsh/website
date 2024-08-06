@@ -4,66 +4,116 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="flex sm:min-h-[91vh] min-h-[88vh] flex-col items-center justify-center text-left px-2 py-8">
-      <h1 className="text-4xl sm:text-8xl font-bold mb-4 text-white">
+    <div className="flex flex-col items-center justify-center min-h-screen py-8 px-4">
+      <h1 className="text-4xl sm:text-8xl font-bold mb-6 text-white">
         Bhavesh Patil
       </h1>
       <p className="mb-8 sm:text-xl max-w-[800px] text-muted-foreground">
         Hey there! I&apos;m Bhavesh Patil, the web wizard from Chatrapati Sambhajinagar, currently battling the dragons of a BSC in IT at MGM&apos;s Dr. G. Y. Pathrikar. Based in India, I brew web applications like a caffeinated barista. As an introvert, I thrive in my code cave, enjoying the silent symphonies of coding, music, and horror stories.
       </p>
-      <p className="mb-8 sm:text-xl max-w-[800px] text-muted-foreground">
-        <strong>Skills & Technologies</strong>
-      </p>
-      <div className="mb-8 sm:text-xl max-w-[800px] text-muted-foreground">
+      <div className="mb-8 sm:text-xl max-w-[800px]">
+        <h2 className="text-3xl sm:text-5xl font-bold mb-4 text-white">
+          Skills & Technologies
+        </h2>
         <img src="https://skillicons.dev/icons?i=html,css,js,bootstrap,tailwindcss,c,md,react,next,ts&theme=light&perline=5" alt="Languages" className="mx-auto"/>
       </div>
-      <p className="mb-8 sm:text-xl max-w-[800px] text-muted-foreground">
-        <strong>Projects & Experience</strong>
-      </p>
-      <p className="mb-8 sm:text-xl max-w-[800px] text-muted-foreground">
-        🛍️ <Link href="https://thepixelstore.vercel.app" target="_blank">ThePixelStore</Link>: An app store inspired by the iOS App Store. (React, Framework7)<br />
-        🎥 <Link href="https://darkvalor.vercel.app" target="_blank">DarkValor</Link>: A YouTube client that&apos;s super minimal. (HTML, Tailwind CSS, JavaScript)<br />
-        🔍 <Link href="https://stackx.vercel.app" target="_blank">StackX</Link>: Google&apos;s search engine, my way. (HTML, CSS, JavaScript)<br />
-        📖 <Link href="https://forwordin.vercel.app" target="_blank">ForWord</Link>: A dictionary app. (Ionic React)<br />
-        🌾 <Link href="https://sanjaypatil.vercel.app" target="_blank">Sanjay Patil&apos;s Website</Link>: My dad&apos;s website. (Information about fertilizers)
-      </p>
-      <p className="mb-8 sm:text-xl max-w-[800px] text-muted-foreground">
-        <strong>GitHub Stats & Badges</strong><br />
-        Check out my GitHub bling:
-      </p>
-      <div className="mb-8 sm:text-xl max-w-[800px] text-muted-foreground">
-        <img src="https://github-readme-stats.vercel.app/api?username=iambhvsh&show_icons=true&theme=radical" alt="GitHub Stats" className="mx-auto"/>
-        <img src="https://github-readme-streak-stats.herokuapp.com/?user=iambhvsh&theme=radical" alt="GitHub Streak" className="mx-auto mt-4"/>
+      <div className="mb-8 sm:text-xl max-w-[800px]">
+        <h2 className="text-3xl sm:text-5xl font-bold mb-4 text-white">
+          Projects
+        </h2>
+        <div className="mb-8">
+          <h3 className="text-2xl sm:text-4xl font-bold mb-2 text-white">
+            1. 🛍️ ThePixelStore
+          </h3>
+          <p className="text-lg sm:text-2xl text-muted-foreground mb-2">
+            <strong>Description:</strong> An app store inspired by the iOS App Store. Browse apps like a pro, with reviews and everything.
+          </p>
+          <p className="text-lg sm:text-2xl text-muted-foreground mb-2">
+            <strong>Technologies:</strong> <img src="https://skillicons.dev/icons?i=react&theme=light" alt="React" className="inline-block"/>
+          </p>
+          <p className="text-lg sm:text-2xl text-muted-foreground">
+            <strong><Link href="https://thepixelstore.vercel.app" target="_blank" className="text-blue-500 underline">Live Preview ⟩</Link></strong>
+          </p>
+        </div>
+        <div className="mb-8">
+          <h3 className="text-2xl sm:text-4xl font-bold mb-2 text-white">
+            2. 🎥 DarkValor
+          </h3>
+          <p className="text-lg sm:text-2xl text-muted-foreground mb-2">
+            <strong>Description:</strong> This project is a sleek and minimalist YouTube client, developed using HTML, Tailwind CSS, and JavaScript. It leverages the Invidious API to provide a seamless and privacy-focused video browsing experience.
+          </p>
+          <p className="text-lg sm:text-2xl text-muted-foreground mb-2">
+            <strong>Technologies:</strong> <img src="https://skillicons.dev/icons?i=html,tailwind,js&theme=light" alt="HTML, Tailwind CSS, JavaScript" className="inline-block"/>
+          </p>
+          <p className="text-lg sm:text-2xl text-muted-foreground">
+            <strong><Link href="https://darkvalor.vercel.app" target="_blank" className="text-blue-500 underline">Live Preview ⟩</Link></strong>
+          </p>
+        </div>
       </div>
-      <p className="mb-8 sm:text-xl max-w-[800px] text-muted-foreground">
-        <strong>Goals</strong><br />
-        Master frontend development and modern tech, Contribute to open-source, Keep up with tech trends, Launch personal projects, Dive into backend development, Tackle coding challenges, Network with tech pros.
-      </p>
-      <p className="mb-8 sm:text-xl max-w-[800px] text-muted-foreground">
-        <strong>Bucket List</strong><br />
-        Languages to Learn: C, C++, Swift, Python<br />
-        Technologies to Master: Next.js, React.js<br />
-        Other Goals: Publish open-source stuff, Play with Node.js and databases, Create a tech blog, Study system design, Contribute to documentation and tutorials, Learn and implement security practices, Try out different state management libraries, Containerize everything with Docker, Build super interactive user experiences, Optimize web performance, Study microservices architecture, Build and deploy multi-platform apps, Master advanced debugging, Help build tools and frameworks for other developers.
-      </p>
-      <p className="mb-8 sm:text-xl max-w-[800px] text-muted-foreground">
-        <strong>Contact Me</strong><br />
-        Email: <Link href="mailto:iambhvshh@outlook.com">iambhvshh@outlook.com</Link><br />
-        GitHub: <Link href="https://github.com/iambhvsh" target="_blank">iambhvsh</Link>
-      </p>
-      <p className="mb-8 sm:text-xl max-w-[800px] text-muted-foreground">
-        <strong>Education</strong><br />
-        BSC in IT from MGM&apos;s Dr. G. Y. Pathrikar, Chatrapati Sambhajinagar<br />
-        SSC from MIT-VGS, Chatrapati Sambhajinagar<br />
-        HSC from DES Highschool, Dharangaon, Malkapur, Buldhana
-      </p>
-      <p className="mb-8 sm:text-xl max-w-[800px] text-muted-foreground">
-        <strong>Let’s Connect</strong><br />
-        Always up for a chat about tech, collaboration, or horror stories. Hit me up!
-      </p>
-      <div className="flex items-center justify-center">
+      <div className="mb-8 sm:text-xl max-w-[800px]">
+        <h2 className="text-3xl sm:text-5xl font-bold mb-4 text-white">
+          GitHub Stats & Badges
+        </h2>
+        <div className="flex flex-col items-center">
+          <img src="https://github-readme-stats.vercel.app/api?username=iambhvsh&show_icons=true&theme=radical" alt="GitHub Stats" className="mb-4"/>
+          <img src="https://github-readme-streak-stats.herokuapp.com/?user=iambhvsh&theme=radical" alt="GitHub Streak"/>
+        </div>
+      </div>
+      <div className="mb-8 sm:text-xl max-w-[800px]">
+        <h2 className="text-3xl sm:text-5xl font-bold mb-4 text-white">
+          Goals
+        </h2>
+        <p className="text-lg sm:text-2xl text-muted-foreground">
+          Master frontend development and modern tech, Contribute to open-source, Keep up with tech trends, Launch personal projects, Dive into backend development, Tackle coding challenges, Network with tech pros.
+        </p>
+      </div>
+      <div className="mb-8 sm:text-xl max-w-[800px]">
+        <h2 className="text-3xl sm:text-5xl font-bold mb-4 text-white">
+          Bucket List
+        </h2>
+        <p className="text-lg sm:text-2xl text-muted-foreground mb-2">
+          <strong>Languages to Learn:</strong> 
+          <img src="https://skillicons.dev/icons?i=c,cpp,swift,python&theme=light&perline=4" alt="C, C++, Swift, Python" className="inline-block"/>
+        </p>
+        <p className="text-lg sm:text-2xl text-muted-foreground mb-2">
+          <strong>Technologies to Master:</strong> 
+          <img src="https://skillicons.dev/icons?i=next,react&theme=light&perline=2" alt="Next.js, React.js" className="inline-block"/>
+        </p>
+        <p className="text-lg sm:text-2xl text-muted-foreground">
+          Other Goals: Publish open-source stuff, Play with Node.js and databases, Create a tech blog, Study system design, Contribute to documentation and tutorials, Learn and implement security practices, Try out different state management libraries, Containerize everything with Docker, Build super interactive user experiences, Optimize web performance, Study microservices architecture, Build and deploy multi-platform apps, Master advanced debugging, Help build tools and frameworks for other developers.
+        </p>
+      </div>
+      <div className="mb-8 sm:text-xl max-w-[800px]">
+        <h2 className="text-3xl sm:text-5xl font-bold mb-4 text-white">
+          Contact Me
+        </h2>
+        <p className="text-lg sm:text-2xl text-muted-foreground">
+          Email: <Link href="mailto:iambhvshh@outlook.com" className="text-blue-500 underline">iambhvshh@outlook.com</Link><br />
+          GitHub: <Link href="https://github.com/iambhvsh" target="_blank" className="text-blue-500 underline">iambhvsh</Link>
+        </p>
+      </div>
+      <div className="mb-8 sm:text-xl max-w-[800px]">
+        <h2 className="text-3xl sm:text-5xl font-bold mb-4 text-white">
+          Education
+        </h2>
+        <p className="text-lg sm:text-2xl text-muted-foreground">
+          BSC in IT from MGM&apos;s Dr. G. Y. Pathrikar, Chatrapati Sambhajinagar<br />
+          SSC from MIT-VGS, Chatrapati Sambhajinagar<br />
+          HSC from DES Highschool, Dharangaon, Malkapur, Buldhana
+        </p>
+      </div>
+      <div className="mb-8 sm:text-xl max-w-[800px]">
+        <h2 className="text-3xl sm:text-5xl font-bold mb-4 text-white">
+          Let’s Connect
+        </h2>
+        <p className="text-lg sm:text-2xl text-muted-foreground">
+          Always up for a chat about tech, collaboration, or horror stories. Hit me up!
+        </p>
+      </div>
+      <div className="flex items-center justify-center mt-8">
         <Link
           href={`/docs/${page_routes[0].href}`}
-          className={buttonVariants({ className: "px-6", size: "lg" })}
+          className={buttonVariants({ className: "px-6 rounded-full", size: "lg" })}
         >
           Get Started
         </Link>
