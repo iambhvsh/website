@@ -9,7 +9,7 @@ export default function Home() {
         Bhavesh Patil
       </h1>
       <p className="mb-8 sm:text-xl max-w-[800px] text-muted-foreground">
-      Hello! I am a Frontend Web Developer. This is not just any documentation site—here, you'll find a wealth of important information and insights. 🌟
+        Hello! I am a Frontend Web Developer. This is not just any documentation site—here, you&apos;ll find a wealth of important information and insights. 🌟
       </p>
       <div className="flex items-center justify-center">
         <Link
