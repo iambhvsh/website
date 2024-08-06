@@ -27,11 +27,11 @@
   }
 
   .dark {
-    --background: 240 10% 3.9%;
+    --background: 0 0% 0%; /* Pure black background */
     --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
+    --card: 0 0% 0%; /* Pure black card background */
     --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
+    --popover: 0 0% 0%; /* Pure black popover background */
     --popover-foreground: 0 0% 98%;
     --primary: 0 0% 98%;
     --primary-foreground: 240 5.9% 10%;
@@ -90,7 +90,6 @@ pre>code {
   text-align: right;
 }
 
-
 .highlight-line {
   @apply dark:bg-neutral-800/90;
   @apply bg-neutral-200/90;
@@ -124,7 +123,7 @@ pre>code {
 .dark .constant,
 .dark .annotation,
 .dark .boolean,
-.dark.number {
+.dark .number {
   color: hsl(0, 0%, 71%)
 }
 
@@ -146,7 +145,6 @@ pre>code {
 
 .dark .attr-name {
   color: #cacaca;
-
 }
 
 .rehype-code-title {
