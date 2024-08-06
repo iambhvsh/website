@@ -15,7 +15,7 @@ export default function Home() {
         
         <Link
           href={`/docs/${page_routes[0].href}`}
-          className={buttonVariants({ className: "px-6 py-3 bg-blue-500 text-white rounded-full", size: "lg" })}
+          className="px-6 py-3 bg-blue-500 text-white rounded-full"
         >
           Get Started
         </Link>
@@ -26,9 +26,10 @@ export default function Home() {
         <h2 className="text-3xl sm:text-4xl font-bold mb-4">
           Skills & Technologies
         </h2>
-        <div className="w-screen">
-          <img src="https://skillicons.dev/icons?i=html,css,js,bootstrap,tailwind,md,c,react,next,ts&theme=light&perline=5" alt="Languages" />
-        </div>
+        <div class="w-full max-w-full">
+         <img src="https://skillicons.dev/icons?i=html,css,js,bootstrap,tailwind,md,c,react,next,ts&theme=light&perline=5" alt="Languages" class="w-full h-auto" />
+         </div>
+
       </section>
       
       <section className="mb-12">
