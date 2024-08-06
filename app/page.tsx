@@ -20,16 +20,7 @@ export default function Home() {
           Skills & Technologies
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
-          <img src="https://skillicons.dev/icons?i=html" alt="HTML" width={64} height={64} />
-          <img src="https://skillicons.dev/icons?i=css" alt="CSS" width={64} height={64} />
-          <img src="https://skillicons.dev/icons?i=js" alt="JavaScript" width={64} height={64} />
-          <img src="https://skillicons.dev/icons?i=bootstrap" alt="Bootstrap" width={64} height={64} />
-          <img src="https://skillicons.dev/icons?i=tailwindcss" alt="Tailwind CSS" width={64} height={64} />
-          <img src="https://skillicons.dev/icons?i=c" alt="C" width={64} height={64} />
-          <img src="https://skillicons.dev/icons?i=md" alt="Markdown" width={64} height={64} />
-          <img src="https://skillicons.dev/icons?i=react" alt="React" width={64} height={64} />
-          <img src="https://skillicons.dev/icons?i=next" alt="Next.js" width={64} height={64} />
-          <img src="https://skillicons.dev/icons?i=ts" alt="TypeScript" width={64} height={64} />
+          <img src="https://skillicons.dev/icons?i=html,css,js,bootstrap,tailwind,md,c,react,next,,ts" alt="HTML" width={200} height={32} />
         </div>
       </section>
       
