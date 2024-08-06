@@ -26,9 +26,9 @@ export default function Home() {
         <h2 className="text-3xl sm:text-4xl font-bold mb-4">
           Skills & Technologies
         </h2>
-        <div class="w-full max-w-full">
-         <img src="https://skillicons.dev/icons?i=html,css,js,bootstrap,tailwind,md,c,react,next,ts&theme=light&perline=5" alt="Languages" class="w-full h-auto" />
-         </div>
+        <div className="w-full max-w-full">
+  <img src="https://skillicons.dev/icons?i=html,css,js,bootstrap,tailwind,md,c,react,next,ts&theme=light&perline=5" alt="Languages" className="w-full h-auto" />
+        </div>
 
       </section>
       
