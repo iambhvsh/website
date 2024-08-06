@@ -5,30 +5,29 @@ import Link from "next/link";
 export default function Home() {
   return (
     <div className="container mx-auto p-6">
-      <header className="mb-12">
-        <h1 className="text-4xl sm:text-6xl font-bold">
-          Bhavesh Patil
-        </h1>
-        <p className="mt-4 sm:text-xl">
-          Hey there! I&apos;m Bhavesh Patil, the web wizard from Chatrapati Sambhajinagar, currently battling the dragons of a BSC in IT at MGM&apos;s Dr. G. Y. Pathrikar. Based in India, I brew web applications like a caffeinated barista. As an introvert, I thrive in my code cave, enjoying the silent symphonies of coding, music, and horror stories.
-        </p>
-        
-        <Link
-          href={`/docs/${page_routes[0].href}`}
-          className="px-6 py-3 bg-blue-500 text-white rounded-full"
-        >
-          Get Started
-        </Link>
-        
-      </header>
+      <header className="mb-12 px-4 sm:px-6 lg:px-8">
+  <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold">
+    Bhavesh Patil
+  </h1>
+  <p className="mt-4 text-base sm:text-lg lg:text-xl">
+    Hey there! I&apos;m Bhavesh Patil, the web wizard from Chatrapati Sambhajinagar, currently battling the dragons of a BSC in IT at MGM&apos;s Dr. G. Y. Pathrikar. Based in India, I brew web applications like a caffeinated barista. As an introvert, I thrive in my code cave, enjoying the silent symphonies of coding, music, and horror stories.
+  </p>
+  
+  <Link
+    href={`/docs/${page_routes[0].href}`}
+    className="mt-6 px-6 py-3 bg-blue-500 text-white rounded-full text-base sm:text-lg"
+  >
+    Get Started
+  </Link>
+</header>
       
       <section className="mb-12">
         <h2 className="text-3xl sm:text-4xl font-bold mb-4">
           Skills & Technologies
         </h2>
-        <div className="w-full max-w-full">
+        <div className="w-full max-w-lg mx-auto">
   <img src="https://skillicons.dev/icons?i=html,css,js,bootstrap,tailwind,md,c,react,next,ts&theme=light&perline=5" alt="Languages" className="w-full h-auto" />
-        </div>
+</div>
 
       </section>
       
