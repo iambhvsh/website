@@ -131,7 +131,7 @@ export default function Home() {
       <div className="flex justify-start">
         <Link
           href={`/docs/${page_routes[0].href}`}
-          className={buttonVariants({ className: "px-6 py-3 bg-blue-500 text-white rounded-full", size: "lg" })}
+          className="px-6 py-3 bg-blue-500 text-white rounded-full"
         >
           Get Started
         </Link>
