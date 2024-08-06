@@ -15,11 +15,9 @@ export default function Home() {
       <p className="mb-8 sm:text-xl max-w-[800px] text-muted-foreground">
         <strong>Skills & Technologies</strong>
       </p>
-      <p className="mb-8 sm:text-xl max-w-[800px] text-muted-foreground">
-        <p align="center">
-          <Image src="https://skillicons.dev/icons?i=html,css,js,bootstrap,tailwindcss,c,md,react,next,ts&theme=light&perline=5" alt="Languages" height="300" width="300" />
-        </p>
-      </p>
+      <div className="mb-8 sm:text-xl max-w-[800px] text-muted-foreground text-center">
+        <Image src="https://skillicons.dev/icons?i=html,css,js,bootstrap,tailwindcss,c,md,react,next,ts&theme=light&perline=5" alt="Languages" height="300" width="300" />
+      </div>
       <p className="mb-8 sm:text-xl max-w-[800px] text-muted-foreground">
         <strong>Projects & Experience</strong>
       </p>
