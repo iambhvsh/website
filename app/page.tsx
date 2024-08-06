@@ -1,7 +1,6 @@
 import { buttonVariants } from "@/components/ui/button";
 import { page_routes } from "@/lib/routes-config";
 import Link from "next/link";
-import Image from "next/image";
 
 export default function Home() {
   return (
@@ -19,7 +18,7 @@ export default function Home() {
         <h2 className="text-3xl sm:text-4xl font-bold mb-4">
           Skills & Technologies
         </h2>
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
+        <div className="w-screen">
           <img src="https://skillicons.dev/icons?i=html,css,js,bootstrap,tailwind,md,c,react,next,ts" alt="Languages" />
         </div>
       </section>
@@ -37,7 +36,10 @@ export default function Home() {
               <strong>Description:</strong> An app store inspired by the iOS App Store. Browse apps like a pro, with reviews and everything.
             </p>
             <p className="text-lg sm:text-xl mb-2">
-              <strong>Technologies:</strong> <img src="https://skillicons.dev/icons?i=react" alt="React" width={32} height={32} className="inline-block" />
+              <strong>Technologies:</strong>
+              <div>
+               <img src="https://skillicons.dev/icons?i=react" alt="React" width={32} height={32} className="inline-block" />
+              </div>
             </p>
             <p className="text-lg sm:text-xl">
               <strong><Link href="https://thepixelstore.vercel.app" target="_blank" className="text-blue-500 no-underline">Live Preview ⟩</Link></strong>
@@ -65,8 +67,8 @@ export default function Home() {
           GitHub Stats & Badges
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Image src="https://github-readme-stats.vercel.app/api?username=iambhvsh&show_icons=true&theme=radical" alt="GitHub Stats"/>
-          <Image src="https://github-readme-streak-stats.herokuapp.com/?user=iambhvsh&theme=radical" alt="GitHub Streak"/>
+          <img src="https://github-readme-stats.vercel.app/api?username=iambhvsh&show_icons=true&theme=radical" alt="GitHub Stats"/>
+          <img src="https://github-readme-streak-stats.herokuapp.com/?user=iambhvsh&theme=radical" alt="GitHub Streak"/>
         </div>
       </section>
       
