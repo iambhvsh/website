@@ -18,7 +18,7 @@ export default function Home() {
 </header>
       
       <section className="mb-12">
-        <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+        <h2 className="text-3xl sm:text-4xl font-bold mb-5">
           Skills & Technologies
         </h2>
         <div className="w-full max-w-lg mx-auto">
@@ -45,26 +45,26 @@ export default function Home() {
                <img src="https://skillicons.dev/icons?i=react" alt="React" width={32} height={32} className="inline-block mt-2" />
               </div>
             </p>
-            <p className="text-lg my-4">
-              <strong><Link href="https://thepixelstore.vercel.app" target="_blank" className="text-blue-500 no-underline">Live Preview ⟩</Link></strong>
+            <p className="text-base my-4">
+              <Link href="https://thepixelstore.vercel.app" target="_blank" className="text-blue-500 no-underline">Live Preview ⟩</Link>
             </p>
           </div>
           <div>
-            <h3 className="text-2xl sm:text-3xl font-bold mb-2">
+            <h3 className="text-2xl font-bold mb-4">
               2. 🎥 DarkValor
             </h3>
-            <p className="text-lg sm:text-xl mb-2">
+            <p className="text-lg mb-4">
               <strong>Description:</strong> This project is a sleek and minimalist YouTube client, developed using HTML, Tailwind CSS, and JavaScript. It leverages the Invidious API to provide a seamless and privacy-focused video browsing experience.
             </p>
-            <p className="text-lg sm:text-xl mb-2">
+            <p className="text-lg mb-4">
               <strong>Technologies:</strong>
               
               <div>
                 <img src="https://skillicons.dev/icons?i=html,tailwind,js" alt="HTML, Tailwind CSS, JavaScript" width={96} height={32} className="inline-block mt-2" />
                 </div>
             </p>
-            <p className="text-lg sm:text-xl">
-              <strong><Link href="https://darkvalor.vercel.app" target="_blank" className="text-blue-500 no-underline">Live Preview ⟩</Link></strong>
+            <p className="text-base">
+              <Link href="https://darkvalor.vercel.app" target="_blank" className="text-blue-500 no-underline">Live Preview ⟩</Link>
             </p>
           </div>
         </div>
@@ -93,19 +93,19 @@ export default function Home() {
         <h2 className="text-3xl sm:text-4xl font-bold mb-4">
           Bucket List
         </h2>
-        <p className="text-lg sm:text-xl mb-2">
+        <p className="text-lg sm:text-xl mb-4">
           <strong>Languages to Learn:</strong> 
-          <div><img src="https://skillicons.dev/icons?i=c,cpp,swift,python" alt="C, C++, Swift, Python" width={128} height={32} className="inline-block mt-2"/>
+          <div><img src="https://skillicons.dev/icons?i=c,cpp,swift,python" alt="C, C++, Swift, Python" width={128} height={32} className="inline-block mt-4"/>
           </div>
         </p>
-        <p className="text-lg sm:text-xl mb-2">
+        <p className="text-lg mb-4">
           <strong>Technologies to Master:</strong> 
           <div>
-            <img src="https://skillicons.dev/icons?i=next,react" alt="Next.js, React.js" width={64} height={32} className="inline-block mt-2"/>
+            <img src="https://skillicons.dev/icons?i=next,react" alt="Next.js, React.js" width={64} height={32} className="inline-block mt-4"/>
           </div>
         </p>
         <p className="text-lg sm:text-xl">
-          Other Goals: Publish open-source stuff, Play with Node.js and databases, Create a tech blog, Study system design, Contribute to documentation and tutorials, Learn and implement security practices, Try out different state management libraries, Containerize everything with Docker, Build super interactive user experiences, Optimize web performance, Study microservices architecture, Build and deploy multi-platform apps, Master advanced debugging, Help build tools and frameworks for other developers.
+          <strong>Other Goals:</strong> Publish open-source stuff, Play with Node.js and databases, Create a tech blog, Study system design, Contribute to documentation and tutorials, Learn and implement security practices, Try out different state management libraries, Containerize everything with Docker, Build super interactive user experiences, Optimize web performance, Study microservices architecture, Build and deploy multi-platform apps, Master advanced debugging, Help build tools and frameworks for other developers.
         </p>
       </section>
       
