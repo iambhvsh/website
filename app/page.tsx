@@ -5,11 +5,11 @@ import Link from "next/link";
 export default function Home() {
   return (
     <div className="container mx-auto p-6">
-      <header className="mb-12 px-2">
-  <h1 className="text-4xl font-bold">
+      <header className="mb-12">
+  <h1 className="text-5xl font-bold">
     Bhavesh Patil
   </h1>
-  <p className="mt-4 text-base text-slate-900">
+  <p className="mt-4 text-base text-slate-400">
     Hey there! I&apos;m Bhavesh Patil, the web wizard from Chatrapati Sambhajinagar, currently battling the dragons of a BSC in IT at MGM&apos;s Dr. G. Y. Pathrikar. Based in India, I brew web applications like a caffeinated barista. As an introvert, I thrive in my code cave, enjoying the silent symphonies of coding, music, and horror stories.
   <div className="mt-4">
   <Link href={`/docs/${page_routes[0].href}`} className="text-blue-500">Get Started ⟩</Link>
