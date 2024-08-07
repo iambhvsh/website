@@ -33,19 +33,19 @@ export default function Home() {
         </h2>
         <div className="grid gap-8">
           <div>
-            <h3 className="text-2xl sm:text-3xl font-bold mb-2">
+            <h3 className="text-2xl sm:text-3xl font-bold mb-4">
               1. 🛍️ ThePixelStore
             </h3>
-            <p className="text-lg sm:text-xl mb-2">
+            <p className="text-lg sm:text-xl mb-4">
               <strong>Description:</strong> An app store inspired by the iOS App Store. Browse apps like a pro, with reviews and everything.
             </p>
-            <p className="text-lg sm:text-xl mb-2">
+            <p className="text-lg sm:text-xl mb-3">
               <strong>Technologies:</strong>
               <div>
                <img src="https://skillicons.dev/icons?i=react" alt="React" width={32} height={32} className="inline-block mt-2" />
               </div>
             </p>
-            <p className="text-lg sm:text-xl">
+            <p className="text-lg my-4">
               <strong><Link href="https://thepixelstore.vercel.app" target="_blank" className="text-blue-500 no-underline">Live Preview ⟩</Link></strong>
             </p>
           </div>
