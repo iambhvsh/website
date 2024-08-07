@@ -7,7 +7,7 @@ import { SheetLeftbar } from "./leftbar";
 
 export function Navbar() {
   return (
-    <nav className="w-full border-b h-16 sticky top-0 z-50 lg:px-4 px-2 backdrop-filter backdrop-blur-2xl">
+    <nav className="w-full h-16 sticky top-0 z-50 lg:px-4 px-2 backdrop-filter backdrop-blur-2xl">
       <div className="sm:p-3 p-2 max-w-[1530px] mx-auto h-full flex items-center justify-between gap-2">
         <div className="flex items-center gap-5">
           <SheetLeftbar />
