@@ -45,6 +45,13 @@ export const ROUTES = [
       { title: "useData", href: "/use-data" },
     ],
   },
+  {
+    title: "Projects",
+    href: "projects",
+    items: [
+      { title: "thepixelstore", href: "/thepixelstore" }
+    ],
+  },
 ];
 
 export const page_routes = ROUTES.map(({ href, items }) => {
