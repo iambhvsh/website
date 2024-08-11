@@ -9,7 +9,7 @@ export const ROUTES = [
   },
   {
     title: "Sitemap",
-    href: "sitemap.xml"
+    href: "sitemap.xml",
     items: [
       { title: "Sitemap", href: "/sitemap.xml" }
   },
