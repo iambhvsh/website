@@ -1,9 +1,9 @@
 {
-  "name": "docs-template",
-  "version": "0.1.0",
+  "name": "iambhvsh",
+  "version": "1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev && next-sitemap",
     "build": "next build && next-sitemap",
     "start": "next start",
     "lint": "next lint",
