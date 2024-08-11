@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://website-lilac-eight-36.vercel.app
+
+# Sitemaps
+Sitemap: https://website-lilac-eight-36.vercel.app/sitemap.xml
