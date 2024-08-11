@@ -7,6 +7,10 @@ export const ROUTES = [
       { title: "thepixelstore", href: "/thepixelstore" }
     ],
   },
+  {
+    title: "Sitemap",
+    href: "/sitemap.xml"
+  },
 ];
 
 export const page_routes = ROUTES.map(({ href, items }) => {
