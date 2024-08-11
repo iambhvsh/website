@@ -1,9 +1,10 @@
-import type { Metadata } from "next";
+import { Metadata } from "next";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Navbar } from "@/components/navbar";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import { Footer } from "@/components/footer";
+import Head from "next/head";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -20,6 +21,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <Head>
+        <meta
+          name="google-site-verification"
+          content="UkG6otmqZFb_kB50fQvIFqrqZGYNm00YpfKG9B_aGTY"
+        />
+      </Head>
       <body
         className={`${GeistSans.variable} ${GeistMono.variable} font-regular`}
         suppressHydrationWarning
