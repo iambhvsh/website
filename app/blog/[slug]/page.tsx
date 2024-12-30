@@ -117,7 +117,7 @@ export default async function Page({ params }: PageProps) {
           <CopyLinkButton slug={params.slug} />
         </div>
 
-        {post.tags.length > 0 && (
+        {post.tags?.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-8">
             {post.tags.map((tag) => (
               <span key={tag} className="text-sm text-gray-400">
