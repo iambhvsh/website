@@ -41,9 +41,7 @@ function constructMetadata(post: Post): Metadata {
     ? `${post.excerpt} | Read this article by Bhavesh Patil about ${post.tags?.join(', ') || 'web development'}.`
     : `Read ${post.title} - An article by Bhavesh Patil about ${post.tags?.join(', ') || 'web development'}.`;
 
-  const ogImageUrl = post.coverImage;
-
-  return {
+  const metadata: Metadata = {
     title: `${post.title} | Bhavesh Patil`,
     description,
     authors: [{ name: AUTHOR.name, url: SITE_URL }],
@@ -60,21 +58,12 @@ function constructMetadata(post: Post): Metadata {
       type: 'article',
       publishedTime: publishDate,
       authors: [AUTHOR.name],
-      images: [
-        {
-          url: ogImageUrl,
-          width: 1200,
-          height: 630,
-          alt: post.title,
-        },
-      ],
     },
     twitter: {
       card: 'summary_large_image',
       title: post.title,
       description,
       creator: '@iambhvsh',
-      images: [ogImageUrl],
     },
     robots: {
       index: true,
@@ -88,6 +77,26 @@ function constructMetadata(post: Post): Metadata {
       },
     },
   };
+
+  if (post.coverImage) {
+    const imageMetadata = {
+      url: post.coverImage,
+      width: 1200,
+      height: 630,
+      alt: post.title,
+    };
+
+    metadata.openGraph = {
+      ...metadata.openGraph,
+      images: [imageMetadata],
+    };
+    metadata.twitter = {
+      ...metadata.twitter,
+      images: [post.coverImage],
+    };
+  }
+
+  return metadata;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
