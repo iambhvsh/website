@@ -25,29 +25,41 @@ type PageProps = {
   };
 };
 
+const SITE_URL = 'https://iambhvsh.vercel.app';
+
 async function fetchPostOr404(slug: string): Promise<Post> {
   const post = await getPostBySlug(slug) as Post;
   if (!post) notFound();
   return post;
 }
 
-function constructMetadata(post: Post) {
+function constructMetadata(post: Post): Metadata {
+  const canonicalUrl = `${SITE_URL}/blog/${post.slug}`;
+  const publishDate = new Date(post.date).toISOString();
+  
   const description = post.excerpt
     ? `${post.excerpt} | Read this article by Bhavesh Patil about ${post.tags?.join(', ') || 'web development'}.`
     : `Read ${post.title} - An article by Bhavesh Patil about ${post.tags?.join(', ') || 'web development'}.`;
 
-  const ogImageUrl = `https://placehold.co/1200x630/png?text=${encodeURIComponent(post.title)}&fontsize=48&color=FFFFFF&bgcolor=000000`;
+  const ogImageUrl = post.coverImage;
 
   return {
-    title: post.title,
+    title: `${post.title} | Bhavesh Patil`,
     description,
+    authors: [{ name: AUTHOR.name, url: SITE_URL }],
+    keywords: post.tags,
+    alternates: {
+      canonical: canonicalUrl,
+    },
     openGraph: {
       title: post.title,
       description,
-      url: `https://iambhvsh.vercel.app/blog/${post.slug}`,
+      url: canonicalUrl,
       siteName: 'Bhavesh Patil',
       locale: 'en_US',
       type: 'article',
+      publishedTime: publishDate,
+      authors: [AUTHOR.name],
       images: [
         {
           url: ogImageUrl,
@@ -61,7 +73,19 @@ function constructMetadata(post: Post) {
       card: 'summary_large_image',
       title: post.title,
       description,
+      creator: '@iambhvsh',
       images: [ogImageUrl],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
     },
   };
 }
@@ -73,6 +97,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function Page({ params }: PageProps) {
   const post = await fetchPostOr404(params.slug);
+  const canonicalUrl = `${SITE_URL}/blog/${params.slug}`;
 
   return (
     <div className="max-w-3xl mx-auto px-4 pt-24 pb-12">
@@ -108,7 +133,7 @@ export default async function Page({ params }: PageProps) {
             <div>
               <div className="font-medium text-white">{AUTHOR.name}</div>
               <div className="flex items-center gap-2 text-sm text-gray-400">
-                <span>{formatDate(post.date)}</span>
+                <time dateTime={post.date}>{formatDate(post.date)}</time>
                 <span>·</span>
                 <span>{post.readingTime}</span>
               </div>
@@ -128,10 +153,12 @@ export default async function Page({ params }: PageProps) {
         )}
 
         <div className="border-t border-zinc-800">
-          <div className="prose prose-invert max-w-none">
+          <div className="prose prose-invert max-w-none" aria-label="Article content">
             <MDXContent source={post.content} />
           </div>
         </div>
+
+        <link rel="canonical" href={canonicalUrl} />
       </article>
     </div>
   );
