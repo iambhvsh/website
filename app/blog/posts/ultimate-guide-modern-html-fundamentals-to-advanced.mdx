@@ -116,48 +116,6 @@ HTML is evolving faster than ever, with powerful features that many developers o
 </details>
 ```
 
-### The `<dialog>` Element with Advanced Features
-
-```html
-<dialog id="shareDialog" class="modern-dialog">
-  <form method="dialog">
-    <header>
-      <h2>Share Content 🔗</h2>
-      <button value="cancel" class="close-button" aria-label="Close dialog">×</button>
-    </header>
-    
-    <div class="dialog-body">
-      <div class="share-options">
-        <button class="share-button" data-platform="twitter">
-          <span class="icon">𝕏</span>
-          Share on X/Twitter
-        </button>
-        
-        <button class="share-button" data-platform="linkedin">
-          <span class="icon">in</span>
-          Share on LinkedIn
-        </button>
-        
-        <div class="direct-share">
-          <input type="url" readonly value="https://example.com/share" aria-label="Share URL">
-          <button class="copy-button">Copy Link</button>
-        </div>
-      </div>
-    </div>
-  </form>
-</dialog>
-```
-
-### The `<portal>` Element for Preview Navigation
-
-```html
-<portal id="preview" src="about:blank">
-  <div class="portal-placeholder">
-    Preview will appear here
-  </div>
-</portal>
-```
-
 ## Advanced Media Handling 🎥
 
 ### Modern Video Player
@@ -528,13 +486,30 @@ class AdvancedTooltip extends HTMLElement {
   constructor() {
     super();
     const template = document.getElementById('advanced-tooltip');
-    const shadowRoot = this.attachShadow({mode: 'open'});
+    const shadowRoot = this.attachShadow({ mode: 'open' });
     shadowRoot.appendChild(template.content.cloneNode(true));
+
+    // Add event listeners to show/hide the tooltip
+    this.addEventListener('mouseenter', () => {
+      this.setAttribute('data-show', '');
+    });
+
+    this.addEventListener('mouseleave', () => {
+      this.removeAttribute('data-show');
+    });
   }
 }
 
 customElements.define('advanced-tooltip', AdvancedTooltip);
 </script>
+
+<!-- Testing -->
+
+<advanced-tooltip>
+  Hover over me
+  <span slot="tooltip-content">This is a custom tooltip</span>
+</advanced-tooltip>
+
 ```
 
 ## Security Best Practices 🔒
