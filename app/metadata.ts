@@ -39,7 +39,7 @@ export function generateMetadata({ params }: MetadataProps): Metadata {
       type,
       images: [
         {
-          url: `https://placehold.co/1200x630/000000/FFFFFF/png?text=${encodeURIComponent(title.charAt(0))}&font=montserrat`,
+          url: `https://placehold.co/1200x630/FFFFFF/000000/png?text=${encodeURIComponent(title.charAt(0))}&font=montserrat`,
           alt: `Placeholder image for ${title}`,
           width: 1200,
           height: 630,
@@ -51,7 +51,7 @@ export function generateMetadata({ params }: MetadataProps): Metadata {
       title,
       description,
       images: [
-        `https://placehold.co/1200x630/000000/FFFFFF/png?text=${encodeURIComponent(title.charAt(0))}&font=montserrat`,
+        `https://placehold.co/1200x630/FFFFFF/000000/png?text=${encodeURIComponent(title.charAt(0))}&font=montserrat`,
       ],
     },
     robots: {
