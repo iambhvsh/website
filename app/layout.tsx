@@ -27,12 +27,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="manifest" href="/manifest.json" />
         <link
           rel="icon"
-          href="https://placehold.co/32x32/000000/FFFFFF/png?text=B&font=montserrat"
+          href="https://placehold.co/32x32/FFFFFF/000000/png?text=B&font=montserrat"
           type="image/png"
         />
         <link
           rel="apple-touch-icon"
-          href="https://placehold.co/180x180/000000/FFFFFF/png?text=B&font=montserrat"
+          href="https://placehold.co/180x180/FFFFFF/000000/png?text=B&font=montserrat"
         />
 
         {/* Fonts */}
