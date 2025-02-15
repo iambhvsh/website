@@ -32,7 +32,7 @@ export default function About() {
             alt={AUTHOR.name}
             width={150}
             height={150}
-            className="rounded-2xl"
+            className="rounded-full"
             priority
           />
         </div>
