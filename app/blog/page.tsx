@@ -150,7 +150,7 @@ export default async function Blog() {
                     </p>
                   </div>
 
-                  {post.tags.length > 0 && (
+                  {post.tags && post.tags.length > 0 && (
                     <div className="flex flex-wrap gap-2">
                       {post.tags.map((tag) => (
                         <span 
@@ -181,4 +181,4 @@ export async function generateStaticParams() {
   return posts.map((post) => ({
     slug: post.slug,
   }))
-}} 
+}
