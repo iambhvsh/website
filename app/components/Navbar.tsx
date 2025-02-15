@@ -14,10 +14,16 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 bg-black/50 backdrop-blur-xl z-50 text-white">
+      <nav className={`fixed top-0 left-0 right-0 ${
+        isMenuOpen ? 'bg-transparent backdrop-blur-none' : 'bg-black/70 backdrop-blur-xl'
+      } z-50 text-white border-b ${
+        isMenuOpen ? 'border-transparent' : 'border-white/10'
+      } transition-all duration-200`}>
         <div className="max-w-6xl mx-auto px-4">
-          <div className="flex justify-between items-center py-2">
-            <Link href="/" className="text-2xl font-bold duration-300 hover:text-zinc-500">iambhvsh</Link>
+          <div className="flex justify-between items-center py-3">
+            <Link href="/" className="text-2xl font-bold duration-300 hover:text-zinc-500">
+              iambhvsh
+            </Link>
             
             {/* Hamburger Button */}
             <button 
@@ -41,9 +47,9 @@ export default function Navbar() {
       <div 
         className={`${
           isMenuOpen ? 'translate-y-0 opacity-100' : '-translate-y-4 opacity-0 pointer-events-none'
-        } fixed top-[55px] left-0 right-0 bottom-0 z-40 bg-black/50 backdrop-blur-xl text-white transition-all duration-200 ease-out transform-gpu`}
+        } fixed inset-0 z-40 bg-black/70 backdrop-blur-xl text-white transition-all duration-200 ease-out transform-gpu`}
       >
-        <div className="max-w-6xl mx-auto px-4 py-6 space-y-2">
+        <div className="max-w-6xl mx-auto px-4 py-6 space-y-2 pt-20">
           {SITE_DATA.pages.map((item) => (
             <Link
               key={item.path}
@@ -59,7 +65,10 @@ export default function Navbar() {
               {item.name}
             </Link>
           ))}
-          <button onClick={showInstallPrompt} className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-white/5 hover:text-white">
+          <button 
+            onClick={showInstallPrompt} 
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-white/5 hover:text-white"
+          >
             <FiDownload className="w-5 h-5" />
             Install App
           </button>
@@ -68,4 +77,3 @@ export default function Navbar() {
     </>
   )
 }
-
