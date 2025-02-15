@@ -42,6 +42,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap"
           rel="stylesheet"
         />
+
+        <meta name="google-site-verification" content="NZeVYWwxwJQXPJC-mu3ccZpG6L2O8hes7185XXl04wI" />
       </head>
       <body className={`${spaceGrotesk.className} min-h-screen bg-black`}>
         <Providers>
