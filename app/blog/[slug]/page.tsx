@@ -7,6 +7,7 @@ import { Metadata } from 'next';
 import { CopyLinkButton } from '../../components/CopyLinkButton';
 import { notFound } from 'next/navigation';
 import { MDXRemoteSerializeResult } from 'next-mdx-remote';
+import Script from 'next/script';
 
 interface Post {
   title: string;
@@ -42,6 +43,7 @@ function constructMetadata(post: Post): Metadata {
     : `Read ${post.title} - An article by Bhavesh Patil about ${post.tags?.join(', ') || 'web development'}.`;
 
   const metadata: Metadata = {
+    metadataBase: new URL(SITE_URL),
     title: `${post.title} | Bhavesh Patil`,
     description,
     authors: [{ name: AUTHOR.name, url: SITE_URL }],
@@ -57,13 +59,16 @@ function constructMetadata(post: Post): Metadata {
       locale: 'en_US',
       type: 'article',
       publishedTime: publishDate,
+      modifiedTime: publishDate,
       authors: [AUTHOR.name],
+      tags: post.tags,
     },
     twitter: {
       card: 'summary_large_image',
       title: post.title,
       description,
       creator: '@iambhvsh',
+      site: '@iambhvsh',
     },
     robots: {
       index: true,
@@ -84,6 +89,7 @@ function constructMetadata(post: Post): Metadata {
       width: 1200,
       height: 630,
       alt: post.title,
+      type: 'image/jpeg',
     };
 
     metadata.openGraph = {
@@ -107,69 +113,120 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function Page({ params }: PageProps) {
   const post = await fetchPostOr404(params.slug);
   const canonicalUrl = `${SITE_URL}/blog/${params.slug}`;
+  const publishDate = new Date(post.date).toISOString();
 
   return (
-    <div className="max-w-3xl mx-auto px-4 pt-24 pb-12">
-      {post.coverImage && (
-        <div className="aspect-video w-full relative rounded-xl overflow-hidden mb-12">
-          <Image
-            src={post.coverImage}
-            alt={post.title}
-            fill
-            className="object-cover"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 75vw"
-            priority
-          />
-        </div>
-      )}
+    <>
+      <article className="max-w-3xl mx-auto px-4 pt-24 pb-12" itemScope itemType="https://schema.org/BlogPosting">
+        <Script
+          id="structured-data"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'BlogPosting',
+              headline: post.title,
+              description: post.excerpt,
+              image: post.coverImage,
+              datePublished: publishDate,
+              dateModified: publishDate,
+              author: {
+                '@type': 'Person',
+                name: AUTHOR.name,
+                url: SITE_URL,
+                image: AUTHOR.image,
+              },
+              publisher: {
+                '@type': 'Person',
+                name: AUTHOR.name,
+                url: SITE_URL,
+                image: AUTHOR.image,
+              },
+              mainEntityOfPage: {
+                '@type': 'WebPage',
+                '@id': canonicalUrl,
+              },
+              keywords: post.tags?.join(', '),
+            }),
+          }}
+        />
 
-      <article>
-        <h1 className="text-3xl text-white font-bold mb-4">{post.title}</h1>
-        <p className="text-gray-400 text-lg mb-8">{post.excerpt}</p>
-
-        <div className="flex items-center justify-between gap-4 mb-6">
-          <div className="flex items-center gap-3">
-            <div className="relative">
-              <Image
-                src={AUTHOR.image}
-                alt={AUTHOR.name}
-                width={40}
-                height={40}
-                className="rounded-full"
-              />
-              <VerifiedBadge className="absolute -right-1 -bottom-1 w-6 h-6" />
-            </div>
-            <div>
-              <div className="font-medium text-white">{AUTHOR.name}</div>
-              <div className="flex items-center gap-2 text-sm text-gray-400">
-                <time dateTime={post.date}>{formatDate(post.date)}</time>
-                <span>·</span>
-                <span>{post.readingTime}</span>
-              </div>
-            </div>
-          </div>
-          <CopyLinkButton slug={params.slug} />
-        </div>
-
-        {post.tags && post.tags.length > 0 && (
-          <div className="flex flex-wrap gap-2 mb-8">
-            {post.tags.map((tag) => (
-              <span key={tag} className="text-sm text-gray-400">
-                #{tag}
-              </span>
-            ))}
+        {post.coverImage && (
+          <div className="aspect-video w-full relative rounded-xl overflow-hidden mb-12">
+            <Image
+              src={post.coverImage}
+              alt={post.title}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 75vw"
+              priority
+              itemProp="image"
+            />
           </div>
         )}
 
+        <header>
+          <h1 className="text-3xl text-white font-bold mb-4" itemProp="headline">
+            {post.title}
+          </h1>
+          <p className="text-gray-400 text-lg mb-8" itemProp="description">
+            {post.excerpt}
+          </p>
+
+          <div className="flex items-center justify-between gap-4 mb-6">
+            <div className="flex items-center gap-3">
+              <div className="relative" itemProp="author" itemScope itemType="https://schema.org/Person">
+                <Image
+                  src={AUTHOR.image}
+                  alt={AUTHOR.name}
+                  width={40}
+                  height={40}
+                  className="rounded-full"
+                  itemProp="image"
+                />
+                <VerifiedBadge className="absolute -right-1 -bottom-1 w-6 h-6" />
+                <meta itemProp="name" content={AUTHOR.name} />
+                <link itemProp="url" href={SITE_URL} />
+              </div>
+              <div>
+                <div className="font-medium text-white">{AUTHOR.name}</div>
+                <div className="flex items-center gap-2 text-sm text-gray-400">
+                  <time dateTime={post.date} itemProp="datePublished">
+                    {formatDate(post.date)}
+                  </time>
+                  <span>·</span>
+                  <span itemProp="timeRequired">{post.readingTime}</span>
+                </div>
+              </div>
+            </div>
+            <CopyLinkButton slug={params.slug} />
+          </div>
+
+          {post.tags && post.tags.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-8">
+              {post.tags.map((tag) => (
+                <span key={tag} className="text-sm text-gray-400" itemProp="keywords">
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          )}
+        </header>
+
         <div className="border-t border-zinc-800">
-          <div className="prose prose-invert max-w-none" aria-label="Article content">
+          <div 
+            className="prose prose-invert max-w-none" 
+            aria-label="Article content"
+            itemProp="articleBody"
+          >
             <MDXContent source={post.content} />
           </div>
         </div>
 
+        <meta itemProp="url" content={canonicalUrl} />
         <link rel="canonical" href={canonicalUrl} />
       </article>
-    </div>
+    </>
   );
 }
 
