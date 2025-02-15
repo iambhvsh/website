@@ -1,9 +1,11 @@
 import './globals.css'
 import { Space_Grotesk } from 'next/font/google'
+import Script from 'next/script'
 import Providers from './components/Providers'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import { generateMetadata } from './metadata'
+import { siteConfig } from './config/site'
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -20,7 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Meta Tags */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="application-name" content="Bhavesh Patil" />
+        <meta name="application-name" content={siteConfig.name} />
         <meta name="theme-color" content="#000000" />
 
         {/* Favicon and Icons */}
@@ -40,9 +42,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap"
           rel="stylesheet"
         />
-
-        {/* Social Scripts */}
-        <script async src="https://platform.twitter.com/widgets.js" />
       </head>
       <body className={`${spaceGrotesk.className} min-h-screen bg-black`}>
         <Providers>
@@ -50,6 +49,30 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main className="flex-1">{children}</main>
           <Footer />
         </Providers>
+
+        {/* Structured Data */}
+        <Script
+          id="schema-org"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'WebSite',
+              name: siteConfig.name,
+              url: siteConfig.url,
+              description: siteConfig.description,
+              author: {
+                '@type': 'Person',
+                name: siteConfig.author,
+                url: siteConfig.url,
+                sameAs: [
+                  `https://github.com/${siteConfig.github}`,
+                  `https://twitter.com/${siteConfig.twitter.replace('@', '')}`,
+                ],
+              },
+            }),
+          }}
+        />
       </body>
     </html>
   )
