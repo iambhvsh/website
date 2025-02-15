@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import { siteConfig } from './config/site'
 
 type MetadataProps = {
   params: {
@@ -7,62 +8,80 @@ type MetadataProps = {
     type?: 'website' | 'article'
     slug?: string
     tags?: string[]
+    publishedTime?: string
+    modifiedTime?: string
+    image?: string
   }
 }
 
 export function generateMetadata({ params }: MetadataProps): Metadata {
-  const title = params.title || 'Bhavesh Patil'
-  const description = params.description || 'Frontend Developer focused on building innovative and modern web applications.'
+  const title = params.title || siteConfig.name
+  const description = params.description || siteConfig.description
   const type = params.type || 'website'
   const slug = params.slug || ''
-  const tags = params.tags?.join(', ') || 'web development, Bhavesh Patil, portfolio'
+  const tags = params.tags?.join(', ') || 'web development, frontend developer, portfolio, nextjs'
+  const image = params.image || `https://placehold.co/1200x630/FFFFFF/000000/png?text=${encodeURIComponent(title.charAt(0))}&font=montserrat`
 
-  const baseUrl = 'https://iambhvsh.vercel.app'
+  const url = `${siteConfig.url}${slug ? `/${slug}` : ''}`
 
   return {
-    metadataBase: new URL(baseUrl),
+    metadataBase: new URL(siteConfig.url),
     title: {
       default: title,
-      template: `%s | Bhavesh Patil`,
+      template: `%s | ${siteConfig.name}`,
     },
     description,
     keywords: tags,
-    authors: [{ name: 'Bhavesh Patil' }],
-    viewport: 'width=device-width, initial-scale=1.0',
-    themeColor: '#000000',
+    authors: [{ name: siteConfig.author, url: siteConfig.url }],
+    creator: siteConfig.author,
+    publisher: siteConfig.author,
+    formatDetection: {
+      email: false,
+      address: false,
+      telephone: false,
+    },
+    alternates: {
+      canonical: url,
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-image-preview': 'large',
+        'max-video-preview': -1,
+        'max-snippet': -1,
+      },
+    },
     openGraph: {
       title,
       description,
-      url: `${baseUrl}/${slug}`,
-      siteName: 'Bhavesh Patil',
+      url,
+      siteName: siteConfig.name,
       locale: 'en_US',
       type,
       images: [
         {
-          url: `https://placehold.co/1200x630/FFFFFF/000000/png?text=${encodeURIComponent(title.charAt(0))}&font=montserrat`,
-          alt: `Placeholder image for ${title}`,
+          url: image,
           width: 1200,
           height: 630,
+          alt: title,
         },
       ],
+      ...(type === 'article' && {
+        publishedTime: params.publishedTime,
+        modifiedTime: params.modifiedTime,
+        authors: [siteConfig.url],
+        tags: params.tags,
+      }),
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
-      images: [
-        `https://placehold.co/1200x630/FFFFFF/000000/png?text=${encodeURIComponent(title.charAt(0))}&font=montserrat`,
-      ],
-    },
-    robots: {
-      index: true,
-      follow: true,
-      'max-snippet': -1,
-      'max-image-preview': 'large',
-      'max-video-preview': -1,
-    },
-    alternates: {
-      canonical: `${baseUrl}/${slug}`,
+      creator: siteConfig.twitter,
+      images: [image],
     },
   }
 }
