@@ -13,6 +13,16 @@ export interface Project {
 
 export const PROJECTS: Project[] = [
   {
+    title: 'TSLRC- Time Synced Lyrics',
+    description: 'TSLRC – Time Synced Lyrics is an innovative app that synchronizes lyrics with your favorite tracks in real time, creating an immersive, interactive music experience.',
+    image: 'https://placehold.co/1200x630/1a1a1a/FFFFFF/png?text=TSLRC',
+    tags: ['HTML', 'TailwindCSS', 'JavaScript'],
+    links: {
+      github: 'https://github.com/iambhvsh/tslrc',
+      live: 'https://tslrc.vercel.app'
+    }
+  },
+  {
     title: 'Flashified',
     description: 'Flashified is a powerful and user-friendly tool for downloading images from websites effortlessly. Whether it\’s blogs, galleries, or dynamic content, Flashified simplifies the process of extracting high-quality images.',
     image: 'https://placehold.co/1200x630/1a1a1a/FFFFFF/png?text=Flashified',
