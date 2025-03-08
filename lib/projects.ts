@@ -13,7 +13,7 @@ export interface Project {
 
 export const PROJECTS: Project[] = [
   {
-    title: 'TSLRC- Time Synced Lyrics',
+    title: 'TSLRC - Time Synced Lyrics',
     description: 'TSLRC – Time Synced Lyrics is an innovative app that synchronizes lyrics with your favorite tracks in real time, creating an immersive, interactive music experience.',
     image: 'https://placehold.co/1200x630/1a1a1a/FFFFFF/png?text=TSLRC',
     tags: ['HTML', 'TailwindCSS', 'JavaScript'],
@@ -24,7 +24,7 @@ export const PROJECTS: Project[] = [
   },
   {
     title: 'Flashified',
-    description: 'Flashified is a powerful and user-friendly tool for downloading images from websites effortlessly. Whether it\’s blogs, galleries, or dynamic content, Flashified simplifies the process of extracting high-quality images.',
+    description: 'Flashified is a powerful and user-friendly tool for downloading images from websites effortlessly. Whether it’s blogs, galleries, or dynamic content, Flashified simplifies the process.',
     image: 'https://placehold.co/1200x630/1a1a1a/FFFFFF/png?text=Flashified',
     tags: ['NextJS', 'TailwindCSS'],
     links: {
@@ -46,7 +46,7 @@ export const PROJECTS: Project[] = [
     title: 'DarkValor',
     description: 'A video streaming website using Invidious and Piped APIs. Modern interface with dark theme and seamless video playback.',
     image: 'https://placehold.co/1200x630/1a1a1a/FFFFFF/png?text=DarkValor',
-    tags: ['HTML', 'Tailwind CSS', 'JavaScript', 'API'],
+    tags: ['HTML', 'TailwindCSS', 'JavaScript', 'API'],
     links: {
       github: 'https://github.com/iambhvsh/DarkValor',
       live: 'https://darkvalor.vercel.app'
@@ -66,7 +66,7 @@ export const PROJECTS: Project[] = [
     title: 'Chat App',
     description: 'Real-time chat application with Firebase backend and modern UI.',
     image: 'https://placehold.co/1200x630/1a1a1a/FFFFFF/png?text=Chat+App',
-    tags: ['HTML', 'Tailwind CSS', 'JavaScript', 'Firebase'],
+    tags: ['HTML', 'TailwindCSS', 'JavaScript', 'Firebase'],
     links: {
       github: 'https://github.com/iambhvsh/chat-app'
     }
@@ -102,4 +102,4 @@ export interface SearchResult {
   url: string
   type: SearchResultType
   tags?: string[]
-} 
+}
