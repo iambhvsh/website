@@ -6,6 +6,7 @@ import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import { generateMetadata } from './metadata'
 import { siteConfig } from './config/site'
+import { Analytics } from "@vercel/analytics/react"
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
