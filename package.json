@@ -15,6 +15,7 @@
     "prod:clean": "pnpm clean && pnpm prod"
   },
   "dependencies": {
+    "@vercel/analytics": "^1.5.0",
     "@mdx-js/loader": "^2.3.0",
     "@mdx-js/react": "^2.3.0",
     "@next/mdx": "^13.5.7",
