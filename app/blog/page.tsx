@@ -11,7 +11,7 @@ const SITE_URL = 'https://iambhvsh.vercel.app'
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: 'Blog | Bhavesh Patil',
+  title: 'Blog',
   description: 'Thoughts and insights about web development by Bhavesh Patil. Read articles about web development, programming techniques, and technology.',
   keywords: ['web development', 'frontend development', 'programming', 'tech blog', 'Bhavesh Patil'],
   authors: [{ name: AUTHOR.name, url: SITE_URL }],

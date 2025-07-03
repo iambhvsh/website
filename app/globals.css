@@ -1,6 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 ::selection {
   background-color: #47a3f3;
   color: #fefefe;
@@ -47,7 +59,7 @@ html {
 
   .prose .anchor:after {
     @apply text-neutral-700;
-    content: '#';
+    content: "#";
   }
 
   .prose *:hover > .anchor {
@@ -62,14 +74,14 @@ html {
 
   .prose code {
     @apply bg-[#090909];
-    font-family: 'Fira Code', monospace;
+    font-family: "Fira Code", monospace;
     font-size: 0.875rem;
     line-height: 1.25rem;
   }
 
   .prose img {
-  /* Don't apply styles to next/image */
-  @apply m-0;
+    /* Don't apply styles to next/image */
+    @apply m-0;
   }
 
   .prose p {
@@ -169,17 +181,8 @@ html {
   }
 }
 
-pre::-webkit-scrollbar {
-  display: none;
-}
-
-pre {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-input[type='text'],
-input[type='email'] {
+input[type="text"],
+input[type="email"] {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -202,7 +205,7 @@ table {
 
 [data-rehype-pretty-code-fragment] code {
   @apply grid min-w-full break-words rounded-none border-0 bg-transparent p-0;
-  font-family: 'Fira Code', monospace;
+  font-family: "Fira Code", monospace;
   font-size: 0.875rem;
   line-height: 1.25;
 }
@@ -237,9 +240,10 @@ table {
   @apply mt-0;
 }
 
-pre, code {
+pre,
+code {
   all: unset;
-  font-family: 'Fira Code', monospace !important;
+  font-family: "Fira Code", monospace !important;
 }
 
 pre {
@@ -255,7 +259,7 @@ code {
 }
 
 code {
-  font-family: 'Fira Code', monospace;
+  font-family: "Fira Code", monospace;
 }
 
 [data-highlighted-line] {
@@ -274,7 +278,7 @@ code {
 [class*="language-"],
 pre[class*="language-"],
 code[class*="language-"] {
-  font-family: 'Fira Code', monospace !important;
+  font-family: "Fira Code", monospace !important;
 }
 
 .font-noto-jp {
@@ -286,7 +290,9 @@ code[class*="language-"] {
 }
 
 .font-zen-kaku {
-  font-family: var(--font-zen-kaku);
+  font-family:
+    ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono",
+    "Roboto Mono", monospace;
 }
 
 .font-serif {

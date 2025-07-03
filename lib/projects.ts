@@ -14,7 +14,7 @@ export interface Project {
 export const PROJECTS: Project[] = [
   {
     title: 'TSLRC - Time Synced Lyrics',
-    description: 'TSLRC – Time Synced Lyrics is an innovative app that synchronizes lyrics with your favorite tracks in real time, creating an immersive, interactive music experience.',
+    description: 'Time Synced Lyrics is an innovative app that synchronizes lyrics with your favorite tracks in real time, creating an immersive, interactive music experience.',
     image: 'https://placehold.co/1200x630/1a1a1a/FFFFFF/png?text=TSLRC',
     tags: ['HTML', 'TailwindCSS', 'JavaScript'],
     links: {
@@ -53,18 +53,8 @@ export const PROJECTS: Project[] = [
     }
   },
   {
-    title: 'StackX',
-    description: 'A Stack Overflow inspired Q&A platform with modern UI and enhanced features.',
-    image: 'https://placehold.co/1200x630/1a1a1a/FFFFFF/png?text=StackX',
-    tags: ['HTML', 'CSS', 'JavaScript'],
-    links: {
-      github: 'https://github.com/iambhvsh/stackx',
-      live: 'https://stackx.vercel.app'
-    }
-  },
-  {
     title: 'Chat App',
-    description: 'Real-time chat application with Firebase backend and modern UI.',
+    description: 'Real-time chat application with Firebase backend and modern UI. Just enter your name and start chatting instantly.',
     image: 'https://placehold.co/1200x630/1a1a1a/FFFFFF/png?text=Chat+App',
     tags: ['HTML', 'TailwindCSS', 'JavaScript', 'Firebase'],
     links: {

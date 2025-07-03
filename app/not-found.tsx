@@ -1,23 +1,10 @@
 'use client'
 import React from 'react'
 import Link from 'next/link'
-import { Zen_Kaku_Gothic_New, Crimson_Pro } from 'next/font/google'
-
-const zenKaku = Zen_Kaku_Gothic_New({ 
-  subsets: ['latin'],
-  weight: ['400', '500', '700'],
-  variable: '--font-zen-kaku'
-})
-
-const crimsonPro = Crimson_Pro({ 
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '700', '900'],
-  variable: '--font-crimson'
-})
 
 export default function NotFound() {
   return (
-    <div className={`min-h-screen relative overflow-hidden ${crimsonPro.variable} ${zenKaku.variable} font-serif`}>
+    <div className="min-h-screen relative overflow-hidden font-serif">
       <div className="relative z-10 min-h-screen flex items-center justify-center px-4">
         <div className="text-center space-y-20">
           <h1 className="relative text-[8rem] sm:text-[12rem] md:text-[16rem] font-black tracking-tighter leading-none">
@@ -30,7 +17,7 @@ export default function NotFound() {
           
           <div className="space-y-10">
             <div className="space-y-4">
-              <p className="text-4xl sm:text-5xl md:text-6xl tracking-wider font-zen-kaku">
+              <p className="text-4xl sm:text-5xl md:text-6xl tracking-wider font-mono">
                 <span className="font-medium bg-clip-text text-transparent bg-gradient-to-r 
                               from-[#ff3377] via-[#ffffff] to-[#6677ff]
                               drop-shadow-[0_2px_50px_rgba(255,51,119,0.9)]">
@@ -56,7 +43,7 @@ export default function NotFound() {
                          transition-all duration-700
                          hover:bg-black/30"
               >
-                <span className="relative text-lg sm:text-xl font-zen-kaku font-medium tracking-[0.3em]
+                <span className="relative text-lg sm:text-xl font-mono font-medium tracking-[0.3em]
                                bg-clip-text text-transparent bg-gradient-to-r 
                                from-[#ff3377] via-[#ffffff] to-[#6677ff]
                                drop-shadow-[0_2px_40px_rgba(255,51,119,0.7)]">

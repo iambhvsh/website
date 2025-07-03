@@ -5,14 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build && next-sitemap",
-    "start": "next start",
-    "clean": "if exist .next rd /s /q .next && if exist node_modules rd /s /q node_modules && if exist .turbo rd /s /q .turbo && if exist .vercel rd /s /q .vercel && if exist dist rd /s /q dist",
-    "reset": "pnpm clean && pnpm install && cls && echo Reset completed successfully!",
-    "format": "prettier --write .",
-    "prod": "pnpm build && next start",
-    "dev:clean": "pnpm clean && pnpm dev",
-    "build:clean": "pnpm clean && pnpm build",
-    "prod:clean": "pnpm clean && pnpm prod"
+    "start": "next start"
   },
   "dependencies": {
     "@vercel/analytics": "^1.5.0",

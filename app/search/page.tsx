@@ -72,9 +72,9 @@ export default function Search() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search across posts, projects and links..."
-            className="w-full px-4 py-3 pl-12 bg-transparent border border-zinc-800 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500/30 focus:border-blue-500/30"
+            className="w-full px-4 py-3 pl-12 bg-zinc-900/50 border border-zinc-800 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500/30 focus:border-blue-500/30 transition-all"
           />
-          <FiSearch className="absolute left-4 top-[60%] -translate-y-1/2 w-5 h-5 text-gray-500 pointer-events-none" />
+          <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
         </div>
       </div>
 
