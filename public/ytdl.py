@@ -4,10 +4,15 @@ import sys
 import time
 import platform
 import subprocess
+import re
+import threading
+from pathlib import Path
 from rich.console import Console
 from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TaskProgressColumn, TimeRemainingColumn
 from rich.prompt import Prompt, Confirm
 from rich.text import Text
+from rich.panel import Panel
+from rich.table import Table
 
 # Initialize rich console
 console = Console()
@@ -37,45 +42,82 @@ def show_banner():
 
 def show_credits():
     """Display centered credits"""
+    console.print(center_text("YouTube Downloader - V2", "bold green"))
     console.print(center_text("Developed with ♥ by Bhavesh Patil", "bright_red"))
     console.print(center_text("GitHub: https://github.com/iambhvsh", "dim"))
-    console.print(center_text("Press `Q` to exit anytime", "yellow"))
+    console.print(center_text("Press `Ctrl+C` to exit anytime", "yellow"))
 
 def check_dependencies():
     """Check and install dependencies"""
-    try:
-        import rich
-    except ImportError:
-        console.print("Installing required dependencies...", style="yellow")
-        subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'rich', 'yt-dlp'], 
-                            stdout=subprocess.DEVNULL, 
-                            stderr=subprocess.DEVNULL)
-        console.print("Dependencies installed successfully!", style="green")
-        time.sleep(1)
+    required_packages = ['rich', 'yt-dlp']
+    missing_packages = []
+    
+    for package in required_packages:
+        try:
+            __import__(package.replace('-', '_'))
+        except ImportError:
+            missing_packages.append(package)
+    
+    if missing_packages:
+        console.print(f"Installing missing dependencies: {', '.join(missing_packages)}", style="yellow")
+        try:
+            subprocess.check_call([
+                sys.executable, '-m', 'pip', 'install', '--upgrade'
+            ] + missing_packages, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            console.print("Dependencies installed successfully!", style="green")
+            time.sleep(1)
+        except subprocess.CalledProcessError:
+            console.print("Failed to install dependencies. Please install manually.", style="red")
+            sys.exit(1)
 
 def check_ffmpeg():
     """Check if ffmpeg is installed"""
     try:
-        subprocess.run(['ffmpeg', '-version'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        return True
-    except (subprocess.SubprocessError, FileNotFoundError):
+        result = subprocess.run(['ffmpeg', '-version'], 
+                              capture_output=True, text=True, timeout=5)
+        return result.returncode == 0
+    except (subprocess.SubprocessError, FileNotFoundError, subprocess.TimeoutExpired):
         return False
 
-def get_supported_format(quality):
-    """Device-compatible format selection"""
-    return {
-        'best': 'bestvideo[ext=mp4][vcodec^=avc1]+bestaudio/best[ext=mp4]',
-        'medium': 'bestvideo[height<=720][ext=mp4][vcodec^=avc1]+bestaudio/best[height<=720][ext=mp4]',
-        'low': 'bestvideo[height<=480][ext=mp4][vcodec^=avc1]+bestaudio/best[height<=480][ext=mp4]',
-        'audio': 'bestaudio/best'
-    }.get(quality, 'bestvideo[ext=mp4][vcodec^=avc1]+bestaudio/best[ext=mp4]')
+def sanitize_filename(filename):
+    """Sanitize filename to be safe for all operating systems"""
+    # Remove invalid characters
+    filename = re.sub(r'[<>:"/\\|?*]', '', filename)
+    # Replace multiple spaces with single space
+    filename = re.sub(r'\s+', ' ', filename)
+    # Remove leading/trailing spaces and dots
+    filename = filename.strip(' .')
+    # Limit length to 100 characters
+    if len(filename) > 100:
+        filename = filename[:100].rsplit(' ', 1)[0]
+    return filename if filename else "video"
 
-def check_exit(input_text):
-    """Check if user wants to exit"""
-    if input_text and input_text.lower() in ('q', 'quit', 'exit'):
-        console.print("\nExiting YTDL. Goodbye!", style="cyan")
-        sys.exit(0)
-    return input_text
+def get_format_selector(quality):
+    """Get optimized format selector for different qualities"""
+    format_selectors = {
+        'best': 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
+        'high': 'bestvideo[height<=1080][ext=mp4]+bestaudio[ext=m4a]/best[height<=1080][ext=mp4]/best',
+        'medium': 'bestvideo[height<=720][ext=mp4]+bestaudio[ext=m4a]/best[height<=720][ext=mp4]/best',
+        'low': 'bestvideo[height<=480][ext=mp4]+bestaudio[ext=m4a]/best[height<=480][ext=mp4]/best',
+        'audio': 'bestaudio/best'
+    }
+    return format_selectors.get(quality, format_selectors['medium'])
+
+def validate_url(url):
+    """Validate if URL is a valid YouTube URL"""
+    youtube_patterns = [
+        r'(?:https?://)?(?:www\.)?youtube\.com/watch\?v=[\w-]+',
+        r'(?:https?://)?(?:www\.)?youtube\.com/playlist\?list=[\w-]+',
+        r'(?:https?://)?youtu\.be/[\w-]+',
+        r'(?:https?://)?(?:www\.)?youtube\.com/channel/[\w-]+',
+        r'(?:https?://)?(?:www\.)?youtube\.com/user/[\w-]+',
+        r'(?:https?://)?(?:www\.)?youtube\.com/@[\w-]+',
+    ]
+    
+    for pattern in youtube_patterns:
+        if re.match(pattern, url, re.IGNORECASE):
+            return True
+    return False
 
 def is_playlist(url):
     """Check if URL is a playlist"""
@@ -88,286 +130,375 @@ def is_playlist(url):
         }
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=False)
-            return 'entries' in info and len(info['entries']) > 1
-    except:
+            return 'entries' in info and len(info.get('entries', [])) > 1
+    except Exception:
         return False
 
 def get_video_info(url):
-    """Get video title and author"""
+    """Get video/playlist information"""
     try:
         ydl_opts = {
             'quiet': True,
             'no_warnings': True,
+            'extract_flat': True,
         }
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=False)
-            return {
-                'title': info.get('title', 'Unknown'),
-                'uploader': info.get('uploader', 'Unknown')
-            }
-    except:
-        return {'title': 'Unknown', 'uploader': 'Unknown'}
+            
+            if 'entries' in info:  # Playlist
+                return {
+                    'title': info.get('title', 'Unknown Playlist'),
+                    'uploader': info.get('uploader', 'Unknown'),
+                    'count': len(info.get('entries', [])),
+                    'type': 'playlist'
+                }
+            else:  # Single video
+                return {
+                    'title': info.get('title', 'Unknown Video'),
+                    'uploader': info.get('uploader', 'Unknown'),
+                    'duration': info.get('duration', 0),
+                    'type': 'video'
+                }
+    except Exception as e:
+        console.print(f"Error getting video info: {str(e)}", style="red")
+        return {'title': 'Unknown', 'uploader': 'Unknown', 'type': 'unknown'}
 
-def download_with_progress(url, quality, output_path):
-    """Minimal progress display downloader"""
-    os.makedirs(output_path, exist_ok=True)
+def format_duration(seconds):
+    """Format duration in seconds to human readable format"""
+    if not seconds:
+        return "Unknown"
     
-    ydl_opts = {
-        'quiet': True,
-        'no_warnings': True,
-        'outtmpl': os.path.join(output_path, '%(title)s.%(ext)s'),
-        'merge_output_format': 'mp4',
-        'format': get_supported_format(quality),
-        'windowsfilenames': True,
-    }
+    hours = seconds // 3600
+    minutes = (seconds % 3600) // 60
+    secs = seconds % 60
+    
+    if hours > 0:
+        return f"{hours}h {minutes}m {secs}s"
+    elif minutes > 0:
+        return f"{minutes}m {secs}s"
+    else:
+        return f"{secs}s"
 
-    if quality == 'audio':
-        ydl_opts.update({
-            'postprocessors': [{
+def download_single_video(url, quality, output_path):
+    """Download a single video with progress tracking"""
+    try:
+        # Create output directory
+        Path(output_path).mkdir(parents=True, exist_ok=True)
+        
+        # Setup yt-dlp options
+        ydl_opts = {
+            'quiet': True,
+            'no_warnings': True,
+            'outtmpl': str(Path(output_path) / '%(title)s.%(ext)s'),
+            'format': get_format_selector(quality),
+            'merge_output_format': 'mp4' if quality != 'audio' else None,
+            'writesubtitles': False,
+            'writeautomaticsub': False,
+        }
+        
+        # Add audio processing for audio-only downloads
+        if quality == 'audio':
+            ydl_opts['postprocessors'] = [{
                 'key': 'FFmpegExtractAudio',
                 'preferredcodec': 'mp3',
                 'preferredquality': '192',
-            }],
-        })
-
-    with Progress(
-        SpinnerColumn(),
-        TextColumn("[progress.description]{task.description}"),
-        BarColumn(bar_width=None),
-        TaskProgressColumn(),
-        TimeRemainingColumn(),
-        transient=False
-    ) as progress:
-        try:
-            task = progress.add_task("Analyzing...", total=100)
-            
-            def update_progress(d):
-                if d['status'] == 'downloading':
-                    progress.update(task, description=f"Downloading: {d.get('filename', '').split('/')[-1]}", 
-                                  completed=d.get('downloaded_bytes', 0),
-                                  total=d.get('total_bytes') or d.get('total_bytes_estimate', 100))
-                elif d['status'] == 'finished':
-                    progress.update(task, description="Processing video...", completed=95)
-            
-            ydl_opts['progress_hooks'] = [update_progress]
-            
-            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-                info = ydl.extract_info(url, download=True)
-                progress.update(task, completed=100, description="Complete")
-            
-            title = info.get('title', 'video').replace(' ', '_')[:50]
-            ext = 'mp3' if quality == 'audio' else 'mp4'
-            return os.path.join(output_path, f"{title}.{ext}"), None
+            }]
         
-        except Exception as e:
-            return None, str(e)
-
-def download_playlist(url, quality, output_path):
-    """Download all videos in a playlist"""
-    try:
-        # First get playlist info
-        ydl_opts = {
-            'quiet': True,
-            'extract_flat': True,
-        }
-        
-        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            info = ydl.extract_info(url, download=False)
-            if 'entries' not in info:
-                console.print("Not a valid playlist", style="red")
-                return
-                
-            videos = len(info['entries'])
-            console.print(f"Found {videos} videos in playlist: {info.get('title', 'Unknown')}", style="green")
-        
-        # Now download each video
+        # Progress tracking
         with Progress(
             SpinnerColumn(),
             TextColumn("[progress.description]{task.description}"),
             BarColumn(bar_width=None),
             TaskProgressColumn(),
             TimeRemainingColumn(),
+            console=console,
             transient=False
         ) as progress:
-            overall_task = progress.add_task(f"Playlist Progress (0/{videos})", total=videos)
             
-            ydl_opts = {
-                'quiet': True,
-                'no_warnings': True,
-                'outtmpl': os.path.join(output_path, '%(title)s.%(ext)s'),
-                'merge_output_format': 'mp4' if quality != 'audio' else None,
-                'format': get_supported_format(quality),
-                'windowsfilenames': True,
-            }
+            task = progress.add_task("Preparing download...", total=100)
             
-            if quality == 'audio':
-                ydl_opts.update({
-                    'postprocessors': [{
-                        'key': 'FFmpegExtractAudio',
-                        'preferredcodec': 'mp3',
-                        'preferredquality': '192',
-                    }],
-                })
-            
-            # Custom callback to track both individual video and overall progress
-            completed_videos = 0
-            current_video_title = "Unknown video"
-            
-            def my_hook(d):
-                nonlocal completed_videos, current_video_title
-                
+            def progress_hook(d):
                 if d['status'] == 'downloading':
-                    progress.update(overall_task, description=f"Playlist: {completed_videos}/{videos} - {current_video_title[:30]}")
+                    filename = Path(d.get('filename', '')).name
+                    total = d.get('total_bytes') or d.get('total_bytes_estimate')
+                    downloaded = d.get('downloaded_bytes', 0)
+                    
+                    if total:
+                        percentage = (downloaded / total) * 100
+                        progress.update(task, 
+                                      description=f"Downloading: {filename[:30]}...",
+                                      completed=percentage)
+                    else:
+                        progress.update(task, 
+                                      description=f"Downloading: {filename[:30]}...")
                 
                 elif d['status'] == 'finished':
-                    completed_videos += 1
-                    progress.update(overall_task, completed=completed_videos)
-                    
-            ydl_opts['progress_hooks'] = [my_hook]
+                    progress.update(task, 
+                                  description="Processing...", 
+                                  completed=90)
             
+            ydl_opts['progress_hooks'] = [progress_hook]
+            
+            # Download the video
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-                # We need to process entries one by one to track progress
-                for i, entry in enumerate(info['entries']):
-                    if not entry:
-                        continue
-                    
-                    video_url = entry.get('url')
-                    if not video_url:
-                        continue
-                        
-                    try:
-                        # Get video title first
-                        info_opts = {'quiet': True, 'no_warnings': True}
-                        with yt_dlp.YoutubeDL(info_opts) as info_ydl:
-                            video_info = info_ydl.extract_info(video_url, download=False)
-                            current_video_title = video_info.get('title', f"Video {i+1}")
-                        
-                        # Download the video
-                        ydl.download([video_url])
-                    except Exception as e:
-                        console.print(f"Error downloading video {i+1}: {str(e)}", style="red")
-                    
-                    # Check for keyboard input to exit
-                    if sys.stdin in select.select([sys.stdin], [], [], 0)[0]:
-                        key = sys.stdin.read(1)
-                        if key.lower() == 'q':
-                            console.print("\nExiting playlist download...", style="yellow")
-                            return
-            
-            console.print(f"✔️ Playlist download complete! ({completed_videos}/{videos} videos)", style="green")
-            
+                ydl.download([url])
+                progress.update(task, completed=100, description="Download complete!")
+                time.sleep(0.5)  # Brief pause to show completion
+        
+        return True, None
+    
     except Exception as e:
-        console.print(f"❌Error: {str(e)}", style="red")
+        return False, str(e)
+
+def download_playlist(url, quality, output_path):
+    """Download playlist"""
+    try:
+        # Get playlist info first
+        ydl_opts = {
+            'quiet': True,
+            'no_warnings': True,
+            'extract_flat': True,
+        }
+        
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            info = ydl.extract_info(url, download=False)
+            
+            if 'entries' not in info:
+                console.print("❌ Not a valid playlist", style="red")
+                return False
+            
+            entries = [entry for entry in info['entries'] if entry]
+            total_videos = len(entries)
+            
+            console.print(f"📋 Playlist: {info.get('title', 'Unknown')}", style="cyan")
+            console.print(f"📹 Videos found: {total_videos}", style="green")
+        
+        # Create playlist-specific directory
+        playlist_name = sanitize_filename(info.get('title', 'Unknown_Playlist'))
+        playlist_path = Path(output_path) / playlist_name
+        playlist_path.mkdir(parents=True, exist_ok=True)
+        
+        # Download setup
+        ydl_opts = {
+            'quiet': True,
+            'no_warnings': True,
+            'outtmpl': str(playlist_path / '%(playlist_index)s - %(title)s.%(ext)s'),
+            'format': get_format_selector(quality),
+            'merge_output_format': 'mp4' if quality != 'audio' else None,
+            'ignoreerrors': True,  # Continue on errors
+        }
+        
+        if quality == 'audio':
+            ydl_opts['postprocessors'] = [{
+                'key': 'FFmpegExtractAudio',
+                'preferredcodec': 'mp3',
+                'preferredquality': '192',
+            }]
+        
+        # Progress tracking
+        with Progress(
+            SpinnerColumn(),
+            TextColumn("[progress.description]{task.description}"),
+            BarColumn(bar_width=None),
+            TaskProgressColumn(),
+            TimeRemainingColumn(),
+            console=console,
+            transient=False
+        ) as progress:
+            
+            overall_task = progress.add_task("Starting playlist download...", total=total_videos)
+            current_task = progress.add_task("Preparing...", total=100)
+            
+            completed_count = 0
+            current_video = ""
+            
+            def progress_hook(d):
+                nonlocal completed_count, current_video
+                
+                if d['status'] == 'downloading':
+                    filename = Path(d.get('filename', '')).name
+                    current_video = filename[:40]
+                    
+                    total = d.get('total_bytes') or d.get('total_bytes_estimate')
+                    downloaded = d.get('downloaded_bytes', 0)
+                    
+                    if total:
+                        percentage = (downloaded / total) * 100
+                        progress.update(current_task, 
+                                      description=f"Downloading: {current_video}...",
+                                      completed=percentage)
+                    
+                    progress.update(overall_task, 
+                                  description=f"Playlist: {completed_count}/{total_videos} - {current_video}...")
+                
+                elif d['status'] == 'finished':
+                    completed_count += 1
+                    progress.update(overall_task, completed=completed_count)
+                    progress.update(current_task, completed=100, description="Processing...")
+            
+            ydl_opts['progress_hooks'] = [progress_hook]
+            
+            # Download playlist
+            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                ydl.download([url])
+                
+                progress.update(overall_task, completed=total_videos, 
+                              description=f"Playlist complete! ({completed_count}/{total_videos})")
+                progress.update(current_task, completed=100, description="All downloads finished!")
+        
+        console.print(f"✅ Playlist download complete!", style="green")
+        console.print(f"📁 Saved to: {playlist_path}", style="dim")
+        return True
+        
+    except Exception as e:
+        console.print(f"❌ Playlist download error: {str(e)}", style="red")
+        return False
+
+def show_quality_menu(is_playlist_url=False):
+    """Show quality selection menu"""
+    table = Table(title="Quality Options", show_header=True, header_style="bold cyan")
+    table.add_column("Option", style="dim", width=8)
+    table.add_column("Quality", style="green")
+    table.add_column("Description", style="dim")
+    
+    table.add_row("1", "Best", "Highest available quality")
+    table.add_row("2", "High", "1080p or best available")
+    table.add_row("3", "Medium", "720p (recommended)")
+    table.add_row("4", "Low", "480p (faster download)")
+    table.add_row("5", "Audio", "MP3 audio only")
+    
+    console.print(table)
+    
+    prompt_text = "Select quality option (1-5)" if not is_playlist_url else "Select quality for playlist (1-5)"
+    return Prompt.ask(prompt_text, choices=["1", "2", "3", "4", "5"], default="3")
 
 def main():
-    check_dependencies()
-    
-    # Set download path to user's Downloads/ytdl folder with proper subfolders
-    base_dir = os.path.join(os.path.expanduser("~"), "Downloads", "ytdl")
-    videos_dir = os.path.join(base_dir, "Videos")
-    audios_dir = os.path.join(base_dir, "Audios")
-    playlists_dir = os.path.join(base_dir, "Playlists")
-    
-    # Create all directories
-    for directory in [base_dir, videos_dir, audios_dir, playlists_dir]:
-        os.makedirs(directory, exist_ok=True)
-    
-    clear_screen()
-    show_banner()
-    show_credits()
-
-    if not check_ffmpeg():
-        console.print("FFmpeg not found - MP3 conversion may not work", style="yellow")
-
-    while True:
-        try:
-            # Use custom prompt function that checks for 'q'
-            url_input = Prompt.ask("\nEnter YouTube URL (or 'q' to quit)")
-            check_exit(url_input)
-            url = url_input
-
-            # Auto-detect if URL is a playlist
-            is_playlist_url = is_playlist(url)
-            
-            if is_playlist_url:
-                console.print("\nPlaylist detected!", style="cyan")
-                console.print("1. Download videos in best quality")
-                console.print("2. Download videos in medium quality")
-                console.print("3. Download videos in low quality")
-                console.print("4. Download playlist as audio (MP3)")
+    """Main application loop"""
+    try:
+        check_dependencies()
+        
+        # Setup directory structure
+        base_dir = Path.home() / "Downloads" / "YTDL"
+        directories = {
+            'videos': base_dir / "Videos",
+            'audio': base_dir / "Audio", 
+            'playlists': base_dir / "Playlists"
+        }
+        
+        for directory in directories.values():
+            directory.mkdir(parents=True, exist_ok=True)
+        
+        # Show interface
+        clear_screen()
+        show_banner()
+        show_credits()
+        
+        # Check FFmpeg
+        if not check_ffmpeg():
+            console.print("⚠️  FFmpeg not found - Audio conversion may not work", style="yellow")
+            console.print("   Install FFmpeg for full functionality", style="dim")
+        
+        console.print(f"\n📁 Downloads will be saved to: {base_dir}", style="dim")
+        
+        # Main loop
+        while True:
+            try:
+                console.print("\n" + "="*50)
                 
-                choice_input = Prompt.ask("\nSelect option (or 'q' to quit)", choices=["1", "2", "3", "4", "q"], default="2")
-                check_exit(choice_input)
-                choice = choice_input
+                # Get URL
+                url = Prompt.ask("\n🔗 Enter YouTube URL").strip()
                 
-                quality_map = {
-                    "1": "best", 
-                    "2": "medium", 
-                    "3": "low", 
-                    "4": "audio"
-                }
+                if not url:
+                    console.print("❌ Please enter a valid URL", style="red")
+                    continue
                 
-                quality = quality_map[choice]
+                # Validate URL
+                if not validate_url(url):
+                    console.print("❌ Invalid YouTube URL", style="red")
+                    continue
                 
-                # Store in Playlists folder
-                playlist_output_folder = playlists_dir
-                
-                download_playlist(url, quality, playlist_output_folder)
-            else:
-                # Get video info and display minimal details
+                # Get video/playlist info
+                console.print("\n🔍 Analyzing URL...", style="yellow")
                 info = get_video_info(url)
-                console.print(f"\nTitle: {info['title']}", style="cyan")
-                console.print(f"Channel: {info['uploader']}", style="green")
                 
-                console.print("\n1. Best quality")
-                console.print("2. Medium quality")
-                console.print("3. Low quality")
-                console.print("4. Audio only (MP3)")
+                if info['type'] == 'unknown':
+                    console.print("❌ Could not get video information", style="red")
+                    continue
                 
-                choice_input = Prompt.ask("\nSelect option (or 'q' to quit)", choices=["1", "2", "3", "4", "q"], default="1")
-                check_exit(choice_input)
-                choice = choice_input
+                # Display info
+                if info['type'] == 'playlist':
+                    console.print(Panel(
+                        f"📋 [bold cyan]Playlist:[/bold cyan] {info['title']}\n"
+                        f"👤 [bold green]Channel:[/bold green] {info['uploader']}\n"
+                        f"📹 [bold blue]Videos:[/bold blue] {info['count']}",
+                        title="Playlist Information",
+                        border_style="cyan"
+                    ))
+                    is_playlist_url = True
+                else:
+                    duration_str = format_duration(info.get('duration', 0))
+                    console.print(Panel(
+                        f"🎬 [bold cyan]Title:[/bold cyan] {info['title']}\n"
+                        f"👤 [bold green]Channel:[/bold green] {info['uploader']}\n"
+                        f"⏱️  [bold blue]Duration:[/bold blue] {duration_str}",
+                        title="Video Information", 
+                        border_style="green"
+                    ))
+                    is_playlist_url = False
+                
+                # Quality selection
+                choice = show_quality_menu(is_playlist_url)
                 
                 quality_map = {
-                    "1": "best", 
-                    "2": "medium", 
-                    "3": "low", 
-                    "4": "audio"
+                    "1": "best",
+                    "2": "high", 
+                    "3": "medium",
+                    "4": "low",
+                    "5": "audio"
                 }
                 
                 quality = quality_map[choice]
                 
-                # Use proper subfolder based on quality
-                if quality == "audio":
-                    output_folder = audios_dir  # Store audio files in Audios folder
+                # Determine output directory
+                if is_playlist_url:
+                    output_dir = directories['playlists']
+                elif quality == 'audio':
+                    output_dir = directories['audio']
                 else:
-                    output_folder = videos_dir  # Store video files in Videos folder
+                    output_dir = directories['videos']
                 
-                result, error = download_with_progress(url, quality, output_folder)
-
-                if error:
-                    console.print(f"❌Error: {error}", style="red")
+                # Download
+                console.print(f"\n🚀 Starting download in {quality} quality...", style="green")
+                
+                if is_playlist_url:
+                    success = download_playlist(url, quality, output_dir)
                 else:
-                    console.print("Download complete!", style="green")
-                    console.print(f"Saved to: {result}", style="dim")
-
-            continue_input = Prompt.ask("\nDownload another? (y/n/q)", choices=["y", "n", "q"], default="y")
-            check_exit(continue_input)
-            if continue_input.lower() != "y":
+                    success, error = download_single_video(url, quality, output_dir)
+                    
+                    if success:
+                        console.print("✅ Download completed successfully!", style="green")
+                        console.print(f"📁 Saved to: {output_dir}", style="dim")
+                    else:
+                        console.print(f"❌ Download failed: {error}", style="red")
+                
+                # Continue prompt
+                if not Confirm.ask("\n🔄 Download another video/playlist?", default=True):
+                    break
+                    
+            except KeyboardInterrupt:
+                console.print("\n\n👋 Download interrupted by user", style="yellow")
                 break
-
-        except KeyboardInterrupt:
-            console.print("\nOperation canceled", style="yellow")
-            break
-
-    console.print("\nThanks for using YTDL!", style="cyan")
-
-# Add import for keyboard input checking
-import select
+            except Exception as e:
+                console.print(f"\n❌ Unexpected error: {str(e)}", style="red")
+                
+        console.print("\n✨ Thank you for using YTDL!", style="cyan")
+        console.print("🔗 GitHub: https://github.com/iambhvsh", style="dim")
+        
+    except KeyboardInterrupt:
+        console.print("\n\n👋 Goodbye!", style="cyan")
+    except Exception as e:
+        console.print(f"\n💥 Critical error: {str(e)}", style="red")
+        sys.exit(1)
 
 if __name__ == "__main__":
-    try:
-        main()
-    except Exception as e:
-        console.print(f"Critical error: {str(e)}", style="red")
-        sys.exit(1)
+    main()
