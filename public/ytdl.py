@@ -11,8 +11,6 @@ from rich.console import Console
 from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TaskProgressColumn, TimeRemainingColumn
 from rich.prompt import Prompt, Confirm
 from rich.text import Text
-from rich.panel import Panel
-from rich.table import Table
 
 # Initialize rich console
 console = Console()
@@ -42,7 +40,7 @@ def show_banner():
 
 def show_credits():
     """Display centered credits"""
-    console.print(center_text("YouTube Downloader - V2", "bold green"))
+    console.print(center_text("YTDL YouTube Downloader V2", "bold green"))
     console.print(center_text("Developed with ♥ by Bhavesh Patil", "bright_red"))
     console.print(center_text("GitHub: https://github.com/iambhvsh", "dim"))
     console.print(center_text("Press `Ctrl+C` to exit anytime", "yellow"))
@@ -81,27 +79,71 @@ def check_ffmpeg():
 
 def sanitize_filename(filename):
     """Sanitize filename to be safe for all operating systems"""
-    # Remove invalid characters
     filename = re.sub(r'[<>:"/\\|?*]', '', filename)
-    # Replace multiple spaces with single space
     filename = re.sub(r'\s+', ' ', filename)
-    # Remove leading/trailing spaces and dots
     filename = filename.strip(' .')
-    # Limit length to 100 characters
     if len(filename) > 100:
         filename = filename[:100].rsplit(' ', 1)[0]
     return filename if filename else "video"
 
-def get_format_selector(quality):
-    """Get optimized format selector for different qualities"""
-    format_selectors = {
-        'best': 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
-        'high': 'bestvideo[height<=1080][ext=mp4]+bestaudio[ext=m4a]/best[height<=1080][ext=mp4]/best',
-        'medium': 'bestvideo[height<=720][ext=mp4]+bestaudio[ext=m4a]/best[height<=720][ext=mp4]/best',
-        'low': 'bestvideo[height<=480][ext=mp4]+bestaudio[ext=m4a]/best[height<=480][ext=mp4]/best',
-        'audio': 'bestaudio/best'
+def get_available_formats(url):
+    """Get available formats for a video"""
+    try:
+        ydl_opts = {
+            'quiet': True,
+            'no_warnings': True,
+            'listformats': True,
+        }
+        
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            info = ydl.extract_info(url, download=False)
+            formats = info.get('formats', [])
+            
+            video_formats = []
+            audio_formats = []
+            
+            for f in formats:
+                if f.get('vcodec') != 'none' and f.get('acodec') != 'none':
+                    height = f.get('height', 0)
+                    if height and height >= 144:
+                        video_formats.append({
+                            'format_id': f['format_id'],
+                            'ext': f.get('ext', 'mp4'),
+                            'height': height,
+                            'fps': f.get('fps', 0),
+                            'filesize': f.get('filesize', 0),
+                            'vcodec': f.get('vcodec', 'unknown'),
+                            'acodec': f.get('acodec', 'unknown'),
+                            'quality': f.get('quality', 0)
+                        })
+                elif f.get('acodec') != 'none' and f.get('vcodec') == 'none':
+                    audio_formats.append({
+                        'format_id': f['format_id'],
+                        'ext': f.get('ext', 'mp3'),
+                        'abr': f.get('abr', 0),
+                        'acodec': f.get('acodec', 'unknown'),
+                        'filesize': f.get('filesize', 0)
+                    })
+            
+            video_formats.sort(key=lambda x: x['height'], reverse=True)
+            audio_formats.sort(key=lambda x: x['abr'], reverse=True)
+            
+            return video_formats, audio_formats
+            
+    except Exception as e:
+        console.print(f"Error getting formats: {str(e)}", style="red")
+        return [], []
+
+def get_fallback_format_selector(quality):
+    """Get fallback format selectors that work with most videos"""
+    selectors = {
+        'best': 'best[ext=mp4]/best',
+        'high': 'best[height<=1080]/best',
+        'medium': 'best[height<=720]/best', 
+        'low': 'best[height<=480]/best',
+        'audio': 'bestaudio[ext=m4a]/bestaudio'
     }
-    return format_selectors.get(quality, format_selectors['medium'])
+    return selectors.get(quality, 'best')
 
 def validate_url(url):
     """Validate if URL is a valid YouTube URL"""
@@ -145,14 +187,14 @@ def get_video_info(url):
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=False)
             
-            if 'entries' in info:  # Playlist
+            if 'entries' in info:
                 return {
                     'title': info.get('title', 'Unknown Playlist'),
                     'uploader': info.get('uploader', 'Unknown'),
                     'count': len(info.get('entries', [])),
                     'type': 'playlist'
                 }
-            else:  # Single video
+            else:
                 return {
                     'title': info.get('title', 'Unknown Video'),
                     'uploader': info.get('uploader', 'Unknown'),
@@ -179,32 +221,102 @@ def format_duration(seconds):
     else:
         return f"{secs}s"
 
-def download_single_video(url, quality, output_path):
+def format_filesize(bytes_size):
+    """Format file size in bytes to human readable format"""
+    if not bytes_size:
+        return "Unknown"
+    
+    for unit in ['B', 'KB', 'MB', 'GB']:
+        if bytes_size < 1024.0:
+            return f"{bytes_size:.1f} {unit}"
+        bytes_size /= 1024.0
+    return f"{bytes_size:.1f} TB"
+
+def show_available_qualities(url):
+    """Show available qualities for a video and let user choose"""
+    console.print("\n🔍 Analyzing available qualities...", style="yellow")
+    
+    video_formats, audio_formats = get_available_formats(url)
+    
+    if not video_formats and not audio_formats:
+        console.print("❌ Could not retrieve available formats", style="red")
+        return {'selector': get_fallback_format_selector('medium'), 'type': 'video'}
+    
+    console.print("\nAvailable Quality Options:")
+    
+    options = {}
+    option_count = 1
+    
+    # Add video formats
+    seen_heights = set()
+    for fmt in video_formats:
+        height = fmt['height']
+        if height not in seen_heights and height >= 144:
+            seen_heights.add(height)
+            quality_name = f"{height}p"
+            if height >= 1080:
+                quality_name += " (HD)"
+            elif height >= 720:
+                quality_name += " (HD)"
+            
+            size_info = format_filesize(fmt['filesize']) if fmt['filesize'] else "Unknown size"
+            
+            console.print(f"{option_count}. {quality_name} - {fmt['ext'].upper()} - {size_info}")
+            
+            options[str(option_count)] = {
+                'type': 'video',
+                'format_id': fmt['format_id'],
+                'selector': f"best[height<={height}]/best"
+            }
+            option_count += 1
+            
+            if option_count > 6:
+                break
+    
+    # Add audio option
+    if audio_formats:
+        best_audio = audio_formats[0]
+        bitrate = f"{best_audio['abr']}kbps" if best_audio['abr'] else "Unknown bitrate"
+        size_info = format_filesize(best_audio['filesize']) if best_audio['filesize'] else "Unknown size"
+        
+        console.print(f"{option_count}. Audio Only - MP3 - {bitrate} - {size_info}")
+        
+        options[str(option_count)] = {
+            'type': 'audio',
+            'format_id': best_audio['format_id'],
+            'selector': 'bestaudio'
+        }
+    
+    # Get user choice
+    valid_choices = list(options.keys())
+    choice = Prompt.ask(f"Select quality option ({'/'.join(valid_choices)})", 
+                       choices=valid_choices, default=valid_choices[0] if valid_choices else "1")
+    
+    return options.get(choice, {'selector': 'best', 'type': 'video'})
+
+def download_single_video(url, format_choice, output_path):
     """Download a single video with progress tracking"""
     try:
-        # Create output directory
         Path(output_path).mkdir(parents=True, exist_ok=True)
         
-        # Setup yt-dlp options
         ydl_opts = {
             'quiet': True,
             'no_warnings': True,
             'outtmpl': str(Path(output_path) / '%(title)s.%(ext)s'),
-            'format': get_format_selector(quality),
-            'merge_output_format': 'mp4' if quality != 'audio' else None,
+            'format': format_choice['selector'],
+            'merge_output_format': 'mp4' if format_choice['type'] != 'audio' else None,
             'writesubtitles': False,
             'writeautomaticsub': False,
+            'ignoreerrors': False,
         }
         
-        # Add audio processing for audio-only downloads
-        if quality == 'audio':
+        if format_choice['type'] == 'audio':
             ydl_opts['postprocessors'] = [{
                 'key': 'FFmpegExtractAudio',
                 'preferredcodec': 'mp3',
                 'preferredquality': '192',
             }]
         
-        # Progress tracking
         with Progress(
             SpinnerColumn(),
             TextColumn("[progress.description]{task.description}"),
@@ -236,24 +348,37 @@ def download_single_video(url, quality, output_path):
                     progress.update(task, 
                                   description="Processing...", 
                                   completed=90)
+                
+                elif d['status'] == 'error':
+                    progress.update(task, 
+                                  description="Error occurred", 
+                                  completed=0)
             
             ydl_opts['progress_hooks'] = [progress_hook]
             
-            # Download the video
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                 ydl.download([url])
                 progress.update(task, completed=100, description="Download complete!")
-                time.sleep(0.5)  # Brief pause to show completion
+                time.sleep(0.5)
         
         return True, None
     
     except Exception as e:
-        return False, str(e)
+        error_msg = str(e)
+        if "Requested format is not available" in error_msg:
+            error_msg = "Selected quality is not available for this video. Please try a different quality."
+        elif "Private video" in error_msg:
+            error_msg = "This video is private or restricted."
+        elif "Video unavailable" in error_msg:
+            error_msg = "This video is not available."
+        else:
+            error_msg = "Download failed. Please check your internet connection and try again."
+        
+        return False, error_msg
 
-def download_playlist(url, quality, output_path):
-    """Download playlist"""
+def download_playlist(url, quality_selector, output_path):
+    """Download playlist with enhanced progress tracking"""
     try:
-        # Get playlist info first
         ydl_opts = {
             'quiet': True,
             'no_warnings': True,
@@ -273,29 +398,19 @@ def download_playlist(url, quality, output_path):
             console.print(f"📋 Playlist: {info.get('title', 'Unknown')}", style="cyan")
             console.print(f"📹 Videos found: {total_videos}", style="green")
         
-        # Create playlist-specific directory
         playlist_name = sanitize_filename(info.get('title', 'Unknown_Playlist'))
         playlist_path = Path(output_path) / playlist_name
         playlist_path.mkdir(parents=True, exist_ok=True)
         
-        # Download setup
         ydl_opts = {
             'quiet': True,
             'no_warnings': True,
             'outtmpl': str(playlist_path / '%(playlist_index)s - %(title)s.%(ext)s'),
-            'format': get_format_selector(quality),
-            'merge_output_format': 'mp4' if quality != 'audio' else None,
-            'ignoreerrors': True,  # Continue on errors
+            'format': quality_selector,
+            'merge_output_format': 'mp4',
+            'ignoreerrors': True,
         }
         
-        if quality == 'audio':
-            ydl_opts['postprocessors'] = [{
-                'key': 'FFmpegExtractAudio',
-                'preferredcodec': 'mp3',
-                'preferredquality': '192',
-            }]
-        
-        # Progress tracking
         with Progress(
             SpinnerColumn(),
             TextColumn("[progress.description]{task.description}"),
@@ -338,7 +453,6 @@ def download_playlist(url, quality, output_path):
             
             ydl_opts['progress_hooks'] = [progress_hook]
             
-            # Download playlist
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                 ydl.download([url])
                 
@@ -354,30 +468,11 @@ def download_playlist(url, quality, output_path):
         console.print(f"❌ Playlist download error: {str(e)}", style="red")
         return False
 
-def show_quality_menu(is_playlist_url=False):
-    """Show quality selection menu"""
-    table = Table(title="Quality Options", show_header=True, header_style="bold cyan")
-    table.add_column("Option", style="dim", width=8)
-    table.add_column("Quality", style="green")
-    table.add_column("Description", style="dim")
-    
-    table.add_row("1", "Best", "Highest available quality")
-    table.add_row("2", "High", "1080p or best available")
-    table.add_row("3", "Medium", "720p (recommended)")
-    table.add_row("4", "Low", "480p (faster download)")
-    table.add_row("5", "Audio", "MP3 audio only")
-    
-    console.print(table)
-    
-    prompt_text = "Select quality option (1-5)" if not is_playlist_url else "Select quality for playlist (1-5)"
-    return Prompt.ask(prompt_text, choices=["1", "2", "3", "4", "5"], default="3")
-
 def main():
     """Main application loop"""
     try:
         check_dependencies()
         
-        # Setup directory structure
         base_dir = Path.home() / "Downloads" / "YTDL"
         directories = {
             'videos': base_dir / "Videos",
@@ -388,36 +483,30 @@ def main():
         for directory in directories.values():
             directory.mkdir(parents=True, exist_ok=True)
         
-        # Show interface
         clear_screen()
         show_banner()
         show_credits()
         
-        # Check FFmpeg
         if not check_ffmpeg():
-            console.print("⚠️  FFmpeg not found - Audio conversion may not work", style="yellow")
+            console.print("⚠️  FFmpeg not found - Audio conversion may not work properly", style="yellow")
             console.print("   Install FFmpeg for full functionality", style="dim")
         
         console.print(f"\n📁 Downloads will be saved to: {base_dir}", style="dim")
         
-        # Main loop
         while True:
             try:
                 console.print("\n" + "="*50)
                 
-                # Get URL
                 url = Prompt.ask("\n🔗 Enter YouTube URL").strip()
                 
                 if not url:
                     console.print("❌ Please enter a valid URL", style="red")
                     continue
                 
-                # Validate URL
                 if not validate_url(url):
                     console.print("❌ Invalid YouTube URL", style="red")
                     continue
                 
-                # Get video/playlist info
                 console.print("\n🔍 Analyzing URL...", style="yellow")
                 info = get_video_info(url)
                 
@@ -425,55 +514,47 @@ def main():
                     console.print("❌ Could not get video information", style="red")
                     continue
                 
-                # Display info
                 if info['type'] == 'playlist':
-                    console.print(Panel(
-                        f"📋 [bold cyan]Playlist:[/bold cyan] {info['title']}\n"
-                        f"👤 [bold green]Channel:[/bold green] {info['uploader']}\n"
-                        f"📹 [bold blue]Videos:[/bold blue] {info['count']}",
-                        title="Playlist Information",
-                        border_style="cyan"
-                    ))
-                    is_playlist_url = True
+                    console.print(f"\n📋 Playlist: {info['title']}")
+                    console.print(f"👤 Channel: {info['uploader']}")
+                    console.print(f"📹 Videos: {info['count']}")
+                    
+                    console.print("\nPlaylist Quality Options:")
+                    console.print("1. Best Available Quality")
+                    console.print("2. 720p (Recommended)")
+                    console.print("3. 480p (Faster)")
+                    console.print("4. Audio Only (MP3)")
+                    
+                    choice = Prompt.ask("Select quality (1-4)", choices=["1", "2", "3", "4"], default="2")
+                    
+                    quality_map = {
+                        "1": "best",
+                        "2": "best[height<=720]/best",
+                        "3": "best[height<=480]/best",
+                        "4": "bestaudio"
+                    }
+                    
+                    quality_selector = quality_map[choice]
+                    output_dir = directories['playlists']
+                    
+                    console.print(f"\n🚀 Starting playlist download...", style="green")
+                    success = download_playlist(url, quality_selector, output_dir)
+                    
                 else:
                     duration_str = format_duration(info.get('duration', 0))
-                    console.print(Panel(
-                        f"🎬 [bold cyan]Title:[/bold cyan] {info['title']}\n"
-                        f"👤 [bold green]Channel:[/bold green] {info['uploader']}\n"
-                        f"⏱️  [bold blue]Duration:[/bold blue] {duration_str}",
-                        title="Video Information", 
-                        border_style="green"
-                    ))
-                    is_playlist_url = False
-                
-                # Quality selection
-                choice = show_quality_menu(is_playlist_url)
-                
-                quality_map = {
-                    "1": "best",
-                    "2": "high", 
-                    "3": "medium",
-                    "4": "low",
-                    "5": "audio"
-                }
-                
-                quality = quality_map[choice]
-                
-                # Determine output directory
-                if is_playlist_url:
-                    output_dir = directories['playlists']
-                elif quality == 'audio':
-                    output_dir = directories['audio']
-                else:
-                    output_dir = directories['videos']
-                
-                # Download
-                console.print(f"\n🚀 Starting download in {quality} quality...", style="green")
-                
-                if is_playlist_url:
-                    success = download_playlist(url, quality, output_dir)
-                else:
-                    success, error = download_single_video(url, quality, output_dir)
+                    console.print(f"\n🎬 Title: {info['title']}")
+                    console.print(f"👤 Channel: {info['uploader']}")
+                    console.print(f"⏱️  Duration: {duration_str}")
+                    
+                    format_choice = show_available_qualities(url)
+                    
+                    if format_choice['type'] == 'audio':
+                        output_dir = directories['audio']
+                    else:
+                        output_dir = directories['videos']
+                    
+                    console.print(f"\n🚀 Starting download...", style="green")
+                    success, error = download_single_video(url, format_choice, output_dir)
                     
                     if success:
                         console.print("✅ Download completed successfully!", style="green")
@@ -481,7 +562,6 @@ def main():
                     else:
                         console.print(f"❌ Download failed: {error}", style="red")
                 
-                # Continue prompt
                 if not Confirm.ask("\n🔄 Download another video/playlist?", default=True):
                     break
                     
