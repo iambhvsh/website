@@ -13,6 +13,16 @@ export interface Project {
 
 export const PROJECTS: Project[] = [
   {
+    title: 'PaletteStudio',
+    description: 'A simple yet powerful color palette generator with infinite color combinations',
+    image: 'https://placehold.co/1200x630/1a1a1a/FFFFFF/png?text=PaletteStudio',
+    tags: ['HTML', 'CSS', 'JavaScript'],
+    links: {
+      github: 'https://github.com/iambhvsh/PaletteStudio',
+      live: 'https://plstudio.vercel.app';
+    }
+  },
+  {
     title: 'YTDL (YouTube Video Downloader)',
     description: 'A sophisticated, secure, and feature-rich command-line interface for downloading YouTube videos and playlists',
     image: 'https://placehold.co/1200x630/1a1a1a/FFFFFF/png?text=YTDL',
