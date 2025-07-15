@@ -13,6 +13,15 @@ export interface Project {
 
 export const PROJECTS: Project[] = [
   {
+    title: 'YTDL (YouTube Video Downloader)',
+    description: 'A sophisticated, secure, and feature-rich command-line interface for downloading YouTube videos and playlists',
+    image: 'https://placehold.co/1200x630/1a1a1a/FFFFFF/png?text=YTDL',
+    tags: ['Python', 'yt-dlp', 'FFMPEG', 'Aria2', 'Rich'],
+    links: {
+      github: 'https://github.com/iambhvsh/ytdl'
+    }
+  },
+  {
     title: 'TSLRC - Time Synced Lyrics',
     description: 'Time Synced Lyrics is an innovative app that synchronizes lyrics with your favorite tracks in real time, creating an immersive, interactive music experience.',
     image: 'https://placehold.co/1200x630/1a1a1a/FFFFFF/png?text=TSLRC',
