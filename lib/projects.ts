@@ -19,7 +19,7 @@ export const PROJECTS: Project[] = [
     tags: ['HTML', 'CSS', 'JavaScript'],
     links: {
       github: 'https://github.com/iambhvsh/PaletteStudio',
-      live: 'https://plstudio.vercel.app';
+      live: 'https://plstudio.vercel.app'
     }
   },
   {
