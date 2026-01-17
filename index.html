@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<!--
+  ://BP - Bhavesh Patil
+  
+  A single-page personal portfolio featuring:
+  - Custom smooth scrolling (Lenis)
+  - GSAP animations (ScrollTrigger)
+  - Interactive custom cursor with magnet effects
+  - Responsive design
+  
+  Built with HTML, CSS, and Vanilla JavaScript.
+-->
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>://BP - Bhavesh Patil</title>
+
+  <!-- SEO & Meta Tags -->
+  <meta name="description" content="Portfolio of Bhavesh Patil, a Creative Developer specializing in modern web development, UI/UX engineering, and motion graphics.">
+  <meta name="keywords" content="Bhavesh Patil, Creative Developer, Web Developer, Frontend Engineer, React, Next.js, Portfolio, UI/UX, GSAP">
+  <meta name="author" content="Bhavesh Patil">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bhavesh Patil | Creative Developer">
+  <meta property="og:description" content="Portfolio of Bhavesh Patil - Where design, motion, and code converge to create meaningful web experiences.">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:title" content="Bhavesh Patil | Creative Developer">
+  <meta property="twitter:description" content="Portfolio of Bhavesh Patil - Where design, motion, and code converge to create meaningful web experiences.">
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/png" href="/assets/favicon.ico">
+  <link rel="apple-touch-icon" href="/assets/favicon.ico">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/styles/index.css">
+
+</head>
+
+<body>
+  
+  <div class="noise"></div>
+  
+  <div class="cursor">
+    <span class="cursor-text"></span>
+  </div>
+  
+  <div class="preloader">
+    <div class="counter">0%</div>
+  </div>
+  
+  <nav>
+    <a href="/"><div class="logo">://BP</div></a>
+    <a href="#connect" class="menu-btn" data-magnet>Let's Talk</a>
+  </nav>
+  
+  <main>
+    <section class="hero">
+      <h1 class="hero-title display-text">
+        <div class="hero-row"><span>BHAVESH</span></div>
+        <div class="hero-row"><span>PATIL</span></div>
+      </h1>
+      
+      <p class="hero-subtitle">
+Where design, motion, <br>
+and code converge to create meaningful web experiences.
+
+      </p>
+      
+      <div class="hero-cta">
+        <a href="#work" class="hero-btn" data-magnet>
+          View My Work
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 10H16M16 10L10 4M16 10L10 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+      
+
+    </section>
+    
+    <section class="marquee-section">
+      <div class="marquee">
+        <div class="marquee-inner">
+          <div class="marquee-item">HTML</div>
+          <div class="marquee-item">CSS</div>
+          <div class="marquee-item">JAVASCRIPT</div>
+          <div class="marquee-item">REACTJS</div>
+          <div class="marquee-item">NEXT.JS</div>
+          <div class="marquee-item">TAILWINDCSS</div>
+          <div class="marquee-item">HTML</div>
+          <div class="marquee-item">CSS</div>
+          <div class="marquee-item">JAVASCRIPT</div>
+          <div class="marquee-item">REACTJS</div>
+          <div class="marquee-item">NEXT.JS</div>
+          <div class="marquee-item">TAILWINDCSS</div>
+        </div>
+        <div class="marquee-inner">
+          <div class="marquee-item">HTML</div>
+          <div class="marquee-item">CSS</div>
+          <div class="marquee-item">JAVASCRIPT</div>
+          <div class="marquee-item">REACTJS</div>
+          <div class="marquee-item">NEXT.JS</div>
+          <div class="marquee-item">TAILWINDCSS</div>
+          <div class="marquee-item">HTML</div>
+          <div class="marquee-item">CSS</div>
+          <div class="marquee-item">JAVASCRIPT</div>
+          <div class="marquee-item">REACTJS</div>
+          <div class="marquee-item">NEXT.JS</div>
+          <div class="marquee-item">TAILWINDCSS</div>
+        </div>
+      </div>
+    </section>
+    
+    <section class="projects" id="work">
+      <div class="section-header">
+        <h2>Projects</h2>
+        <div class="section-number">(01)</div>
+      </div>
+      
+      <div class="projects-grid">
+        <a href="https://blkproxy.vercel.app" target="_blank" class="project-card" data-magnet-card>
+          <div class="project-info">
+            <div>
+              <div class="project-title">blkproxy</div>
+              <div class="project-desc">A free, zero-config CORS proxy for developers to instantly access any API during development, without cross-origin restrictions.</div>
+            </div>
+          </div>
+          <div class="project-tags">
+            <div class="tag">Proxy</div>
+            <div class="tag">Development</div>
+            <div class="tag">Tooling</div>
+          </div>
+        </a>
+        
+        <a href="https://flashified.vercel.app" target="_blank" class="project-card" data-magnet-card>
+          <div class="project-info">
+            <div>
+              <div class="project-title">Flashified</div>
+              <div class="project-desc">Ultimate tool to download images from any URL, whether in bulk or individually, completely ad-free and efficient.</div>
+            </div>
+          </div>
+          <div class="project-tags">
+            <div class="tag">Images</div>
+            <div class="tag">React</div>
+            <div class="tag">Tool</div>
+          </div>
+        </a>
+        
+        <a href="https://wthrx.vercel.app" target="_blank" class="project-card" data-magnet-card>
+          <div class="project-info">
+            <div>
+              <div class="project-title">WeatherX</div>
+              <div class="project-desc">A modern, responsive weather application featuring AI-powered insights and real-time forecast visualization.</div>
+            </div>
+          </div>
+          <div class="project-tags">
+            <div class="tag">Weather</div>
+            <div class="tag">API</div>
+            <div class="tag">AI</div>
+          </div>
+        </a>
+        
+        <a href="https://github.com/iambhvsh/ytdl" target="_blank" class="project-card" data-magnet-card>
+          <div class="project-info">
+            <div>
+              <div class="project-title">YTDL</div>
+              <div class="project-desc">A sophisticated, secure, and feature-rich command-line interface for simplifying media downloads.</div>
+            </div>
+          </div>
+          <div class="project-tags">
+            <div class="tag">CLI</div>
+            <div class="tag">Python</div>
+            <div class="tag">Automation</div>
+          </div>
+        </a>
+
+        <a href="https://plstudio.vercel.app/" target="_blank" class="project-card" data-magnet-card>
+          <div class="project-info">
+            <div>
+              <div class="project-title">PaletteStudio</div>
+              <div class="project-desc">Generate sophisticated and harmonious color palettes for your product designs with PaletteStudio - a simple yet powerful color palette generator.</div>
+            </div>
+          </div>
+          <div class="project-tags">
+            <div class="tag">DesignTool</div>
+            <div class="tag">Colors</div>
+            <div class="tag">Next.js</div>
+          </div>
+        </a>
+        
+        <a href="https://aerox.vercel.app/" target="_blank" class="project-card" data-magnet-card>
+          <div class="project-info">
+            <div>
+              <div class="project-title">AeroX</div>
+              <div class="project-desc">AeroX is your go-to platform for the latest and most reliable aviation news from around the world. With a clean interface and up-to-date news.</div>
+            </div>
+          </div>
+          <div class="project-tags">
+            <div class="tag">News</div>
+            <div class="tag">Aviation</div>
+            <div class="tag">React</div>
+          </div>
+        </a>
+        
+        <a href="https://swipeapis.vercel.app/" target="_blank" class="project-card" data-magnet-card>
+          <div class="project-info">
+            <div>
+              <div class="project-title">Swipe APIs</div>
+              <div class="project-desc">Swipe APIs is a collection of APIs which let's you access data, like Finance, Search and News free and without rate limits.</div>
+            </div>
+          </div>
+          <div class="project-tags">
+            <div class="tag">API</div>
+            <div class="tag">Backend</div>
+            <div class="tag">Docs</div>
+          </div>
+        </a>
+        
+        <a href="https://searchstellar.vercel.app/" target="_blank" class="project-card" data-magnet-card>
+          <div class="project-info">
+            <div>
+              <div class="project-title">Stellar</div>
+              <div class="project-desc">A modern, intelligent AI-powered search application built with Google's Gemini AI and integrated Google Programmable Search.</div>
+            </div>
+          </div>
+          <div class="project-tags">
+            <div class="tag">AI</div>
+            <div class="tag">Gemini</div>
+            <div class="tag">Search</div>
+          </div>
+        </a>
+      </div>
+    </section>
+    
+    <section class="capabilities">
+      <div class="section-header">
+        <h2>What I Do</h2>
+        <div class="section-number">(02)</div>
+      </div>
+      
+      <div class="capabilities-list">
+        <div class="capability-item" data-magnet>
+          <div class="capability-num">01/</div>
+          <div class="capability-name">Modern Web Development</div>
+          <div class="capability-desc">Building performant, SEO-friendly web applications using <strong>Next.js</strong> and <strong>React</strong>. I specialize in creating responsive Single Page Applications (SPAs) that work seamlessly across all devices.</div>
+        </div>
+        <div class="capability-item" data-magnet>
+          <div class="capability-num">02/</div>
+          <div class="capability-name">UI/UX Engineering</div>
+          <div class="capability-desc">Translating designs into pixel-perfect code. I use <strong>Tailwind CSS</strong> and modern CSS features to build beautiful, accessible, and interactive user interfaces with smooth animations.</div>
+        </div>
+        <div class="capability-item" data-magnet>
+          <div class="capability-num">03/</div>
+          <div class="capability-name">Full Stack Integration</div>
+          <div class="capability-desc">Connecting frontends to powerful backends. Experienced in using <strong>Firebase</strong> for real-time databases and integrating complex third-party <strong>APIs</strong> into seamless applications.</div>
+        </div>
+        <div class="capability-item" data-magnet>
+          <div class="capability-num">04/</div>
+          <div class="capability-name">Tools & Automation</div>
+          <div class="capability-desc">Going beyond the browser with <strong>Python</strong>. I build efficient CLI tools, scripts, and automation bots to streamline workflows and handle data processing tasks.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-me" id="about">
+      <div class="section-header">
+        <h2>About Me</h2>
+        <div class="section-number">(03)</div>
+      </div>
+      
+      <div class="about-content">
+        <div class="about-text">
+            <p>
+                Hello! I'm Bhavesh Patil, a creative developer with a passion for building digital experiences that merge clean code with thoughtful design. I thrive on the challenge of turning complex problems into simple, beautiful solutions.
+            </p>
+            <p>
+                My journey began with a curiosity for how things work on the web, which quickly evolved into a full-fledged career. I love exploring new technologies, experimenting with motion graphics, and constantly refining my craft.
+            </p>
+            <p>
+                When I'm not coding, you can find me exploring the latest design trends, contributing to open-source projects, or sharing my knowledge with the developer community.
+            </p>
+            
+            <div class="music-player">
+                <h3>What's playing</h3>
+                <iframe allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write" frameborder="0" height="150" style="width:100%;max-width:450px;overflow:hidden;border-radius:10px;background:#050505;" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation-by-user-activation" src="https://embed.music.apple.com/in/song/end-of-beginning/1632448108?theme=dark" loading="lazy"></iframe>
+            </div>
+        </div>
+        <div class="about-image" data-magnet-card>
+            <a href="/assets/profile.png" target="_blank"><img src="/assets/profile.png" alt="Bhavesh Patil"></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="education" id="education">
+      <div class="section-header">
+        <h2>Education</h2>
+        <div class="section-number">(04)</div>
+      </div>
+      
+      <div class="education-list">
+        <div class="education-item" data-magnet>
+          <div class="education-year">2024 - 2027</div>
+          <div class="education-degree">Bachelor of Science in Information Technology<br><span style="font-size: 16px; color: var(--gray);">Currently pursuing my degree with a focus on web development and software engineering.</span></div>
+          <div class="education-institution">Dr. G. Y. Pathrikar College of CS & IT</div>
+        </div>
+        <div class="education-item" data-magnet>
+          <div class="education-year">2023 - 2024</div>
+          <div class="education-degree">Higher Secondary Education<br><span style="font-size: 16px; color: var(--gray);">Completed HSC with focus on Physics and Mathematics.</span></div>
+          <div class="education-institution">DES, High School</div>
+        </div>
+        <div class="education-item" data-magnet>
+          <div class="education-year">2022 - 2023</div>
+          <div class="education-degree">Secondary Education<br><span style="font-size: 16px; color: var(--gray);">Completed SSC with distinction.</span></div>
+          <div class="education-institution">MIT VGS</div>
+        </div>
+      </div>
+    </section>
+    
+    <footer id="connect">
+      <div class="footer-content">
+        <div class="footer-cta">Have an Idea?</div>
+        <a href="mailto:iam.bhvsh@gmail.com" class="btn-large" data-magnet>Start a Project</a>
+      </div>
+      
+      <div class="footer-bottom">
+        <div>©2026 Bhavesh Patil</div>
+        <div>
+          <a href="https://github.com/iambhvsh" target="_blank" style="margin: 0 10px;">GitHub</a>
+          <a href="https://instagram.com/iambhvsh" target="_blank" style="margin: 0 10px;">Instagram</a>
+          <a href="https://twitter.com/iambhvsh" target="_blank" style="margin: 0 10px;">Twitter</a>
+          <a href="https://linkedin.com/in/iambhvsh" target="_blank" style="margin: 0 10px;">LinkedIn</a>
+        </div>
+        <div><span id="time">00:00</span></div>
+      </div>
+    </footer>
+  </main>
+
+  <div class="bottom-sheet-overlay"></div>
+  
+  <button class="back-to-top" aria-label="Back to top" data-magnet>
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 19V5M5 12l7-7 7 7"/>
+    </svg>
+  </button>
+  
+  <div class="bottom-sheet">
+    <div class="bottom-sheet-header">
+      <div class="bottom-sheet-drag-handle"></div>
+      <button class="bottom-sheet-close">&times;</button>
+    </div>
+    <div class="bottom-sheet-content">
+      <div class="bs-num">01/</div>
+      <h3 class="bs-title">Service Name</h3>
+      <p class="bs-desc">Description goes here...</p>
+    </div>
+  </div>
+  
+  <script type="module" src="/assets/scripts/index.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+  
+</body>
+
+</html>
