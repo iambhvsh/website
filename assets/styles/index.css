@@ -272,6 +272,7 @@ main {
 
 .marquee-item:hover {
     color: var(--text);
+}
 
 @keyframes marquee {
     0% {
