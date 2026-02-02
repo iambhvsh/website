@@ -1,10 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-
 <!--
-  ============================================
-  PORTFOLIO WEBSITE - BHAVESH PATIL
-  ============================================
+
+  ://BP - BHAVESH PATIL
   
   A modern, responsive portfolio website featuring:
   - Dark theme with custom cursor
@@ -15,28 +11,27 @@
   
   @author Bhavesh Patil
   @url https://iambhvsh.in
-  ============================================
+
 -->
 
-<!-- ============================================
-     HEAD SECTION: Metadata, Styles, and Scripts
-     ============================================ -->
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- HEAD: Metadata, styles, and SEO -->
+
 <head>
   <!-- Character encoding and viewport configuration -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  
+
   <!-- Theme and color scheme for browser UI -->
   <meta name="theme-color" content="#050505">
   <meta name="color-scheme" content="dark">
-  
+
   <!-- Page title for browser tab and search results -->
-  <title>Bhavesh Patil | Creative Developer & Full Stack Engineer</title>
-  
-  <!-- ============================================
-       CRITICAL CSS: Above-the-fold styles
-       Inline for immediate rendering
-       ============================================ -->
+  <title>://BP - Creative Developer & Full Stack Engineer</title>
+
+  <!-- CRITICAL CSS -->
   <style>
     :root {
       --bg: #050505;
@@ -52,24 +47,24 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      cursor: none                            /* Hide default cursor for custom cursor */
+      cursor: none
     }
 
     /* Base styles for HTML and body */
     html,
     body {
-      overflow-x: hidden;                     /* Prevent horizontal scroll */
+      overflow-x: hidden;
       width: 100%;
       background-color: var(--bg);
       color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-      -webkit-font-smoothing: antialiased;    /* Better font rendering */
-      -webkit-user-select: none;              /* Disable text selection */
+      -webkit-font-smoothing: antialiased;
+      -webkit-user-select: none;
       user-select: none
     }
 
     body {
-      min-height: 100vh                       /* Full viewport height minimum */
+      min-height: 100vh
     }
 
     /* Link styles */
@@ -78,10 +73,10 @@
       text-decoration: none
     }
 
-    /* Accessibility: Skip to Content Link for keyboard navigation */
+    /* Accessibility */
     .skip-to-content {
       position: absolute;
-      top: -40px;                             /* Hidden above viewport */
+      top: -40px;
       left: 0;
       background: var(--accent);
       color: #fff;
@@ -92,39 +87,39 @@
     }
 
     .skip-to-content:focus {
-      top: 0                                  /* Visible when focused */
+      top: 0
     }
 
-    /* Visual Effects: Noise Overlay for texture */
+    /* Visual Effects */
     .noise {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      pointer-events: none;                   /* Allow clicks through */
+      pointer-events: none;
       z-index: 9999;
-      opacity: 0.05;                          /* Subtle effect */
+      opacity: 0.05;
       background: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E')
     }
 
-    /* Loading Screen: Full-screen preloader */
+    /* Loader */
     .preloader {
       position: fixed;
       inset: 0;
-      background: var(--text);                /* Light background (inverted) */
-      z-index: 20000;                         /* Highest layer */
+      background: var(--text);
+      z-index: 20000;
       display: flex;
       justify-content: center;
       align-items: center;
       color: var(--bg);
-      font-size: clamp(40px, 8vw, 100px);     /* Responsive sizing */
-      will-change: opacity;                   /* Optimize for animation */
+      font-size: clamp(40px, 8vw, 100px);
+      will-change: opacity;
       contain: layout style paint;
       font-weight: 800
     }
 
-    /* Navigation: Fixed header */
+    /* Navigation */
     nav {
       position: fixed;
       top: 0;
@@ -155,7 +150,7 @@
       color: var(--text)
     }
 
-    /* Hero Section Styles */
+    /* Hero Section */
     .hero {
       display: flex;
       flex-direction: column;
@@ -198,7 +193,7 @@
       display: block
     }
 
-    /* Mobile Enhancements: Disable Custom Cursor */
+    /* Mobile Enhancements */
     @media (max-width:1024px) {
       .cursor {
         display: none !important
@@ -210,13 +205,11 @@
     }
   </style>
 
-  <!-- ============================================
-       SEO & METADATA: Search engine optimization
-       ============================================ -->
-  
-  <!-- Canonical URL to prevent duplicate content issues -->
+  <!-- SEO & METADATA -->
+
+  <!-- Canonical URL -->
   <link rel="canonical" href="https://iambhvsh.in/" />
-  
+
   <!-- Basic SEO Meta Tags -->
   <meta name="description"
     content="Bhavesh Patil is a Creative Developer specializing in modern web development with React, Next.js, and Python. View my portfolio of innovative web projects and tools.">
@@ -224,10 +217,10 @@
     content="Bhavesh Patil, Creative Developer, Web Developer, Frontend Engineer, React, Next.js, Portfolio, UI/UX, GSAP, Full Stack Developer">
   <meta name="author" content="Bhavesh Patil">
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
-  
+
   <!-- Google Search Console Verification -->
   <meta name="google-site-verification" content="NZeVYWwxwJQXPJC-mu3ccZpG6L2O8hes7185XXl04wI" />
-  
+
   <!-- Open Graph / Facebook Meta Tags -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://iambhvsh.in/">
@@ -236,7 +229,7 @@
     content="Portfolio of Bhavesh Patil - Where design, motion, and code converge to create meaningful web experiences.">
   <meta property="og:site_name" content="Bhavesh Patil Portfolio">
   <meta property="og:locale" content="en_US">
-  
+
   <!-- Twitter / X Card Meta Tags -->
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="https://iambhvsh.in/">
@@ -244,36 +237,37 @@
   <meta property="twitter:description"
     content="Portfolio of Bhavesh Patil - Where design, motion, and code converge to create meaningful web experiences.">
   <meta property="twitter:creator" content="@iambhvsh">
-  
+
   <!-- Favicon and App Icons -->
   <link rel="icon" type="image/png" href="/favicon.ico">
   <link rel="apple-touch-icon" href="/favicon.ico">
-  
+
   <!-- DNS Prefetch: Speed up external resource loading -->
   <link rel="dns-prefetch" href="https://fonts.googleapis.com">
   <link rel="dns-prefetch" href="https://fonts.gstatic.com">
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
   <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
-  
+
   <!-- Preconnect: Early connection to external domains -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdnjs.cloudflare.com">
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
-  
+
   <!-- Preload: Critical resources for faster page load -->
   <link rel="preload" href="/profile.webp" as="image" fetchpriority="high" type="image/webp">
   <link rel="preload" href="/assets/styles/index.css" as="style">
   <link rel="preload"
     href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&family=Syne:wght@600;700;800&display=swap"
     as="style" onload="this.onload=null;this.rel='stylesheet'">
-  
+
   <!-- Fallback for browsers without JavaScript -->
   <noscript>
     <link
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&family=Syne:wght@600;700;800&display=swap"
       rel="stylesheet">
   </noscript>
+
   <style>
     :root {
       --bg: #050505;
@@ -301,12 +295,9 @@
   <!-- External Stylesheet -->
   <link rel="stylesheet" href="/assets/styles/index.css">
 
-  <!-- ============================================
-       STRUCTURED DATA: Schema.org JSON-LD
-       Helps search engines understand the content
-       ============================================ -->
-  
-  <!-- Person Schema: Information about Bhavesh Patil -->
+  <!-- STRUCTURED DATA -->
+
+  <!-- Person Schema -->
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -341,14 +332,14 @@
       "email": "iam.bhvsh@gmail.com",
       "address": {
         "@type": "PostalAddress",
-        "addressLocality": "Nagpur",
+        "addressLocality": "Chhatrapati Sambhajinagar",
         "addressRegion": "Maharashtra",
         "addressCountry": "IN"
       }
     }
   </script>
-  
-  <!-- WebSite Schema: Information about the portfolio website -->
+
+  <!-- WebSite Schema -->
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -363,8 +354,8 @@
       "inLanguage": "en-US"
     }
   </script>
-  
-  <!-- ItemList Schema: Portfolio projects list -->
+
+  <!-- ItemList Schema -->
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -413,8 +404,8 @@
       ]
     }
   </script>
-  
-  <!-- ProfilePage Schema: Portfolio page metadata -->
+
+  <!-- ProfilePage Schema -->
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -431,35 +422,31 @@
   </script>
 </head>
 
-<!-- ============================================
-     BODY: Main page content
-     ============================================ -->
+<!-- BODY -->
+
 <body>
-  <!-- ============================================
-       ACCESSIBILITY & UI ELEMENTS
-       ============================================ -->
-  
+
+  <!-- ACCESSIBILITY & UI ELEMENTS -->
+
   <!-- Skip link for keyboard navigation (WCAG accessibility) -->
   <a href="#main-content" class="skip-to-content">Skip to main content</a>
-  
+
   <!-- Visual overlay effects -->
   <div class="noise"></div>
-  
-  <!-- Custom cursor with text display -->
+
+  <!-- Custom cursor -->
   <div class="cursor">
     <span class="cursor-text"></span>
   </div>
-  
-  <!-- Loading screen with animated counter -->
+
+  <!-- Loader -->
   <div class="preloader">
     <div class="counter">0%</div>
   </div>
 
-  <!-- ============================================
-       NAVIGATION: Fixed header
-       ============================================ -->
+  <!-- NAVIGATION -->
   <nav role="navigation" aria-label="Main navigation">
-    <!-- Logo / Brand -->
+    <!-- Logo -->
     <a href="/" aria-label="Homepage - Bhavesh Patil">
       <div class="logo">://BP</div>
     </a>
@@ -467,14 +454,10 @@
     <a href="#connect" class="menu-btn" data-magnet aria-label="Contact section">Let's Talk</a>
   </nav>
 
-  <!-- ============================================
-       MAIN CONTENT WRAPPER
-       ============================================ -->
+  <!-- MAIN CONTENT WRAPPER -->
   <main role="main" id="main-content">
-    
-    <!-- ============================================
-         HERO SECTION: Introduction
-         ============================================ -->
+
+    <!-- HERO SECTION -->
     <section class="hero">
       <h1 class="hero-title display-text">
         <div class="hero-row"><span>BHAVESH</span></div>
@@ -495,10 +478,7 @@
       </div>
     </section>
 
-    <!-- ============================================
-         MARQUEE SECTION: Scrolling tech stack
-         Displays technologies in an infinite loop
-         ============================================ -->
+    <!-- MARQUEE SECTION -->
     <section class="marquee-section" aria-hidden="true" style="opacity: 0.6;">
       <div class="marquee">
         <!-- First marquee track -->
@@ -534,16 +514,14 @@
       </div>
     </section>
 
-    <!-- ============================================
-         PROJECTS SECTION: Portfolio showcase
-         ============================================ -->
+    <!-- PROJECTS SECTION -->
     <section class="projects" id="work" aria-labelledby="projects-heading">
       <!-- Section header with title and number -->
       <div class="section-header">
         <h2 id="projects-heading">Projects</h2>
         <div class="section-number">(01)</div>
       </div>
-      
+
       <!-- Projects grid layout -->
       <div class="projects-grid">
         <!-- Project Card: blkproxy -->
@@ -567,14 +545,13 @@
           <div class="project-info">
             <div>
               <div class="project-title">StockIt</div>
-              <div class="project-desc">One simple API to search and optimize images from Unsplash, StockSnap, and
-                Pixabay.</div>
+              <div class="project-desc">A unified REST API that aggregates free stock images from multiple platforms (Unsplash, Pixabay, StockSnap) with built-in format conversion, quality optimization, and filtering capabilities.</div>
             </div>
           </div>
           <div class="project-tags">
-            <div class="tag">API</div>
+            <div class="tag">Flask</div>
             <div class="tag">Python</div>
-            <div class="tag">Free</div>
+            <div class="tag">Web Scraping</div>
           </div>
         </a>
         <a href="https://flashified.vercel.app" target="_blank" rel="noopener noreferrer" class="project-card"
@@ -685,18 +662,18 @@
       </div>
     </section>
 
-    <!-- ============================================
-         CAPABILITIES SECTION: Services offered
-         ============================================ -->
+    <!-- CAPABILITIES SECTION -->
     <section class="capabilities" aria-labelledby="capabilities-heading">
+
       <!-- Section header -->
       <div class="section-header">
         <h2 id="capabilities-heading">What I Do</h2>
         <div class="section-number">(02)</div>
       </div>
-      
+
       <!-- Capabilities list -->
       <div class="capabilities-list">
+
         <!-- Capability 1: Modern Web Development -->
         <div class="capability-item" data-magnet>
           <div class="capability-num">01/</div>
@@ -711,6 +688,7 @@
             </svg>
           </div>
         </div>
+
         <div class="capability-item" data-magnet>
           <div class="capability-num">02/</div>
           <div class="capability-name">UI/UX Engineering</div>
@@ -724,6 +702,7 @@
             </svg>
           </div>
         </div>
+
         <div class="capability-item" data-magnet>
           <div class="capability-num">03/</div>
           <div class="capability-name">Full Stack Integration</div>
@@ -738,6 +717,7 @@
             </svg>
           </div>
         </div>
+
         <div class="capability-item" data-magnet>
           <div class="capability-num">04/</div>
           <div class="capability-name">Tools & Automation</div>
@@ -753,17 +733,16 @@
       </div>
     </section>
 
-    <!-- ============================================
-         ABOUT SECTION: Personal introduction
-         ============================================ -->
+    <!-- ABOUT SECTION -->
     <section class="about-me" id="about" aria-labelledby="about-heading">
+
       <!-- Section header -->
       <div class="section-header">
         <h2 id="about-heading">About Me</h2>
         <div class="section-number">(03)</div>
       </div>
-      
-      <!-- About content: Text and profile image -->
+
+      <!-- About content -->
       <div class="about-content">
         <!-- Bio text -->
         <div class="about-text">
@@ -781,6 +760,7 @@
             When I'm not coding, you can find me exploring the latest design trends, contributing to open-source
             projects, or sharing my knowledge with the developer community.
           </p>
+
           <!-- Music player embed -->
           <div class="music-player">
             <h3>What's playing</h3>
@@ -792,6 +772,8 @@
               loading="lazy"></iframe>
           </div>
         </div>
+
+        <!-- Profile image -->
         <div class="about-image" data-magnet-card>
           <a href="/profile.webp" target="_blank" rel="noopener noreferrer">
             <img src="/profile.webp" alt="Bhavesh Patil - Creative Developer Portfolio Photo" width="358" height="358"
@@ -801,19 +783,18 @@
       </div>
     </section>
 
-    <!-- ============================================
-         EDUCATION SECTION: Academic background
-         ============================================ -->
+    <!-- EDUCATION SECTION -->
     <section class="education" id="education" aria-labelledby="education-heading">
+
       <!-- Section header -->
       <div class="section-header">
         <h2 id="education-heading">Education</h2>
         <div class="section-number">(04)</div>
       </div>
-      
+
       <!-- Education timeline -->
       <div class="education-list">
-        <!-- Current: Bachelor's degree -->
+        <!-- Current -->
         <div class="education-item" data-magnet>
           <div class="education-year">2024 - 2027</div>
           <div class="education-degree">Bachelor of Science in Information Technology<br>
@@ -822,7 +803,7 @@
           </div>
           <div class="education-institution">Dr. G. Y. Pathrikar College of CS & IT</div>
         </div>
-        
+
         <!-- Higher Secondary Education -->
         <div class="education-item" data-magnet>
           <div class="education-year">2023 - 2024</div>
@@ -832,7 +813,7 @@
           </div>
           <div class="education-institution">DES, High School</div>
         </div>
-        
+
         <!-- Secondary Education -->
         <div class="education-item" data-magnet>
           <div class="education-year">2022 - 2023</div>
@@ -844,21 +825,20 @@
       </div>
     </section>
 
-    <!-- ============================================
-         FOOTER: Contact section
-         ============================================ -->
+    <!-- FOOTER -->
     <footer id="connect" role="contentinfo" aria-label="Contact and footer information">
+
       <!-- Call-to-action area -->
       <div class="footer-content">
         <div class="footer-cta">Have an Idea?</div>
         <a href="mailto:iam.bhvsh@gmail.com" class="btn-large" data-magnet>Start a Project</a>
       </div>
-      
-      <!-- Footer bottom: Copyright, social links, and time -->
+
+      <!-- Footer bottom -->
       <div class="footer-bottom">
         <!-- Copyright -->
         <div>©2026 Bhavesh Patil</div>
-        
+
         <!-- Social media links -->
         <div>
           <a href="https://github.com/iambhvsh" target="_blank" rel="noopener noreferrer"
@@ -870,7 +850,7 @@
           <a href="https://linkedin.com/in/iambhvsh" target="_blank" rel="noopener noreferrer"
             style="margin: 0 10px;">LinkedIn</a>
         </div>
-        
+
         <!-- Live time display -->
         <div>
           <span id="time">00:00</span>
@@ -879,13 +859,11 @@
     </footer>
   </main>
 
-  <!-- ============================================
-       UI COMPONENTS: Interactive elements
-       ============================================ -->
-  
-  <!-- Bottom sheet overlay (for mobile capability details) -->
+  <!-- UI COMPONENTS -->
+
+  <!-- Bottom sheet overlay (for mobile) -->
   <div class="bottom-sheet-overlay"></div>
-  
+
   <!-- Back to top button -->
   <button class="back-to-top" aria-label="Scroll back to top" title="Back to top" data-magnet>
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -893,7 +871,7 @@
       <path d="M12 19V5M5 12l7-7 7 7" />
     </svg>
   </button>
-  
+
   <!-- Bottom sheet panel (mobile) -->
   <div class="bottom-sheet">
     <div class="bottom-sheet-header">
@@ -907,10 +885,8 @@
     </div>
   </div>
 
-  <!-- ============================================
-       SCRIPTS: External libraries and app logic
-       ============================================ -->
-  
+  <!-- SCRIPTS -->
+
   <!-- Lazy load external libraries after page load -->
   <script>
     window.addEventListener('load', function () {
@@ -927,7 +903,7 @@
       });
     });
   </script>
-  
+
   <!-- Main application script -->
   <script type="module" src="/assets/scripts/index.js"></script>
 </body>

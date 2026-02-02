@@ -1,13 +1,12 @@
 {
-  "name": "personal-portfolio",
+  "name": "website",
   "version": "1.0.0",
   "description": "My personal portfolio website built with Vite, GSAP & Lenis",
   "main": "index.html",
   "scripts": {
     "dev": "vite --host",
     "build": "vite build",
-    "preview": "vite preview --host",
-    "test": "vite build && vite preview --host"
+    "preview": "vite build && vite preview --host"
   },
   "author": "Bhavesh Patil",
   "license": "ISC",

@@ -1,15 +1,13 @@
-/**
- * Main Application Entry Point
+/*
+ * ://BP - Main Script
  * 
- * This script initializes the portfolio website with smooth scrolling,
- * custom cursor, scroll animations, and interactive UI components.
- * 
- * Dependencies:
- * - GSAP: Animation library for smooth transitions
- * - ScrollTrigger: Scroll-based animation triggers
- * - Lenis: Smooth scrolling library
+ * A modern, responsive portfolio website with:
+ * - Custom cursor interactions
+ * - Smooth scroll animations
+ * - Mobile-friendly bottom sheet
  * 
  * @author Bhavesh Patil
+ *
  */
 
 /**
@@ -57,9 +55,7 @@ function initializeApp() {
     // Register GSAP ScrollTrigger plugin for scroll-based animations
     gsap.registerPlugin(ScrollTrigger);
     
-    /* ==========================================
-       SMOOTH SCROLLING SETUP
-       ========================================== */
+    /* SMOOTH SCROLLING */
     
     // Initialize Lenis smooth scroll if available
     let lenis;
@@ -90,9 +86,7 @@ function initializeApp() {
         });
     }
     
-    /* ==========================================
-       PRELOADER ANIMATION
-       ========================================== */
+    /* PRELOADER ANIMATION */
     
     // Get preloader counter element
     const counterElement = document.querySelector(".counter");
@@ -125,9 +119,7 @@ function initializeApp() {
         delay: 0.2  // Small delay before sliding out
     });
     
-    /* ==========================================
-       DOM ELEMENT REFERENCES
-       ========================================== */
+    /* DOM ELEMENT REFERENCES */
     
     // Custom cursor elements
     const cursor = document.querySelector('.cursor');
@@ -151,9 +143,7 @@ function initializeApp() {
     // Track bottom sheet state
     let isBottomSheetActive = false;
 
-    /* ==========================================
-       BOTTOM SHEET FUNCTIONALITY (MOBILE)
-       ========================================== */
+    /* BOTTOM SHEET (MOBILE) */
     
     /**
      * Opens the bottom sheet panel with capability details
@@ -213,9 +203,7 @@ function initializeApp() {
     // Close bottom sheet when clicking close button
     if (closeBtn) closeBtn.addEventListener('click', closeBottomSheet);
     
-    /* ==========================================
-       CUSTOM CURSOR EFFECTS
-       ========================================== */
+    /* CUSTOM CURSOR */
     
     if (cursor) {
         /**
@@ -296,9 +284,7 @@ function initializeApp() {
         });
     }
     
-    /* ==========================================
-       SCROLL-BASED ANIMATIONS
-       ========================================== */
+    /* SCROLL-BASED ANIMATIONS */
     
     /**
      * Hero parallax effect
@@ -367,9 +353,7 @@ function initializeApp() {
         });
     });
     
-    /* ==========================================
-       LIVE CLOCK DISPLAY
-       ========================================== */
+    /* LIVE CLOCK DISPLAY */
     
     /**
      * Updates the time display in footer every second
@@ -386,9 +370,7 @@ function initializeApp() {
         }
     }, 1000);
     
-    /* ==========================================
-       BACK TO TOP BUTTON
-       ========================================== */
+    /* BACK TO TOP BUTTON */
     
     if (backToTopBtn) {
         /**

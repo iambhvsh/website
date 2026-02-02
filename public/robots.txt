@@ -1,21 +1,11 @@
-# robots.txt for https://iambhvsh.vercel.app
+# robots.txt for https://iambhvsh.in
 
 # Allow all crawlers
 User-agent: *
 Allow: /
 
-# Disallow
-# Add any paths that should not be indexed
-
-# Disallow: /about
-# Disallow: /projects
-# Disallow: /contact
-# Disallow: /education
-# Disallow: /search
-# Disallow: /blog
-
 # Sitemap location
-Sitemap: https://iambhvsh.vercel.app/sitemap.xml
+Sitemap: https://iambhvsh.in/sitemap.xml
 
 # Crawl delay
 Crawl-delay: 1

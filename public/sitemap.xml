@@ -6,7 +6,7 @@
 
   <!-- Main page -->
   <url>
-    <loc>https://iambhvsh.vercel.app/</loc>
+    <loc>https://iambhvsh.in/</loc>
     <lastmod>2026-01-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
@@ -14,28 +14,28 @@
 
   <!-- Section anchors -->
   <url>
-    <loc>https://iambhvsh.vercel.app/#work</loc>
+    <loc>https://iambhvsh.in/#work</loc>
     <lastmod>2026-01-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://iambhvsh.vercel.app/#about</loc>
+    <loc>https://iambhvsh.in/#about</loc>
     <lastmod>2026-01-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://iambhvsh.vercel.app/#education</loc>
+    <loc>https://iambhvsh.in/#education</loc>
     <lastmod>2026-01-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://iambhvsh.vercel.app/#connect</loc>
+    <loc>https://iambhvsh.in/#connect</loc>
     <lastmod>2026-01-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
