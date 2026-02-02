@@ -1,96 +1,143 @@
-/* --- Variables & Reset --- */
+/*
+ * ============================================
+ * PORTFOLIO WEBSITE STYLES
+ * ============================================
+ * 
+ * A modern, responsive portfolio website with:
+ * - Dark theme design
+ * - Custom cursor interactions
+ * - Smooth scroll animations
+ * - Mobile-friendly bottom sheet
+ * 
+ * @author Bhavesh Patil
+ * ============================================
+ */
+
+
+/* ============================================
+   CSS VARIABLES & DESIGN TOKENS
+   ============================================ */
+
 :root {
-    --bg: #050505;
-    --text: #e1e1e1;
-    --accent: #ff3333;
-    --gray: #888;
-    --light-gray: #ccc;
-    --border: rgba(255, 255, 255, 0.1);
-    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    /* Color palette */
+    --bg: #050505;                          /* Primary background color */
+    --text: #e1e1e1;                        /* Primary text color */
+    --accent: #ff3333;                      /* Accent color for highlights */
+    --gray: #888;                           /* Secondary text color */
+    --light-gray: #ccc;                     /* Tertiary text color */
+    --border: rgba(255, 255, 255, 0.1);     /* Border color with transparency */
+    
+    /* Animation easing */
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);  /* Custom easing for smooth animations */
 }
+
+
+/* ============================================
+   GLOBAL RESET & BASE STYLES
+   ============================================ */
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    cursor: none;
+    cursor: none;  /* Hide default cursor for custom cursor effect */
 }
 
-/* --- Global Styles --- */
+/* ============================================
+   HTML & BODY STYLES
+   ============================================ */
+
 html,
 body {
-    overflow-x: hidden;
+    overflow-x: hidden;                           /* Prevent horizontal scroll */
     width: 100%;
-    background-color: var(--bg);
-    color: var(--text);
-    font-family: 'Space Grotesk', sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -webkit-tap-highlight-color: transparent;
-    -webkit-user-select: none;
+    background-color: var(--bg);                  /* Dark background */
+    color: var(--text);                           /* Light text */
+    font-family: 'Space Grotesk', sans-serif;     /* Primary font */
+    -webkit-font-smoothing: antialiased;          /* Smoother font rendering on webkit */
+    -webkit-tap-highlight-color: transparent;     /* Remove tap highlight on mobile */
+    -webkit-user-select: none;                    /* Disable text selection */
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
 }
 
+/* Link styles - inherit parent styles and remove underline */
 a {
     color: inherit;
     text-decoration: none;
 }
 
 
-/* --- Utilities --- */
+/* ============================================
+   ACCESSIBILITY UTILITIES
+   ============================================ */
+/* Skip to content link for keyboard navigation */
 .skip-to-content {
     position: absolute;
-    top: -40px;
+    top: -40px;                           /* Hidden above viewport by default */
     left: 0;
     background: var(--accent);
     color: #fff;
     padding: 8px 16px;
     text-decoration: none;
-    z-index: 100000;
+    z-index: 100000;                      /* Always on top */
     border-radius: 0 0 4px 0;
     font-weight: 600;
 }
 
+/* Show skip link when focused (keyboard tab) */
 .skip-to-content:focus {
-    top: 0;
+    top: 0;                               /* Slide into view on focus */
 }
 
 
-/* --- Lenis (Smooth Scroll) --- */
+/* ============================================
+   LENIS SMOOTH SCROLL INTEGRATION
+   ============================================ */
+/* Lenis smooth scroll initialization */
 html.lenis,
 html.lenis body {
-    height: auto;
+    height: auto;                         /* Allow natural height for smooth scroll */
 }
 
+/* Override native scroll behavior when Lenis is active */
 .lenis.lenis-smooth {
     scroll-behavior: auto !important;
 }
 
+/* Prevent overscroll on Lenis-controlled elements */
 .lenis.lenis-smooth [data-lenis-prevent] {
     overscroll-behavior: contain;
 }
 
+/* Hide overflow when Lenis is stopped */
 .lenis.lenis-stopped {
     overflow: hidden;
 }
 
 
-/* --- UI Overlays --- */
+/* ============================================
+   VISUAL EFFECTS & OVERLAYS
+   ============================================ */
+/* Subtle noise overlay for texture effect */
 .noise {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    pointer-events: none;
-    z-index: 9999;
-    opacity: 0.05;
+    pointer-events: none;                  /* Allow clicks to pass through */
+    z-index: 9999;                         /* Layer above content */
+    opacity: 0.05;                         /* Very subtle effect */
     background: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
 }
 
 
-/* --- Custom Cursor --- */
+/* ============================================
+   CUSTOM CURSOR DESIGN
+   ============================================ */
+/* Custom cursor element */
 .cursor {
     position: fixed;
     top: 0;
@@ -98,18 +145,19 @@ html.lenis body {
     width: 12px;
     height: 12px;
     background-color: var(--text);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 10000;
-    transform: translate(-50%, -50%);
-    mix-blend-mode: difference;
+    border-radius: 50%;                    /* Circular cursor */
+    pointer-events: none;                  /* Don't interfere with clicks */
+    z-index: 10000;                        /* Always on top */
+    transform: translate(-50%, -50%);      /* Center cursor on mouse position */
+    mix-blend-mode: difference;            /* Invert colors underneath */
     transition: width 0.3s var(--ease), height 0.3s var(--ease);
     display: flex;
     justify-content: center;
     align-items: center;
-    will-change: transform;
+    will-change: transform;                /* Optimize for animation */
 }
 
+/* Enlarged cursor state on hover */
 .cursor.hovered {
     width: 80px;
     height: 80px;
@@ -117,22 +165,27 @@ html.lenis body {
     mix-blend-mode: difference;
 }
 
+/* Text inside cursor (e.g., "View") */
 .cursor-text {
     font-size: 10px;
     text-transform: uppercase;
     color: var(--bg);
-    opacity: 0;
+    opacity: 0;                            /* Hidden by default */
     transition: opacity 0.2s;
     font-weight: 700;
     letter-spacing: 1px;
 }
 
+/* Show cursor text when hovered */
 .cursor.hovered .cursor-text {
     opacity: 1;
 }
 
 
-/* --- Back to Top --- */
+/* ============================================
+   BACK TO TOP BUTTON
+   ============================================ */
+/* Floating back to top button */
 .back-to-top {
     position: fixed;
     bottom: 30px;
@@ -141,57 +194,66 @@ html.lenis body {
     height: 50px;
     background: var(--text);
     color: var(--bg);
-    border-radius: 50%;
+    border-radius: 50%;                    /* Circular button */
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 20002;
-    opacity: 0;
-    pointer-events: none;
+    z-index: 20002;                        /* Above most elements */
+    opacity: 0;                            /* Hidden by default */
+    pointer-events: none;                  /* Non-interactive when hidden */
     transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
     border: none;
-    transform: translateY(20px);
+    transform: translateY(20px);           /* Start slightly below final position */
     cursor: pointer;
-    mix-blend-mode: difference;
+    mix-blend-mode: difference;            /* Invert colors underneath */
 }
 
+/* Visible state - shown after scrolling down */
 .back-to-top.visible {
     opacity: 1;
-    pointer-events: all;
-    transform: translateY(0);
+    pointer-events: all;                   /* Enable interactions */
+    transform: translateY(0);              /* Slide into final position */
 }
 
+/* Hover effect - slight scale up */
 .back-to-top:hover {
     transform: translateY(0) scale(1.1);
 }
 
 
-/* --- Preloader --- */
+/* ============================================
+   PRELOADER / LOADING SCREEN
+   ============================================ */
+/* Full-screen loading animation */
 .preloader {
     position: fixed;
-    inset: 0;
-    background: var(--text);
-    z-index: 20000;
+    inset: 0;                              /* Cover entire viewport */
+    background: var(--text);               /* Light background (inverted) */
+    z-index: 20000;                        /* Highest layer */
     display: flex;
     justify-content: center;
     align-items: center;
-    color: var(--bg);
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(40px, 8vw, 100px);
+    color: var(--bg);                      /* Dark text (inverted) */
+    font-family: 'Syne', sans-serif;       /* Bold display font */
+    font-size: clamp(40px, 8vw, 100px);    /* Responsive font size */
     font-weight: 800;
-    will-change: opacity;
+    will-change: opacity;                  /* Optimize for fade out */
 }
 
 
-/* --- Typography & Components --- */
+/* ============================================
+   TYPOGRAPHY & SHARED COMPONENTS
+   ============================================ */
+/* Large display text style */
 .display-text {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Syne', sans-serif;       /* Bold display font */
     font-weight: 800;
-    line-height: 1.0;
+    line-height: 1.0;                      /* Tight line height */
     text-transform: uppercase;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.02em;               /* Slight negative tracking */
 }
 
+/* Section header with bottom border */
 .section-header {
     margin-bottom: 60px;
     border-bottom: 1px solid var(--border);
@@ -201,34 +263,40 @@ html.lenis body {
     align-items: flex-end;
 }
 
+/* Section title styling */
 .section-header h2 {
     font-family: 'Syne', sans-serif;
-    font-size: clamp(32px, 4vw, 48px);
+    font-size: clamp(32px, 4vw, 48px);     /* Responsive sizing */
     font-weight: 700;
     text-transform: uppercase;
 }
 
+/* Section number indicator (e.g., "(01)") */
 .section-number {
     font-family: 'Syne', sans-serif;
     font-size: 14px;
-    color: var(--gray);
+    color: var(--gray);                    /* Subtle gray color */
 }
 
 
-/* --- Navigation --- */
+/* ============================================
+   NAVIGATION BAR
+   ============================================ */
+/* Fixed navigation bar at top of page */
 nav {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    padding: 30px 5vw;
+    padding: 30px 5vw;                     /* Responsive horizontal padding */
     display: flex;
     justify-content: space-between;
     align-items: center;
-    z-index: 1000;
-    mix-blend-mode: difference;
+    z-index: 1000;                         /* Above content */
+    mix-blend-mode: difference;            /* Invert colors underneath */
 }
 
+/* Logo/brand text */
 .logo {
     font-family: 'Syne', sans-serif;
     font-weight: 800;
@@ -236,25 +304,30 @@ nav {
     letter-spacing: -0.02em;
 }
 
+/* Navigation button (e.g., "Let's Talk") */
 .menu-btn {
     font-size: 14px;
     text-transform: uppercase;
     letter-spacing: 1px;
     padding: 10px 20px;
     border: 1px solid var(--text);
-    border-radius: 50px;
+    border-radius: 50px;                   /* Pill-shaped button */
     transition: all 0.3s;
     text-decoration: none;
     color: var(--text);
 }
 
+/* Menu button hover effect - invert colors */
 .menu-btn:hover {
     background: var(--text);
     color: var(--bg);
 }
 
 
-/* --- Hero Section --- */
+/* ============================================
+   HERO SECTION
+   ============================================ */
+/* Main hero section - full viewport height */
 .hero {
     height: auto;
     min-height: 100vh;
@@ -262,64 +335,71 @@ nav {
     flex-direction: column;
     justify-content: center;
     padding: 0 5vw;
-    padding-top: 120px;
+    padding-top: 120px;                    /* Space for fixed nav */
     padding-bottom: 50px;
     position: relative;
 }
 
+/* Large hero title text */
 .hero-title {
-    font-size: clamp(40px, 11vw, 130px);
+    font-size: clamp(40px, 11vw, 130px);   /* Responsive: 40px to 130px */
     width: 100%;
     position: relative;
     z-index: 10;
     margin-top: 40px;
     margin-bottom: 0px;
     padding-top: 10px;
-    line-height: 1;
+    line-height: 1;                        /* Tight spacing */
 }
 
+/* Container for each line of hero title */
 .hero-row {
     display: block;
     overflow: visible;
 }
 
+/* Individual word spans in hero title */
 .hero-row span {
     display: block;
     transform: translateY(0);
 }
 
+/* Hero subtitle/description */
 .hero-subtitle {
-    font-size: clamp(16px, 1.8vw, 24px);
+    font-size: clamp(16px, 1.8vw, 24px);   /* Responsive sizing */
     color: var(--light-gray);
     margin-top: 20px;
     margin-bottom: 0px;
-    max-width: 700px;
+    max-width: 700px;                      /* Limit line length for readability */
     position: relative;
     z-index: 10;
     line-height: 1.4;
     font-weight: 400;
 }
 
+/* Accent color for emphasized text in subtitle */
 .hero-subtitle .accent {
     color: var(--text);
     font-weight: 600;
 }
 
+/* Call-to-action button container */
 .hero-cta {
     margin-top: 40px;
     position: relative;
     z-index: 10;
 }
 
+/* Primary CTA button */
 .hero-btn {
     display: inline-flex;
     align-items: center;
-    gap: 15px;
+    gap: 15px;                             /* Space between text and icon */
     padding: 18px 40px;
     background: var(--text);
     color: var(--bg);
     text-decoration: none;
-    border-radius: 50px;
+    border-radius: 50px;                   /* Pill-shaped */
     font-size: 16px;
     font-weight: 600;
     text-transform: uppercase;
@@ -328,24 +408,27 @@ nav {
     border: 2px solid var(--text);
 }
 
+/* Hero button hover effect */
 .hero-btn:hover {
-    background: transparent;
+    background: transparent;               /* Become outline button */
     color: var(--text);
-    transform: translateY(-2px);
+    transform: translateY(-2px);           /* Slight lift */
 }
 
+/* Arrow icon in button */
 .hero-btn svg {
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* Move arrow right on hover */
 .hero-btn:hover svg {
     transform: translateX(5px);
 }
 
 
-
-
-/* --- Marquee Section --- */
+/* ============================================
+   MARQUEE / TICKER SECTION
+   ============================================ */
 .marquee-section {
     padding: 80px 0;
     overflow: hidden;
