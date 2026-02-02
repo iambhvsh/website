@@ -4,9 +4,10 @@
   "description": "My personal portfolio website built with Vite, GSAP & Lenis",
   "main": "index.html",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview --host",
+    "test": "vite build && vite preview --host"
   },
   "author": "Bhavesh Patil",
   "license": "ISC",

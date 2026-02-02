@@ -1,15 +1,27 @@
+// Wait for DOM to be fully loaded before initializing
 document.addEventListener("DOMContentLoaded", () => {
+    // Check if required libraries are loaded, retry if not
+    function checkLibraries() {
+        if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined' && typeof Lenis !== 'undefined') {
+            initializeApp();
+        } else {
+            setTimeout(checkLibraries, 50);
+        }
+    }
+    checkLibraries();
+});
 
-    /**
-     * Initialize Animation Libraries
-     * Sets up GSAP ScrollTrigger and Lenis smooth scrolling.
-     */
-    if (typeof gsap === 'undefined') {
+function initializeApp() {
+    // Exit early if core libraries aren't available
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
         document.querySelector('.preloader').style.display = 'none';
         return;
     }
+    
+    // Register GSAP ScrollTrigger plugin
     gsap.registerPlugin(ScrollTrigger);
-
+    
+    // Initialize Lenis smooth scroll if available
     let lenis;
     if (typeof Lenis !== 'undefined') {
         lenis = new Lenis({
@@ -18,64 +30,51 @@ document.addEventListener("DOMContentLoaded", () => {
             smooth: true,
         });
 
-        /**
-         * Request Animation Frame loop for Lenis
-         * @param {number} time - Current time
-         */
+        // Connect Lenis to requestAnimationFrame loop
         function raf(time) {
             lenis.raf(time);
             requestAnimationFrame(raf);
         }
         requestAnimationFrame(raf);
-
-        // Smooth scroll for anchor links
+        
+        // Enable smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
+            anchor.addEventListener('click', function(e) {
                 e.preventDefault();
                 lenis.scrollTo(this.getAttribute('href'));
             });
         });
     }
-
-    /**
-     * Preloader Animation
-     * Animates the loading counter and reveals the page content.
-     * Uses a timeline to sequence the counter release and the curtain lift.
-     */
+    
+    // Preloader animation with counter
     const counterElement = document.querySelector(".counter");
-    const loadProgress = { val: 0 };
-
+    const loadProgress = {
+        val: 0
+    };
     const tlLoader = gsap.timeline();
-
+    
+    // Animate counter from 0 to 100%
     tlLoader.to(loadProgress, {
         val: 100,
         duration: 2,
         ease: "power2.inOut",
         onUpdate: () => {
-            // Ensure integer value to avoid display glitches
             if (counterElement) {
                 counterElement.textContent = Math.floor(loadProgress.val) + "%";
             }
         }
     })
-        .to(".preloader", {
-            yPercent: -100,
-            duration: 1,
-            ease: "power4.inOut",
-            delay: 0.2
-        });
-
-    /**
-     * Custom Cursor & Interaction Logic
-     * Handles cursor movement, magnet effects, and bottom sheet interactions.
-     * - .cursor: The main dot cursor
-     * - data-magnet: Elements that attract the cursor
-     * - data-magnet-card: Project cards with special hover state
-     */
+    // Slide preloader up and out of view
+    .to(".preloader", {
+        yPercent: -100,
+        duration: 1,
+        ease: "power4.inOut",
+        delay: 0.2
+    });
+    
+    // Get DOM elements for interactive features
     const cursor = document.querySelector('.cursor');
     const cursorText = document.querySelector('.cursor-text');
-
-    // Bottom Sheet Elements
     const items = document.querySelectorAll('.capability-item');
     const bottomSheet = document.querySelector('.bottom-sheet');
     const overlay = document.querySelector('.bottom-sheet-overlay');
@@ -83,44 +82,40 @@ document.addEventListener("DOMContentLoaded", () => {
     const bsNum = document.querySelector('.bs-num');
     const bsTitle = document.querySelector('.bs-title');
     const bsDesc = document.querySelector('.bs-desc');
-
-    // Back to Top Elements
     const backToTopBtn = document.querySelector('.back-to-top');
     const heroSection = document.querySelector('.hero');
     let isBottomSheetActive = false;
 
-    /**
-     * Opens the bottom sheet with details from the clicked item.
-     * Only active on mobile/tablet devices (<= 1024px).
-     * @param {HTMLElement} item - The clicked capability item
-     */
+    // Open bottom sheet with capability details (mobile only)
     function openBottomSheet(item) {
         if (window.innerWidth > 1024) return;
-
+        
+        // Extract data from clicked item
         const num = item.querySelector('.capability-num').textContent;
         const name = item.querySelector('.capability-name').textContent;
         const desc = item.querySelector('.capability-desc').innerHTML;
-
+        
+        // Populate bottom sheet content
         bsNum.textContent = num;
         bsTitle.textContent = name;
         bsDesc.innerHTML = desc;
-
+        
+        // Show bottom sheet and overlay
         bottomSheet.classList.add('active');
         overlay.classList.add('active');
-
         isBottomSheetActive = true;
+        
+        // Hide back-to-top button when sheet is open
         if (backToTopBtn) backToTopBtn.classList.remove('visible');
     }
 
-    /**
-     * Closes the active bottom sheet.
-     */
+    // Close bottom sheet and restore back-to-top button
     function closeBottomSheet() {
         bottomSheet.classList.remove('active');
         overlay.classList.remove('active');
-
         isBottomSheetActive = false;
-        // Check if back-to-top should be visible again
+        
+        // Restore back-to-top button if scrolled past hero
         if (backToTopBtn) {
             const triggerHeight = heroSection ? heroSection.offsetHeight : 500;
             if (window.scrollY > triggerHeight) {
@@ -128,18 +123,17 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
     }
-
-    // Event Listeners for Bottom Sheet
+    
+    // Attach event listeners for bottom sheet
     items.forEach(item => {
         item.addEventListener('click', () => openBottomSheet(item));
     });
-
     if (overlay) overlay.addEventListener('click', closeBottomSheet);
     if (closeBtn) closeBtn.addEventListener('click', closeBottomSheet);
-
-    // Desktop-only Cursor Effects
+    
+    // Custom cursor interactions
     if (cursor) {
-        // Move cursor with mouse
+        // Make cursor follow mouse position
         window.addEventListener('mousemove', (e) => {
             gsap.to(cursor, {
                 x: e.clientX,
@@ -148,29 +142,38 @@ document.addEventListener("DOMContentLoaded", () => {
                 ease: "power2.out"
             });
         });
-
-        // Magnet effect for interactive elements
+        
+        // Cursor hover effect for magnetic elements
         const magnets = document.querySelectorAll('[data-magnet]');
         magnets.forEach((magnet) => {
             magnet.addEventListener('mouseenter', () => {
-                gsap.to(cursor, { scale: 3, backgroundColor: '#e1e1e1', mixBlendMode: 'difference', duration: 0.3 });
+                gsap.to(cursor, {
+                    scale: 3,
+                    backgroundColor: '#e1e1e1',
+                    mixBlendMode: 'difference',
+                    duration: 0.3
+                });
                 cursor.classList.add('hovered');
             });
-
             magnet.addEventListener('mouseleave', () => {
-                gsap.to(cursor, { scale: 1, backgroundColor: '#e1e1e1', mixBlendMode: 'difference', duration: 0.3 });
+                gsap.to(cursor, {
+                    scale: 1,
+                    backgroundColor: '#e1e1e1',
+                    mixBlendMode: 'difference',
+                    duration: 0.3
+                });
                 cursor.classList.remove('hovered');
             });
         });
-
-        // Specialized cursor for Project Cards
+        
+        // Cursor hover effect for project cards with "View" text
         const projectCards = document.querySelectorAll('[data-magnet-card]');
         projectCards.forEach((card) => {
             card.addEventListener('mouseenter', () => {
                 gsap.to(cursor, {
                     scale: 3,
                     mixBlendMode: 'normal',
-                    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+                    backgroundColor: 'rgba(0,0,0,0.2)',
                     backdropFilter: 'blur(5px)',
                     duration: 0.3
                 });
@@ -178,7 +181,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 cursorText.textContent = "View";
                 cursorText.style.color = "#ffffff";
             });
-
             card.addEventListener('mouseleave', () => {
                 gsap.to(cursor, {
                     scale: 1,
@@ -193,12 +195,8 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
     }
-
-    /**
-     * Scroll-Triggered Animations
-     */
-
-    // Parallax effect for Hero Title
+    
+    // Parallax effect: fade out hero title on scroll
     gsap.to(".hero-title", {
         yPercent: 30,
         opacity: 0,
@@ -210,8 +208,8 @@ document.addEventListener("DOMContentLoaded", () => {
             scrub: true
         }
     });
-
-    // Staggered reveal for Project Cards
+    
+    // Animate project cards on scroll into view
     const projects = document.querySelectorAll('.project-card');
     projects.forEach((project, i) => {
         gsap.from(project, {
@@ -225,8 +223,8 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     });
-
-    // About Me Section
+    
+    // Animate about section on scroll into view
     gsap.from(".about-content", {
         y: 50,
         opacity: 0,
@@ -237,8 +235,8 @@ document.addEventListener("DOMContentLoaded", () => {
             start: "top 75%",
         }
     });
-
-    // Education Section
+    
+    // Animate education items on scroll into view
     const educationItems = document.querySelectorAll('.education-item');
     educationItems.forEach((item, i) => {
         gsap.from(item, {
@@ -252,24 +250,28 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     });
-
-    // Live Time Update
+    
+    // Update time display every second
     const timeEl = document.getElementById('time');
     setInterval(() => {
         const now = new Date();
-        if (timeEl) timeEl.textContent = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+        if (timeEl) timeEl.textContent = now.toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit'
+        });
     }, 1000);
-
-    // Back to Top Logic
+    
+    // Back to top button functionality
     if (backToTopBtn) {
+        // Show/hide button based on scroll position
         const toggleBackToTop = () => {
-            // Hide button if bottom sheet is active
+            // Hide when bottom sheet is active
             if (isBottomSheetActive) {
                 backToTopBtn.classList.remove('visible');
                 return;
             }
-
-            // Show button only when passed the hero section
+            
+            // Show after scrolling past hero section
             const triggerHeight = heroSection ? heroSection.offsetHeight : 500;
             if (window.scrollY > triggerHeight) {
                 backToTopBtn.classList.add('visible');
@@ -277,18 +279,20 @@ document.addEventListener("DOMContentLoaded", () => {
                 backToTopBtn.classList.remove('visible');
             }
         };
-
+        
         window.addEventListener('scroll', toggleBackToTop);
-        // Initial check (delay slightly to ensure layout)
         setTimeout(toggleBackToTop, 100);
-
-        // Scroll to top on click
+        
+        // Scroll to top when button is clicked
         backToTopBtn.addEventListener('click', () => {
             if (typeof lenis !== 'undefined') {
                 lenis.scrollTo(0);
             } else {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
             }
         });
     }
-});
+}
