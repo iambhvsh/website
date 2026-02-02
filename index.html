@@ -1,15 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<!-- Head Section: Metadata, Styles, and Scripts -->
+<!--
+  ============================================
+  PORTFOLIO WEBSITE - BHAVESH PATIL
+  ============================================
+  
+  A modern, responsive portfolio website featuring:
+  - Dark theme with custom cursor
+  - Smooth scroll animations (GSAP + Lenis)
+  - SEO optimization with structured data
+  - Accessibility features
+  - Mobile-responsive design
+  
+  @author Bhavesh Patil
+  @url https://iambhvsh.in
+  ============================================
+-->
+
+<!-- ============================================
+     HEAD SECTION: Metadata, Styles, and Scripts
+     ============================================ -->
 <head>
+  <!-- Character encoding and viewport configuration -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  
+  <!-- Theme and color scheme for browser UI -->
   <meta name="theme-color" content="#050505">
   <meta name="color-scheme" content="dark">
+  
+  <!-- Page title for browser tab and search results -->
   <title>Bhavesh Patil | Creative Developer & Full Stack Engineer</title>
   
-  <!-- Inline Critical CSS -->
+  <!-- ============================================
+       CRITICAL CSS: Above-the-fold styles
+       Inline for immediate rendering
+       ============================================ -->
   <style>
     :root {
       --bg: #050505;
@@ -20,38 +47,41 @@
       --ease: cubic-bezier(0.16, 1, 0.3, 1)
     }
 
+    /* Global reset for consistent rendering */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      cursor: none
+      cursor: none                            /* Hide default cursor for custom cursor */
     }
 
+    /* Base styles for HTML and body */
     html,
     body {
-      overflow-x: hidden;
+      overflow-x: hidden;                     /* Prevent horizontal scroll */
       width: 100%;
       background-color: var(--bg);
       color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-      -webkit-font-smoothing: antialiased;
-      -webkit-user-select: none;
+      -webkit-font-smoothing: antialiased;    /* Better font rendering */
+      -webkit-user-select: none;              /* Disable text selection */
       user-select: none
     }
 
     body {
-      min-height: 100vh
+      min-height: 100vh                       /* Full viewport height minimum */
     }
 
+    /* Link styles */
     a {
       color: inherit;
       text-decoration: none
     }
 
-    /* Accessibility: Skip to Content Link */
+    /* Accessibility: Skip to Content Link for keyboard navigation */
     .skip-to-content {
       position: absolute;
-      top: -40px;
+      top: -40px;                             /* Hidden above viewport */
       left: 0;
       background: var(--accent);
       color: #fff;
@@ -62,39 +92,39 @@
     }
 
     .skip-to-content:focus {
-      top: 0
+      top: 0                                  /* Visible when focused */
     }
 
-    /* Visual Effects: Noise Overlay */
+    /* Visual Effects: Noise Overlay for texture */
     .noise {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      pointer-events: none;
+      pointer-events: none;                   /* Allow clicks through */
       z-index: 9999;
-      opacity: 0.05;
+      opacity: 0.05;                          /* Subtle effect */
       background: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E')
     }
 
-    /* Loading Screen Styles */
+    /* Loading Screen: Full-screen preloader */
     .preloader {
       position: fixed;
       inset: 0;
-      background: var(--text);
-      z-index: 20000;
+      background: var(--text);                /* Light background (inverted) */
+      z-index: 20000;                         /* Highest layer */
       display: flex;
       justify-content: center;
       align-items: center;
       color: var(--bg);
-      font-size: clamp(40px, 8vw, 100px);
-      will-change: opacity;
+      font-size: clamp(40px, 8vw, 100px);     /* Responsive sizing */
+      will-change: opacity;                   /* Optimize for animation */
       contain: layout style paint;
       font-weight: 800
     }
 
-    /* Navigation Styles */
+    /* Navigation: Fixed header */
     nav {
       position: fixed;
       top: 0;
@@ -180,43 +210,65 @@
     }
   </style>
 
-  <!-- SEO and Social Media Metadata -->
-  <link rel="canonical" href="https://iambhvsh.vercel.app/" />
+  <!-- ============================================
+       SEO & METADATA: Search engine optimization
+       ============================================ -->
+  
+  <!-- Canonical URL to prevent duplicate content issues -->
+  <link rel="canonical" href="https://iambhvsh.in/" />
+  
+  <!-- Basic SEO Meta Tags -->
   <meta name="description"
     content="Bhavesh Patil is a Creative Developer specializing in modern web development with React, Next.js, and Python. View my portfolio of innovative web projects and tools.">
   <meta name="keywords"
     content="Bhavesh Patil, Creative Developer, Web Developer, Frontend Engineer, React, Next.js, Portfolio, UI/UX, GSAP, Full Stack Developer">
   <meta name="author" content="Bhavesh Patil">
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  
+  <!-- Google Search Console Verification -->
   <meta name="google-site-verification" content="NZeVYWwxwJQXPJC-mu3ccZpG6L2O8hes7185XXl04wI" />
+  
+  <!-- Open Graph / Facebook Meta Tags -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://iambhvsh.vercel.app/">
+  <meta property="og:url" content="https://iambhvsh.in/">
   <meta property="og:title" content="Bhavesh Patil | Creative Developer & Full Stack Engineer">
   <meta property="og:description"
     content="Portfolio of Bhavesh Patil - Where design, motion, and code converge to create meaningful web experiences.">
   <meta property="og:site_name" content="Bhavesh Patil Portfolio">
   <meta property="og:locale" content="en_US">
+  
+  <!-- Twitter / X Card Meta Tags -->
   <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="https://iambhvsh.vercel.app/">
+  <meta property="twitter:url" content="https://iambhvsh.in/">
   <meta property="twitter:title" content="Bhavesh Patil | Creative Developer & Full Stack Engineer">
   <meta property="twitter:description"
     content="Portfolio of Bhavesh Patil - Where design, motion, and code converge to create meaningful web experiences.">
   <meta property="twitter:creator" content="@iambhvsh">
+  
+  <!-- Favicon and App Icons -->
   <link rel="icon" type="image/png" href="/favicon.ico">
   <link rel="apple-touch-icon" href="/favicon.ico">
+  
+  <!-- DNS Prefetch: Speed up external resource loading -->
   <link rel="dns-prefetch" href="https://fonts.googleapis.com">
   <link rel="dns-prefetch" href="https://fonts.gstatic.com">
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
   <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  
+  <!-- Preconnect: Early connection to external domains -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdnjs.cloudflare.com">
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  
+  <!-- Preload: Critical resources for faster page load -->
   <link rel="preload" href="/profile.webp" as="image" fetchpriority="high" type="image/webp">
   <link rel="preload" href="/assets/styles/index.css" as="style">
   <link rel="preload"
     href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&family=Syne:wght@600;700;800&display=swap"
     as="style" onload="this.onload=null;this.rel='stylesheet'">
+  
+  <!-- Fallback for browsers without JavaScript -->
   <noscript>
     <link
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&family=Syne:wght@600;700;800&display=swap"
@@ -246,15 +298,22 @@
     }
   </style>
 
+  <!-- External Stylesheet -->
   <link rel="stylesheet" href="/assets/styles/index.css">
 
+  <!-- ============================================
+       STRUCTURED DATA: Schema.org JSON-LD
+       Helps search engines understand the content
+       ============================================ -->
+  
+  <!-- Person Schema: Information about Bhavesh Patil -->
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Person",
       "name": "Bhavesh Patil",
-      "url": "https://iambhvsh.vercel.app/",
-      "image": "https://iambhvsh.vercel.app/profile.webp",
+      "url": "https://iambhvsh.in/",
+      "image": "https://iambhvsh.in/profile.webp",
       "sameAs": [
         "https://github.com/iambhvsh",
         "https://twitter.com/iambhvsh",
@@ -288,12 +347,14 @@
       }
     }
   </script>
+  
+  <!-- WebSite Schema: Information about the portfolio website -->
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
       "name": "Bhavesh Patil Portfolio",
-      "url": "https://iambhvsh.vercel.app/",
+      "url": "https://iambhvsh.in/",
       "description": "Portfolio website showcasing web development projects and skills",
       "author": {
         "@type": "Person",
@@ -302,6 +363,8 @@
       "inLanguage": "en-US"
     }
   </script>
+  
+  <!-- ItemList Schema: Portfolio projects list -->
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -350,6 +413,8 @@
       ]
     }
   </script>
+  
+  <!-- ProfilePage Schema: Portfolio page metadata -->
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -360,39 +425,56 @@
         "@type": "Person",
         "name": "Bhavesh Patil",
         "description": "Creative Developer specializing in modern web development",
-        "image": "https://iambhvsh.vercel.app/profile.webp"
+        "image": "https://iambhvsh.in/profile.webp"
       }
     }
   </script>
 </head>
 
+<!-- ============================================
+     BODY: Main page content
+     ============================================ -->
 <body>
-  <!-- Skip Link for Accessibility -->
+  <!-- ============================================
+       ACCESSIBILITY & UI ELEMENTS
+       ============================================ -->
+  
+  <!-- Skip link for keyboard navigation (WCAG accessibility) -->
   <a href="#main-content" class="skip-to-content">Skip to main content</a>
   
-  <!-- Visual Overlay Elements -->
+  <!-- Visual overlay effects -->
   <div class="noise"></div>
+  
+  <!-- Custom cursor with text display -->
   <div class="cursor">
     <span class="cursor-text"></span>
   </div>
   
-  <!-- Loading Screen -->
+  <!-- Loading screen with animated counter -->
   <div class="preloader">
     <div class="counter">0%</div>
   </div>
 
-  <!-- Navigation Bar -->
+  <!-- ============================================
+       NAVIGATION: Fixed header
+       ============================================ -->
   <nav role="navigation" aria-label="Main navigation">
+    <!-- Logo / Brand -->
     <a href="/" aria-label="Homepage - Bhavesh Patil">
       <div class="logo">://BP</div>
     </a>
+    <!-- Contact CTA button -->
     <a href="#connect" class="menu-btn" data-magnet aria-label="Contact section">Let's Talk</a>
   </nav>
 
-  <!-- Main Content Wrappper -->
+  <!-- ============================================
+       MAIN CONTENT WRAPPER
+       ============================================ -->
   <main role="main" id="main-content">
     
-    <!-- Hero Section -->
+    <!-- ============================================
+         HERO SECTION: Introduction
+         ============================================ -->
     <section class="hero">
       <h1 class="hero-title display-text">
         <div class="hero-row"><span>BHAVESH</span></div>
@@ -413,9 +495,13 @@
       </div>
     </section>
 
-    <!-- Marquee/Ticker Section -->
+    <!-- ============================================
+         MARQUEE SECTION: Scrolling tech stack
+         Displays technologies in an infinite loop
+         ============================================ -->
     <section class="marquee-section" aria-hidden="true" style="opacity: 0.6;">
       <div class="marquee">
+        <!-- First marquee track -->
         <div class="marquee-inner">
           <div class="marquee-item">HTML</div>
           <div class="marquee-item">CSS</div>
@@ -430,6 +516,7 @@
           <div class="marquee-item">NEXT.JS</div>
           <div class="marquee-item">TAILWINDCSS</div>
         </div>
+        <!-- Second marquee track (for seamless loop) -->
         <div class="marquee-inner">
           <div class="marquee-item">HTML</div>
           <div class="marquee-item">CSS</div>
@@ -447,13 +534,19 @@
       </div>
     </section>
 
-    <!-- Projects Section -->
+    <!-- ============================================
+         PROJECTS SECTION: Portfolio showcase
+         ============================================ -->
     <section class="projects" id="work" aria-labelledby="projects-heading">
+      <!-- Section header with title and number -->
       <div class="section-header">
         <h2 id="projects-heading">Projects</h2>
         <div class="section-number">(01)</div>
       </div>
+      
+      <!-- Projects grid layout -->
       <div class="projects-grid">
+        <!-- Project Card: blkproxy -->
         <a href="https://blkproxy.vercel.app" target="_blank" rel="noopener noreferrer" class="project-card"
           data-magnet-card>
           <div class="project-info">
@@ -592,13 +685,19 @@
       </div>
     </section>
 
-    <!-- Capabilities / Services Section -->
+    <!-- ============================================
+         CAPABILITIES SECTION: Services offered
+         ============================================ -->
     <section class="capabilities" aria-labelledby="capabilities-heading">
+      <!-- Section header -->
       <div class="section-header">
         <h2 id="capabilities-heading">What I Do</h2>
         <div class="section-number">(02)</div>
       </div>
+      
+      <!-- Capabilities list -->
       <div class="capabilities-list">
+        <!-- Capability 1: Modern Web Development -->
         <div class="capability-item" data-magnet>
           <div class="capability-num">01/</div>
           <div class="capability-name">Modern Web Development</div>
@@ -654,13 +753,19 @@
       </div>
     </section>
 
-    <!-- About Me Section -->
+    <!-- ============================================
+         ABOUT SECTION: Personal introduction
+         ============================================ -->
     <section class="about-me" id="about" aria-labelledby="about-heading">
+      <!-- Section header -->
       <div class="section-header">
         <h2 id="about-heading">About Me</h2>
         <div class="section-number">(03)</div>
       </div>
+      
+      <!-- About content: Text and profile image -->
       <div class="about-content">
+        <!-- Bio text -->
         <div class="about-text">
           <p>
             Hello! I'm Bhavesh Patil, a creative developer with a passion for building digital experiences that merge
@@ -676,6 +781,7 @@
             When I'm not coding, you can find me exploring the latest design trends, contributing to open-source
             projects, or sharing my knowledge with the developer community.
           </p>
+          <!-- Music player embed -->
           <div class="music-player">
             <h3>What's playing</h3>
             <iframe title="Apple Music Player - End of Beginning"
@@ -695,13 +801,19 @@
       </div>
     </section>
 
-    <!-- Education Section -->
+    <!-- ============================================
+         EDUCATION SECTION: Academic background
+         ============================================ -->
     <section class="education" id="education" aria-labelledby="education-heading">
+      <!-- Section header -->
       <div class="section-header">
         <h2 id="education-heading">Education</h2>
         <div class="section-number">(04)</div>
       </div>
+      
+      <!-- Education timeline -->
       <div class="education-list">
+        <!-- Current: Bachelor's degree -->
         <div class="education-item" data-magnet>
           <div class="education-year">2024 - 2027</div>
           <div class="education-degree">Bachelor of Science in Information Technology<br>
@@ -710,6 +822,8 @@
           </div>
           <div class="education-institution">Dr. G. Y. Pathrikar College of CS & IT</div>
         </div>
+        
+        <!-- Higher Secondary Education -->
         <div class="education-item" data-magnet>
           <div class="education-year">2023 - 2024</div>
           <div class="education-degree">Higher Secondary Education<br>
@@ -718,6 +832,8 @@
           </div>
           <div class="education-institution">DES, High School</div>
         </div>
+        
+        <!-- Secondary Education -->
         <div class="education-item" data-magnet>
           <div class="education-year">2022 - 2023</div>
           <div class="education-degree">Secondary Education<br>
@@ -728,14 +844,22 @@
       </div>
     </section>
 
-    <!-- Footer Section -->
+    <!-- ============================================
+         FOOTER: Contact section
+         ============================================ -->
     <footer id="connect" role="contentinfo" aria-label="Contact and footer information">
+      <!-- Call-to-action area -->
       <div class="footer-content">
         <div class="footer-cta">Have an Idea?</div>
         <a href="mailto:iam.bhvsh@gmail.com" class="btn-large" data-magnet>Start a Project</a>
       </div>
+      
+      <!-- Footer bottom: Copyright, social links, and time -->
       <div class="footer-bottom">
+        <!-- Copyright -->
         <div>©2026 Bhavesh Patil</div>
+        
+        <!-- Social media links -->
         <div>
           <a href="https://github.com/iambhvsh" target="_blank" rel="noopener noreferrer"
             style="margin: 0 10px;">GitHub</a>
@@ -746,6 +870,8 @@
           <a href="https://linkedin.com/in/iambhvsh" target="_blank" rel="noopener noreferrer"
             style="margin: 0 10px;">LinkedIn</a>
         </div>
+        
+        <!-- Live time display -->
         <div>
           <span id="time">00:00</span>
         </div>
@@ -753,14 +879,22 @@
     </footer>
   </main>
 
-  <!-- UI Components: Overlays and Buttons -->
+  <!-- ============================================
+       UI COMPONENTS: Interactive elements
+       ============================================ -->
+  
+  <!-- Bottom sheet overlay (for mobile capability details) -->
   <div class="bottom-sheet-overlay"></div>
+  
+  <!-- Back to top button -->
   <button class="back-to-top" aria-label="Scroll back to top" title="Back to top" data-magnet>
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
       stroke-linecap="round" stroke-linejoin="round">
       <path d="M12 19V5M5 12l7-7 7 7" />
     </svg>
   </button>
+  
+  <!-- Bottom sheet panel (mobile) -->
   <div class="bottom-sheet">
     <div class="bottom-sheet-header">
       <div class="bottom-sheet-drag-handle"></div>
@@ -773,7 +907,11 @@
     </div>
   </div>
 
-  <!-- Scripts: Libraries and Main Application Logic -->
+  <!-- ============================================
+       SCRIPTS: External libraries and app logic
+       ============================================ -->
+  
+  <!-- Lazy load external libraries after page load -->
   <script>
     window.addEventListener('load', function () {
       var scripts = [
@@ -789,6 +927,8 @@
       });
     });
   </script>
+  
+  <!-- Main application script -->
   <script type="module" src="/assets/scripts/index.js"></script>
 </body>
 
