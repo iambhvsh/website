@@ -13,20 +13,19 @@
 <html lang="en">
 
 <head>
+  <!-- Basic Meta -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bhavesh Patil | Creative Developer & Full Stack Engineer</title>
+  <link rel="canonical" href="https://iambhvsh.vercel.app/">
 
-  <!-- Canonical URL -->
-  <link rel="canonical" href="https://iambhvsh.vercel.app/" />
-
-  <!-- SEO & Meta Tags -->
+  <!-- SEO Meta Tags -->
   <meta name="description" content="Bhavesh Patil is a Creative Developer specializing in modern web development with React, Next.js, and Python. View my portfolio of innovative web projects and tools.">
   <meta name="keywords" content="Bhavesh Patil, Creative Developer, Web Developer, Frontend Engineer, React, Next.js, Portfolio, UI/UX, GSAP, Full Stack Developer">
   <meta name="author" content="Bhavesh Patil">
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
   
-  <!-- Open Graph / Facebook -->
+  <!-- Social Meta Tags -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://iambhvsh.vercel.app/">
   <meta property="og:title" content="Bhavesh Patil | Creative Developer & Full Stack Engineer">
@@ -34,50 +33,36 @@
   <meta property="og:site_name" content="Bhavesh Patil Portfolio">
   <meta property="og:locale" content="en_US">
 
-  <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="https://iambhvsh.vercel.app/">
   <meta property="twitter:title" content="Bhavesh Patil | Creative Developer & Full Stack Engineer">
   <meta property="twitter:description" content="Portfolio of Bhavesh Patil - Where design, motion, and code converge to create meaningful web experiences.">
   <meta property="twitter:creator" content="@iambhvsh">
 
-  <!-- Favicons -->
-  <link rel="icon" type="image/png" href="/favicon.ico">
+  <!-- Icons -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <link rel="apple-touch-icon" href="/favicon.ico">
   
-  <!-- Google Site Verification -->
-  <meta name="google-site-verification" content="NZeVYWwxwJQXPJC-mu3ccZpG6L2O8hes7185XXl04wI" />
+  <!-- Verification -->
+  <meta name="google-site-verification" content="NZeVYWwxwJQXPJC-mu3ccZpG6L2O8hes7185XXl04wI">
 
-  <!-- Google Fonts Performance -->
+  <!-- Performance Optimization -->
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  <link
-    rel="preload"
-    as="font"
-    type="font/woff2"
-    href="https://fonts.gstatic.com/s/spacegrotesk/v15/qWcsB6-ypo7xBdr6Xshe96H3WDzRtjkho4M.woff2"
-    crossorigin
-  >
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <link
-  rel="preload"
-  as="font"
-  type="font/woff2"
-  href="https://fonts.gstatic.com/s/syne/v16/8vIS7w4qzmVxm2BL9YdX.woff2"
-  crossorigin
->
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="/assets/styles/index.css">
 
-<link
-  href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@400;500;600;700;800&display=swap"
-  rel="stylesheet"
->
-
-<!-- Main Styles -->
-<link rel="stylesheet" href="/assets/styles/index.css">
-
-
-  <!-- JSON-LD Structured Data -->
+  <!-- Structured Data (Schema.org) -->
+  <!-- Person Schema -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -134,6 +119,7 @@
   }
   </script>
 
+  <!-- Projects ItemList Schema -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -183,6 +169,7 @@
   }
   </script>
 
+  <!-- ProfilePage Schema -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -202,48 +189,55 @@
 
 <body>
   
+  <!-- Visual Effects -->
   <div class="noise"></div>
   
-  <div class="cursor">
+  <!-- Custom Cursor -->
+  <div class="cursor" aria-hidden="true">
     <span class="cursor-text"></span>
   </div>
   
-  <div class="preloader">
+  <!-- Loading Screen -->
+  <div class="preloader" aria-label="Loading content">
     <div class="counter">0%</div>
   </div>
   
-  <nav>
-    <a href="/"><div class="logo">://BP</div></a>
+  <!-- Navigation -->
+  <nav role="navigation" aria-label="Main navigation">
+    <a href="/" aria-label="Home">
+      <div class="logo">://BP</div>
+    </a>
     <a href="#connect" class="menu-btn" data-magnet>Let's Talk</a>
   </nav>
   
-  <main>
-    <section class="hero">
-      <h1 class="hero-title display-text">
+  <!-- Main Content -->
+  <main id="main-content">
+    
+    <!-- Hero Section -->
+    <section class="hero" aria-labelledby="hero-title">
+      <h1 id="hero-title" class="hero-title display-text">
         <div class="hero-row"><span>BHAVESH</span></div>
         <div class="hero-row"><span>PATIL</span></div>
       </h1>
       
       <p class="hero-subtitle">
-Where design, motion, <br>
-and code converge to create meaningful web experiences.
-
+        Where design, motion,<br>
+        and code converge to create meaningful web experiences.
       </p>
       
       <div class="hero-cta">
-        <a href="#work" class="hero-btn" data-magnet>
+        <a href="#work" class="hero-btn" data-magnet aria-label="View my work portfolio">
           View My Work
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path d="M4 10H16M16 10L10 4M16 10L10 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </a>
       </div>
-      
-
     </section>
     
-    <section class="marquee-section">
-      <div class="marquee">
+    <!-- Tech Stack Marquee -->
+    <section class="marquee-section" aria-label="Technology stack">
+      <div class="marquee" aria-hidden="true">
         <div class="marquee-inner">
           <div class="marquee-item">HTML</div>
           <div class="marquee-item">CSS</div>
@@ -275,14 +269,15 @@ and code converge to create meaningful web experiences.
       </div>
     </section>
     
-    <section class="projects" id="work">
+    <!-- Projects Section -->
+    <section class="projects" id="work" aria-labelledby="projects-heading">
       <div class="section-header">
-        <h2>Projects</h2>
-        <div class="section-number">(01)</div>
+        <h2 id="projects-heading">Projects</h2>
+        <div class="section-number" aria-hidden="true">(01)</div>
       </div>
       
       <div class="projects-grid">
-        <a href="https://blkproxy.vercel.app" target="_blank" rel="noopener noreferrer" class="project-card" data-magnet-card>
+        <a href="https://blkproxy.vercel.app" target="_blank" rel="noopener noreferrer" class="project-card" data-magnet-card aria-label="blkproxy - A free, zero-config CORS proxy for developers">
           <div class="project-info">
             <div>
               <div class="project-title">blkproxy</div>
@@ -290,13 +285,13 @@ and code converge to create meaningful web experiences.
             </div>
           </div>
           <div class="project-tags">
-            <div class="tag">Proxy</div>
-            <div class="tag">Development</div>
-            <div class="tag">Tooling</div>
+            <span class="tag">Proxy</span>
+            <span class="tag">Development</span>
+            <span class="tag">Tooling</span>
           </div>
         </a>
 
-        <a href="https://imgstcks.vercel.app" target="_blank" rel="noopener noreferrer" class="project-card" data-magnet-card>
+        <a href="https://imgstcks.vercel.app" target="_blank" rel="noopener noreferrer" class="project-card" data-magnet-card aria-label="StockIt - One simple API to search and optimize images">
           <div class="project-info">
             <div>
               <div class="project-title">StockIt</div>
@@ -304,13 +299,13 @@ and code converge to create meaningful web experiences.
             </div>
           </div>
           <div class="project-tags">
-            <div class="tag">API</div>
-            <div class="tag">Python</div>
-            <div class="tag">Free</div>
+            <span class="tag">API</span>
+            <span class="tag">Python</span>
+            <span class="tag">Free</span>
           </div>
         </a>
         
-        <a href="https://flashified.vercel.app" target="_blank" rel="noopener noreferrer" class="project-card" data-magnet-card>
+        <a href="https://flashified.vercel.app" target="_blank" rel="noopener noreferrer" class="project-card" data-magnet-card aria-label="Flashified - Ultimate tool to download images from any URL">
           <div class="project-info">
             <div>
               <div class="project-title">Flashified</div>
@@ -318,13 +313,13 @@ and code converge to create meaningful web experiences.
             </div>
           </div>
           <div class="project-tags">
-            <div class="tag">Images</div>
-            <div class="tag">React</div>
-            <div class="tag">Tool</div>
+            <span class="tag">Images</span>
+            <span class="tag">React</span>
+            <span class="tag">Tool</span>
           </div>
         </a>
         
-        <a href="https://wthrx.vercel.app" target="_blank" rel="noopener noreferrer" class="project-card" data-magnet-card>
+        <a href="https://wthrx.vercel.app" target="_blank" rel="noopener noreferrer" class="project-card" data-magnet-card aria-label="WeatherX - A modern weather application with AI-powered insights">
           <div class="project-info">
             <div>
               <div class="project-title">WeatherX</div>
@@ -332,13 +327,13 @@ and code converge to create meaningful web experiences.
             </div>
           </div>
           <div class="project-tags">
-            <div class="tag">Weather</div>
-            <div class="tag">API</div>
-            <div class="tag">AI</div>
+            <span class="tag">Weather</span>
+            <span class="tag">API</span>
+            <span class="tag">AI</span>
           </div>
         </a>
         
-        <a href="https://github.com/iambhvsh/ytdl" target="_blank" rel="noopener noreferrer" class="project-card" data-magnet-card>
+        <a href="https://github.com/iambhvsh/ytdl" target="_blank" rel="noopener noreferrer" class="project-card" data-magnet-card aria-label="YTDL - A sophisticated command-line interface for media downloads">
           <div class="project-info">
             <div>
               <div class="project-title">YTDL</div>
@@ -346,13 +341,13 @@ and code converge to create meaningful web experiences.
             </div>
           </div>
           <div class="project-tags">
-            <div class="tag">CLI</div>
-            <div class="tag">Python</div>
-            <div class="tag">Automation</div>
+            <span class="tag">CLI</span>
+            <span class="tag">Python</span>
+            <span class="tag">Automation</span>
           </div>
         </a>
 
-        <a href="https://plstudio.vercel.app/" target="_blank" rel="noopener noreferrer" class="project-card" data-magnet-card>
+        <a href="https://plstudio.vercel.app/" target="_blank" rel="noopener noreferrer" class="project-card" data-magnet-card aria-label="PaletteStudio - Color palette generator for designers">
           <div class="project-info">
             <div>
               <div class="project-title">PaletteStudio</div>
@@ -360,13 +355,13 @@ and code converge to create meaningful web experiences.
             </div>
           </div>
           <div class="project-tags">
-            <div class="tag">DesignTool</div>
-            <div class="tag">Colors</div>
-            <div class="tag">Next.js</div>
+            <span class="tag">DesignTool</span>
+            <span class="tag">Colors</span>
+            <span class="tag">Next.js</span>
           </div>
         </a>
         
-        <a href="https://aerox.vercel.app/" target="_blank" rel="noopener noreferrer" class="project-card" data-magnet-card>
+        <a href="https://aerox.vercel.app/" target="_blank" rel="noopener noreferrer" class="project-card" data-magnet-card aria-label="AeroX - Latest aviation news platform">
           <div class="project-info">
             <div>
               <div class="project-title">AeroX</div>
@@ -374,13 +369,13 @@ and code converge to create meaningful web experiences.
             </div>
           </div>
           <div class="project-tags">
-            <div class="tag">News</div>
-            <div class="tag">Aviation</div>
-            <div class="tag">React</div>
+            <span class="tag">News</span>
+            <span class="tag">Aviation</span>
+            <span class="tag">React</span>
           </div>
         </a>
         
-        <a href="https://swipeapis.vercel.app/" target="_blank" rel="noopener noreferrer" class="project-card" data-magnet-card>
+        <a href="https://swipeapis.vercel.app/" target="_blank" rel="noopener noreferrer" class="project-card" data-magnet-card aria-label="Swipe APIs - Collection of free APIs without rate limits">
           <div class="project-info">
             <div>
               <div class="project-title">Swipe APIs</div>
@@ -388,13 +383,13 @@ and code converge to create meaningful web experiences.
             </div>
           </div>
           <div class="project-tags">
-            <div class="tag">API</div>
-            <div class="tag">Backend</div>
-            <div class="tag">Docs</div>
+            <span class="tag">API</span>
+            <span class="tag">Backend</span>
+            <span class="tag">Docs</span>
           </div>
         </a>
         
-        <a href="https://searchstellar.vercel.app/" target="_blank" rel="noopener noreferrer" class="project-card" data-magnet-card>
+        <a href="https://searchstellar.vercel.app/" target="_blank" rel="noopener noreferrer" class="project-card" data-magnet-card aria-label="Stellar - AI-powered search application">
           <div class="project-info">
             <div>
               <div class="project-title">Stellar</div>
@@ -402,148 +397,178 @@ and code converge to create meaningful web experiences.
             </div>
           </div>
           <div class="project-tags">
-            <div class="tag">AI</div>
-            <div class="tag">Gemini</div>
-            <div class="tag">Search</div>
+            <span class="tag">AI</span>
+            <span class="tag">Gemini</span>
+            <span class="tag">Search</span>
           </div>
         </a>
       </div>
     </section>
     
-    <section class="capabilities">
+    <!-- Capabilities Section -->
+    <section class="capabilities" aria-labelledby="capabilities-heading">
       <div class="section-header">
-        <h2>What I Do</h2>
-        <div class="section-number">(02)</div>
+        <h2 id="capabilities-heading">What I Do</h2>
+        <div class="section-number" aria-hidden="true">(02)</div>
       </div>
       
       <div class="capabilities-list">
         <div class="capability-item" data-magnet>
-          <div class="capability-num">01/</div>
+          <div class="capability-num" aria-hidden="true">01/</div>
           <div class="capability-name">Modern Web Development</div>
           <div class="capability-desc">Building performant, SEO-friendly web applications using <strong>Next.js</strong> and <strong>React</strong>. I specialize in creating responsive Single Page Applications (SPAs) that work seamlessly across all devices.</div>
         </div>
         <div class="capability-item" data-magnet>
-          <div class="capability-num">02/</div>
+          <div class="capability-num" aria-hidden="true">02/</div>
           <div class="capability-name">UI/UX Engineering</div>
           <div class="capability-desc">Translating designs into pixel-perfect code. I use <strong>Tailwind CSS</strong> and modern CSS features to build beautiful, accessible, and interactive user interfaces with smooth animations.</div>
         </div>
         <div class="capability-item" data-magnet>
-          <div class="capability-num">03/</div>
+          <div class="capability-num" aria-hidden="true">03/</div>
           <div class="capability-name">Full Stack Integration</div>
           <div class="capability-desc">Connecting frontends to powerful backends. Experienced in using <strong>Firebase</strong> for real-time databases and integrating complex third-party <strong>APIs</strong> into seamless applications.</div>
         </div>
         <div class="capability-item" data-magnet>
-          <div class="capability-num">04/</div>
+          <div class="capability-num" aria-hidden="true">04/</div>
           <div class="capability-name">Tools & Automation</div>
           <div class="capability-desc">Going beyond the browser with <strong>Python</strong>. I build efficient CLI tools, scripts, and automation bots to streamline workflows and handle data processing tasks.</div>
         </div>
       </div>
     </section>
 
-    <section class="about-me" id="about">
+    <!-- About Section -->
+    <section class="about-me" id="about" aria-labelledby="about-heading">
       <div class="section-header">
-        <h2>About Me</h2>
-        <div class="section-number">(03)</div>
+        <h2 id="about-heading">About Me</h2>
+        <div class="section-number" aria-hidden="true">(03)</div>
       </div>
       
       <div class="about-content">
         <div class="about-text">
-            <p>
-                Hello! I'm Bhavesh Patil, a creative developer with a passion for building digital experiences that merge clean code with thoughtful design. I thrive on the challenge of turning complex problems into simple, beautiful solutions.
-            </p>
-            <p>
-                My journey began with a curiosity for how things work on the web, which quickly evolved into a full-fledged career. I love exploring new technologies, experimenting with motion graphics, and constantly refining my craft.
-            </p>
-            <p>
-                When I'm not coding, you can find me exploring the latest design trends, contributing to open-source projects, or sharing my knowledge with the developer community.
-            </p>
-            
-            <div class="music-player">
-                <h3>What's playing</h3>
-                <iframe allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write" frameborder="0" height="150" style="width:100%;max-width:450px;overflow:hidden;border-radius:10px;background:#050505;" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation-by-user-activation" src="https://embed.music.apple.com/in/song/end-of-beginning/1632448108?theme=dark" loading="lazy"></iframe>
-            </div>
+          <p>
+            Hello! I'm Bhavesh Patil, a creative developer with a passion for building digital experiences that merge clean code with thoughtful design. I thrive on the challenge of turning complex problems into simple, beautiful solutions.
+          </p>
+          <p>
+            My journey began with a curiosity for how things work on the web, which quickly evolved into a full-fledged career. I love exploring new technologies, experimenting with motion graphics, and constantly refining my craft.
+          </p>
+          <p>
+            When I'm not coding, you can find me exploring the latest design trends, contributing to open-source projects, or sharing my knowledge with the developer community.
+          </p>
+          
+          <!-- Music Player Embed -->
+          <div class="music-player">
+            <h3>What's playing</h3>
+            <iframe 
+              title="Apple Music Player - End of Beginning"
+              frameborder="0" 
+              height="150" 
+              style="width:100%;max-width:450px;overflow:hidden;border-radius:10px;background:#050505;" 
+              sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation" 
+              src="https://embed.music.apple.com/in/song/end-of-beginning/1632448108?theme=dark" 
+              loading="lazy">
+            </iframe>
+          </div>
         </div>
         <div class="about-image" data-magnet-card>
-            <a href="/profile.png" target="_blank" rel="noopener noreferrer"><img src="/profile.png" alt="Bhavesh Patil - Creative Developer"></a>
+          <a href="/profile.png" target="_blank" rel="noopener noreferrer">
+            <img src="/profile.png" alt="Bhavesh Patil - Creative Developer" width="400" height="400" loading="lazy">
+          </a>
         </div>
       </div>
     </section>
 
-    <section class="education" id="education">
+    <!-- Education Section -->
+    <section class="education" id="education" aria-labelledby="education-heading">
       <div class="section-header">
-        <h2>Education</h2>
-        <div class="section-number">(04)</div>
+        <h2 id="education-heading">Education</h2>
+        <div class="section-number" aria-hidden="true">(04)</div>
       </div>
       
       <div class="education-list">
         <div class="education-item" data-magnet>
           <div class="education-year">2024 - 2027</div>
-          <div class="education-degree">Bachelor of Science in Information Technology<br><span style="font-size: 16px; color: var(--gray);">Currently pursuing my degree with a focus on web development and software engineering.</span></div>
+          <div class="education-degree">
+            Bachelor of Science in Information Technology<br>
+            <span style="font-size: 16px; color: var(--gray);">Currently pursuing my degree with a focus on web development and software engineering.</span>
+          </div>
           <div class="education-institution">Dr. G. Y. Pathrikar College of CS & IT</div>
         </div>
         <div class="education-item" data-magnet>
           <div class="education-year">2023 - 2024</div>
-          <div class="education-degree">Higher Secondary Education<br><span style="font-size: 16px; color: var(--gray);">Completed HSC with focus on Physics and Mathematics.</span></div>
+          <div class="education-degree">
+            Higher Secondary Education<br>
+            <span style="font-size: 16px; color: var(--gray);">Completed HSC with focus on Physics and Mathematics.</span>
+          </div>
           <div class="education-institution">DES, High School</div>
         </div>
         <div class="education-item" data-magnet>
           <div class="education-year">2022 - 2023</div>
-          <div class="education-degree">Secondary Education<br><span style="font-size: 16px; color: var(--gray);">Completed SSC with distinction.</span></div>
+          <div class="education-degree">
+            Secondary Education<br>
+            <span style="font-size: 16px; color: var(--gray);">Completed SSC with distinction.</span>
+          </div>
           <div class="education-institution">MIT VGS</div>
         </div>
       </div>
     </section>
     
-    <footer id="connect">
+    <!-- Footer / Contact Section -->
+    <footer id="connect" role="contentinfo">
       <div class="footer-content">
         <div class="footer-cta">Have an Idea?</div>
-        <a href="mailto:iam.bhvsh@gmail.com" class="btn-large" data-magnet>Start a Project</a>
+        <a href="mailto:iam.bhvsh@gmail.com" class="btn-large" data-magnet aria-label="Contact me to start a project">Start a Project</a>
       </div>
       
       <div class="footer-bottom">
         <div>©2026 Bhavesh Patil</div>
+        <nav aria-label="Social media links">
+          <a href="https://github.com/iambhvsh" target="_blank" rel="noopener noreferrer" style="margin: 0 10px;" aria-label="GitHub profile">GitHub</a>
+          <a href="https://instagram.com/iambhvsh" target="_blank" rel="noopener noreferrer" style="margin: 0 10px;" aria-label="Instagram profile">Instagram</a>
+          <a href="https://twitter.com/iambhvsh" target="_blank" rel="noopener noreferrer" style="margin: 0 10px;" aria-label="Twitter profile">Twitter</a>
+          <a href="https://linkedin.com/in/iambhvsh" target="_blank" rel="noopener noreferrer" style="margin: 0 10px;" aria-label="LinkedIn profile">LinkedIn</a>
+        </nav>
         <div>
-          <a href="https://github.com/iambhvsh" target="_blank" rel="noopener noreferrer" style="margin: 0 10px;">GitHub</a>
-          <a href="https://instagram.com/iambhvsh" target="_blank" rel="noopener noreferrer" style="margin: 0 10px;">Instagram</a>
-          <a href="https://twitter.com/iambhvsh" target="_blank" rel="noopener noreferrer" style="margin: 0 10px;">Twitter</a>
-          <a href="https://linkedin.com/in/iambhvsh" target="_blank" rel="noopener noreferrer" style="margin: 0 10px;">LinkedIn</a>
+          <time id="time">00:00</time>
         </div>
-        <div><span id="time">00:00</span></div>
       </div>
     </footer>
   </main>
 
-  <div class="bottom-sheet-overlay"></div>
+  <!-- UI Components -->
+  <!-- Bottom Sheet Overlay -->
+  <div class="bottom-sheet-overlay" aria-hidden="true"></div>
   
+  <!-- Back to Top Button -->
   <button class="back-to-top" aria-label="Back to top" data-magnet>
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <path d="M12 19V5M5 12l7-7 7 7"/>
     </svg>
   </button>
   
-  <div class="bottom-sheet">
+  <!-- Bottom Sheet Modal -->
+  <div class="bottom-sheet" role="dialog" aria-modal="true" aria-labelledby="bottom-sheet-title">
     <div class="bottom-sheet-header">
-      <div class="bottom-sheet-drag-handle"></div>
-      <button class="bottom-sheet-close">&times;</button>
+      <div class="bottom-sheet-drag-handle" aria-hidden="true"></div>
+      <button class="bottom-sheet-close" aria-label="Close dialog">&times;</button>
     </div>
     <div class="bottom-sheet-content">
-      <div class="bs-num">01/</div>
-      <h3 class="bs-title">Service Name</h3>
+      <div class="bs-num" aria-hidden="true">01/</div>
+      <h3 id="bottom-sheet-title" class="bs-title">Service Name</h3>
       <p class="bs-desc">Description goes here...</p>
     </div>
   </div>
   
+  <!-- External Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js" defer></script>
+  
+  <!-- Main Application Script -->
   <script type="module" src="/assets/scripts/index.js"></script>
-  <script defer src="/_vercel/speed-insights/script.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 
-  <!-- Vercel Configurations -->
+  <!-- Analytics -->
   <script>
-  window.si =
-    window.si ||
-    function () {
+    window.si = window.si || function () {
       (window.siq = window.siq || []).push(arguments);
     };
   </script>
