@@ -429,63 +429,74 @@ nav {
 /* ============================================
    MARQUEE / TICKER SECTION
    ============================================ */
+/* Scrolling technology/skills marquee */
 .marquee-section {
     padding: 80px 0;
-    overflow: hidden;
+    overflow: hidden;                      /* Hide overflowing text */
     width: 100%;
-    background: #0a0a0a;
+    background: #0a0a0a;                   /* Slightly lighter than main bg */
 }
 
+/* Container for marquee tracks */
 .marquee {
     display: flex;
     width: fit-content;
 }
 
+/* Individual marquee track (2 tracks for seamless loop) */
 .marquee-inner {
     display: flex;
-    gap: 6vw;
-    animation: marquee 20s linear infinite;
+    gap: 6vw;                              /* Spacing between items */
+    animation: marquee 20s linear infinite; /* Continuous scroll */
     padding-right: 6vw;
-    will-change: transform;
+    will-change: transform;                /* Optimize animation */
 }
 
+/* Individual technology name */
 .marquee-item {
     font-family: 'Syne', sans-serif;
-    font-size: 8vw;
+    font-size: 8vw;                        /* Large, responsive text */
     font-weight: 700;
-    color: transparent;
+    color: transparent;                    /* Outlined text effect */
     -webkit-text-stroke: 1px #333;
     transition: all 0.3s;
-    white-space: nowrap;
+    white-space: nowrap;                   /* No text wrapping */
 }
 
+/* Fill text on hover */
 .marquee-item:hover {
     color: var(--text);
     -webkit-text-stroke: 0;
 }
 
+/* Marquee animation - continuous leftward scroll */
 @keyframes marquee {
     0% {
         transform: translateX(0);
     }
 
     100% {
-        transform: translateX(-100%);
+        transform: translateX(-100%);       /* Move one full width */
     }
 }
 
 
-/* --- Projects Section --- */
+/* ============================================
+   PROJECTS SECTION
+   ============================================ */
+/* Projects showcase section */
 .projects {
     padding: 120px 5vw;
 }
 
+/* 3-column grid layout for project cards */
 .projects-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 60px 30px;
+    grid-template-columns: repeat(3, 1fr);  /* 3 equal columns */
+    gap: 60px 30px;                         /* Row and column gaps */
 }
 
+/* Individual project card */
 .project-card {
     display: flex;
     flex-direction: column;
@@ -495,18 +506,19 @@ nav {
     color: inherit;
 }
 
+/* Keep even cards aligned (no staggering) */
 .project-card:nth-child(even) {
     margin-top: 0;
 }
 
-
-
+/* Project information container */
 .project-info {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
 }
 
+/* Project title */
 .project-title {
     font-family: 'Syne', sans-serif;
     font-size: 28px;
@@ -514,6 +526,7 @@ nav {
     margin-bottom: 5px;
 }
 
+/* Project description */
 .project-desc {
     font-size: 16px;
     color: var(--gray);
@@ -521,45 +534,53 @@ nav {
     line-height: 1.4;
 }
 
+/* Technology tags container */
 .project-tags {
     display: flex;
     gap: 10px;
     margin-top: 15px;
 }
 
+/* Individual technology tag */
 .tag {
     font-size: 11px;
     text-transform: uppercase;
     padding: 5px 12px;
     border: 1px solid var(--border);
-    border-radius: 20px;
+    border-radius: 20px;                    /* Pill-shaped */
     color: var(--light-gray);
 }
 
 
-/* --- What I Do Section --- */
+/* ============================================
+   CAPABILITIES / SERVICES SECTION
+   ============================================ */
+/* What I Do / Services section */
 .capabilities {
     padding: 120px 5vw;
     border-top: 1px solid var(--border);
 }
 
+/* Vertical list of capabilities */
 .capabilities-list {
     display: flex;
     flex-direction: column;
 }
 
+/* Individual capability item */
 .capability-item {
     position: relative;
     padding: 40px 20px;
-    margin: 0 -20px;
+    margin: 0 -20px;                        /* Negative margin for full-width hover */
     border-bottom: 1px solid var(--border);
     display: grid;
-    grid-template-columns: 0.5fr 1.5fr 2fr;
+    grid-template-columns: 0.5fr 1.5fr 2fr; /* Number, Title, Description */
     align-items: flex-start;
     transition: all 0.4s var(--ease);
     border-radius: 0;
 }
 
+/* Mobile chevron indicator (hidden on desktop) */
 .mobile-chevron {
     display: none;
     position: absolute;
@@ -571,27 +592,32 @@ nav {
     transition: transform 0.3s ease;
 }
 
+/* Rotate chevron on tap (mobile) */
 .capability-item:active .mobile-chevron {
     transform: translateY(-50%) rotate(90deg);
 }
 
+/* Hover effect - subtle background */
 .capability-item:hover {
     background: rgba(255, 255, 255, 0.02);
     border-radius: 20px;
 }
 
+/* Capability number (01/, 02/, etc.) */
 .capability-num {
     font-family: 'Syne', sans-serif;
     color: var(--gray);
     margin-top: 5px;
 }
 
+/* Capability name/title */
 .capability-name {
     font-size: 32px;
     font-weight: 500;
     margin-bottom: 15px;
 }
 
+/* Capability description */
 .capability-desc {
     font-size: 16px;
     color: var(--gray);
@@ -600,54 +626,65 @@ nav {
 }
 
 
-/* --- About Me Section --- */
+/* ============================================
+   ABOUT ME SECTION
+   ============================================ */
+/* About me section with image and text */
 .about-me {
     padding: 120px 5vw;
     border-top: 1px solid var(--border);
 }
 
+/* Two-column layout: text and image */
 .about-content {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;         /* Equal columns */
     gap: 60px;
     align-items: start;
 }
 
+/* About text content */
 .about-text {
     font-size: 20px;
     line-height: 1.6;
     color: var(--light-gray);
 }
 
+/* Spacing between paragraphs */
 .about-text p {
     margin-bottom: 20px;
 }
 
+/* Circular profile image container */
 .about-image {
     width: 400px;
     height: 400px;
-    border-radius: 50%;
+    border-radius: 50%;                     /* Perfect circle */
     overflow: hidden;
     background: #111;
     justify-self: center;
 }
 
+/* Profile image styling */
 .about-image img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    filter: grayscale(100%);
+    object-fit: cover;                      /* Fill container while maintaining aspect ratio */
+    filter: grayscale(100%);                /* Black and white by default */
     transition: filter 0.3s ease;
 }
 
+/* Color image on hover */
 .about-image:hover img {
     filter: grayscale(0%);
 }
 
+/* Music player embed section */
 .music-player {
     margin-top: 50px;
 }
 
+/* Music player heading */
 .music-player h3 {
     font-size: 20px;
     color: #ffffff;
@@ -656,43 +693,55 @@ nav {
 }
 
 
+/* ============================================
+   EDUCATION SECTION
+   ============================================ */
 
 
+
+
+/* Education history section */
 .education {
     padding: 120px 5vw;
     border-top: 1px solid var(--border);
 }
 
+/* Vertical list of education items */
 .education-list {
     display: flex;
     flex-direction: column;
 }
 
+/* Individual education entry */
 .education-item {
     padding: 40px 20px;
-    margin: 0 -20px;
+    margin: 0 -20px;                        /* Negative margin for full-width hover */
     border-bottom: 1px solid var(--border);
     display: grid;
-    grid-template-columns: 0.5fr 1.5fr 1fr;
+    grid-template-columns: 0.5fr 1.5fr 1fr; /* Year, Degree, Institution */
     align-items: center;
     transition: all 0.4s var(--ease);
 }
 
+/* Hover effect - subtle background */
 .education-item:hover {
     background: rgba(255, 255, 255, 0.02);
     border-radius: 20px;
 }
 
+/* Education year range */
 .education-year {
     font-family: 'Syne', sans-serif;
     color: var(--gray);
 }
 
+/* Degree name and description */
 .education-degree {
     font-size: 24px;
     font-weight: 500;
 }
 
+/* Institution name */
 .education-institution {
     font-size: 16px;
     color: var(--light-gray);
@@ -700,19 +749,21 @@ nav {
 }
 
 
-
-
-/* --- Footer --- */
+/* ============================================
+   FOOTER / CONTACT SECTION
+   ============================================ */
+/* Footer section with inverted colors */
 footer {
     padding: 100px 5vw 40px 5vw;
-    background: #e1e1e1;
-    color: #050505;
+    background: #e1e1e1;                    /* Light background (inverted) */
+    color: #050505;                         /* Dark text (inverted) */
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
 
+/* Main footer content area */
 .footer-content {
     display: flex;
     flex-direction: column;
@@ -722,18 +773,20 @@ footer {
     flex-grow: 1;
 }
 
+/* Large call-to-action text */
 .footer-cta {
     font-family: 'Syne', sans-serif;
-    font-size: clamp(40px, 12vw, 150px);
+    font-size: clamp(40px, 12vw, 150px);    /* Responsive: 40px to 150px */
     font-weight: 800;
     line-height: 0.9;
     text-transform: uppercase;
     margin-bottom: 60px;
 }
 
+/* Large CTA button in footer */
 .btn-large {
     padding: 20px 40px;
-    background: #050505;
+    background: #050505;                    /* Dark button on light bg */
     color: #fff;
     border-radius: 50px;
     text-decoration: none;
@@ -743,10 +796,12 @@ footer {
     display: inline-block;
 }
 
+/* Scale up on hover */
 .btn-large:hover {
     transform: scale(1.05);
 }
 
+/* Footer bottom section with links */
 .footer-bottom {
     margin-top: 0;
     padding-top: 20px;
@@ -760,13 +815,117 @@ footer {
 }
 
 
-/* --- Responsiveness --- */
+/* ============================================
+   MOBILE BOTTOM SHEET
+   ============================================ */
+
+/* Overlay that dims background when bottom sheet is open */
+.bottom-sheet-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);         /* Semi-transparent black */
+    z-index: 9998;
+    opacity: 0;                             /* Hidden by default */
+    pointer-events: none;                   /* Non-interactive when hidden */
+    transition: opacity 0.3s;
+    backdrop-filter: blur(5px);             /* Blur effect on background */
+}
+
+/* Active state - visible overlay */
+.bottom-sheet-overlay.active {
+    opacity: 1;
+    pointer-events: all;                    /* Enable click to close */
+}
+
+/* Sliding panel from bottom (mobile only) */
+.bottom-sheet {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #111;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    padding: 30px;
+    z-index: 9999;
+    transform: translateY(100%);            /* Hidden below viewport */
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    border-top: 1px solid var(--border);
+}
+
+/* Active state - sheet slides up */
+.bottom-sheet.active {
+    transform: translateY(0);               /* Slide into view */
+}
+
+/* Bottom sheet header with drag handle */
+.bottom-sheet-header {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+/* Drag handle indicator */
+.bottom-sheet-drag-handle {
+    width: 50px;
+    height: 5px;
+    background: var(--border);
+    border-radius: 5px;
+}
+
+/* Close button for bottom sheet */
+.bottom-sheet-close {
+    position: absolute;
+    right: 0;
+    top: -10px;
+    background: none;
+    border: none;
+    color: var(--text);
+    font-size: 24px;
+    cursor: pointer;
+    padding: 10px;
+}
+
+/* Bottom sheet content - capability number */
+.bs-num {
+    font-family: 'Syne', sans-serif;
+    color: var(--gray);
+    margin-bottom: 10px;
+}
+
+/* Bottom sheet content - title */
+.bs-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: var(--text);
+}
+
+/* Bottom sheet content - description */
+.bs-desc {
+    color: var(--light-gray);
+    line-height: 1.6;
+    font-size: 16px;
+}
+
+
+/* ============================================
+   RESPONSIVE DESIGN - TABLET (max-width: 1024px)
+   ============================================ */
+
 @media (max-width: 1024px) {
+    /* Projects - Switch to 2-column grid on tablet */
     .projects-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 40px;
     }
 
+    /* Remove staggering on tablet */
     .project-card:nth-child(even) {
         margin-top: 0;
     }
@@ -902,26 +1061,28 @@ footer {
 }
 
 
-/* --- Bottom Sheet --- */
+/* Overlay that dims background when bottom sheet is open */
 .bottom-sheet-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.6);         /* Semi-transparent black */
     z-index: 9998;
-    opacity: 0;
-    pointer-events: none;
+    opacity: 0;                             /* Hidden by default */
+    pointer-events: none;                   /* Non-interactive when hidden */
     transition: opacity 0.3s;
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);             /* Blur effect on background */
 }
 
+/* Active state - visible overlay */
 .bottom-sheet-overlay.active {
     opacity: 1;
-    pointer-events: all;
+    pointer-events: all;                    /* Enable click to close */
 }
 
+/* Sliding panel from bottom (mobile only) */
 .bottom-sheet {
     position: fixed;
     bottom: 0;
@@ -932,15 +1093,17 @@ footer {
     border-top-right-radius: 30px;
     padding: 30px;
     z-index: 9999;
-    transform: translateY(100%);
+    transform: translateY(100%);            /* Hidden below viewport */
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     border-top: 1px solid var(--border);
 }
 
+/* Active state - sheet slides up */
 .bottom-sheet.active {
-    transform: translateY(0);
+    transform: translateY(0);               /* Slide into view */
 }
 
+/* Bottom sheet header with drag handle */
 .bottom-sheet-header {
     display: flex;
     justify-content: center;
@@ -948,6 +1111,7 @@ footer {
     position: relative;
 }
 
+/* Drag handle indicator */
 .bottom-sheet-drag-handle {
     width: 50px;
     height: 5px;
@@ -955,6 +1119,7 @@ footer {
     border-radius: 5px;
 }
 
+/* Close button for bottom sheet */
 .bottom-sheet-close {
     position: absolute;
     right: 0;
@@ -967,12 +1132,14 @@ footer {
     padding: 10px;
 }
 
+/* Bottom sheet content - capability number */
 .bs-num {
     font-family: 'Syne', sans-serif;
     color: var(--gray);
     margin-bottom: 10px;
 }
 
+/* Bottom sheet content - title */
 .bs-title {
     font-family: 'Syne', sans-serif;
     font-size: 28px;
@@ -981,8 +1148,14 @@ footer {
     color: var(--text);
 }
 
+/* Bottom sheet content - description */
 .bs-desc {
     color: var(--light-gray);
     line-height: 1.6;
     font-size: 16px;
 }
+
+
+/* ============================================
+   RESPONSIVE DESIGN - TABLET (max-width: 1024px)
+   ============================================ */
