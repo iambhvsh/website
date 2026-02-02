@@ -58,12 +58,19 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
     })
-        .to(".preloader", {
-            yPercent: -100,
-            duration: 1,
-            ease: "power4.inOut",
-            delay: 0.2
-        });
+    .to(".preloader", {
+        yPercent: -100,
+        duration: 1,
+        ease: "power4.inOut",
+        delay: 0.2,
+        onComplete: () => {
+            // Remove preloader from DOM after animation to improve performance
+            const preloader = document.querySelector('.preloader');
+            if (preloader) {
+                preloader.style.display = 'none';
+            }
+        }
+    });
 
     /**
      * Custom Cursor & Interaction Logic
@@ -138,16 +145,28 @@ document.addEventListener("DOMContentLoaded", () => {
     if (closeBtn) closeBtn.addEventListener('click', closeBottomSheet);
 
     // Desktop-only Cursor Effects
-    if (cursor) {
-        // Move cursor with mouse
+    if (cursor && window.innerWidth > 1024) {
+        // Use requestAnimationFrame for smooth cursor movement
+        let cursorX = 0;
+        let cursorY = 0;
+        let currentX = 0;
+        let currentY = 0;
+
         window.addEventListener('mousemove', (e) => {
-            gsap.to(cursor, {
-                x: e.clientX,
-                y: e.clientY,
-                duration: 0.1,
-                ease: "power2.out"
-            });
+            cursorX = e.clientX;
+            cursorY = e.clientY;
         });
+
+        // Smooth cursor animation loop
+        function animateCursor() {
+            // Lerp for smooth following
+            currentX += (cursorX - currentX) * 0.1;
+            currentY += (cursorY - currentY) * 0.1;
+
+            cursor.style.transform = `translate(${currentX}px, ${currentY}px) translate(-50%, -50%)`;
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
 
         // Magnet effect for interactive elements
         const magnets = document.querySelectorAll('[data-magnet]');
@@ -194,9 +213,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    /**
-     * Scroll-Triggered Animations
-     */
+    // Scroll-Triggered Animations
 
     // Parallax effect for Hero Title
     gsap.to(".hero-title", {
@@ -222,6 +239,7 @@ document.addEventListener("DOMContentLoaded", () => {
             scrollTrigger: {
                 trigger: project,
                 start: "top 85%",
+                once: true
             }
         });
     });
@@ -235,6 +253,7 @@ document.addEventListener("DOMContentLoaded", () => {
         scrollTrigger: {
             trigger: ".about-me",
             start: "top 75%",
+            once: true
         }
     });
 
@@ -249,19 +268,35 @@ document.addEventListener("DOMContentLoaded", () => {
             scrollTrigger: {
                 trigger: item,
                 start: "top 90%",
+                once: true
             }
         });
     });
 
     // Live Time Update
     const timeEl = document.getElementById('time');
-    setInterval(() => {
+    let lastTimeString = '';
+    
+    const updateTime = () => {
         const now = new Date();
-        if (timeEl) timeEl.textContent = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-    }, 1000);
+        const timeString = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+        
+        // Only update DOM if time has changed
+        if (timeString !== lastTimeString && timeEl) {
+            timeEl.textContent = timeString;
+            lastTimeString = timeString;
+        }
+    };
+    
+    // Update immediately
+    updateTime();
+    // Then update every second
+    setInterval(updateTime, 1000);
 
     // Back to Top Logic
     if (backToTopBtn) {
+        let ticking = false;
+
         const toggleBackToTop = () => {
             // Hide button if bottom sheet is active
             if (isBottomSheetActive) {
@@ -276,9 +311,21 @@ document.addEventListener("DOMContentLoaded", () => {
             } else {
                 backToTopBtn.classList.remove('visible');
             }
+
+            ticking = false;
         };
 
-        window.addEventListener('scroll', toggleBackToTop);
+        // Throttle scroll event with requestAnimationFrame
+        const onScroll = () => {
+            if (!ticking) {
+                requestAnimationFrame(toggleBackToTop);
+                ticking = true;
+            }
+        };
+
+        // Use passive listener for better scroll performance
+        window.addEventListener('scroll', onScroll, { passive: true });
+        
         // Initial check (delay slightly to ensure layout)
         setTimeout(toggleBackToTop, 100);
 
@@ -291,4 +338,44 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
+
+    // Add 'loaded' class when images are fully loaded
+    const lazyImages = document.querySelectorAll('img[loading="lazy"]');
+    if ('IntersectionObserver' in window) {
+        const imageObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.addEventListener('load', () => {
+                        img.classList.add('loaded');
+                    });
+                    imageObserver.unobserve(img);
+                }
+            });
+        });
+
+        lazyImages.forEach(img => imageObserver.observe(img));
+    }
+
+    /// Remove GSAP animations on mobile to improve performance
+    if (window.innerWidth <= 768) {
+        // Disable ScrollTrigger on mobile
+        ScrollTrigger.getAll().forEach(trigger => {
+            trigger.kill();
+        });
+    }
+
+    // Remove event listeners to prevent memory leaks
+    window.addEventListener('beforeunload', () => {
+        // Kill all GSAP animations
+        gsap.killTweensOf('*');
+        
+        // Kill all ScrollTriggers
+        ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+        
+        // Stop Lenis
+        if (lenis) {
+            lenis.destroy();
+        }
+    });
 });
