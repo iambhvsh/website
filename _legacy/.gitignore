@@ -28,4 +28,3 @@ dist-ssr
 .env
 .env.test
 .env.production
-.svelte-kit
