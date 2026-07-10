@@ -1,3 +1,40 @@
+/* ── Fonts ──────────────────────────────────────────────── */
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/assets/fonts/instrument-serif-latin-400-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/assets/fonts/instrument-serif-latin-400-italic.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url('/assets/fonts/inter-latin-300-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/assets/fonts/inter-latin-400-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/assets/fonts/inter-latin-500-normal.woff2') format('woff2');
+}
+
 /* ── Tokens ─────────────────────────────────────────────── */
 :root {
   /* 8px grid */
@@ -339,10 +376,10 @@ body::before {
   transition: background var(--duration-fast), border-color var(--duration-fast);
 }
 
-.card-icon-wrap .material-symbols-rounded {
-  font-size: 18px;
-  color: var(--icon-color);
-  font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' -25, 'opsz' 20;
+.card-icon-wrap svg {
+  width: 18px;
+  height: 18px;
+  fill: var(--icon-color);
 }
 
 /* Card text */
@@ -372,16 +409,16 @@ body::before {
 }
 
 /* External arrow */
-.card-arrow .material-symbols-rounded {
-  font-size: 16px;
-  color: var(--text-tertiary);
-  font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' -25, 'opsz' 20;
+.card-arrow svg {
+  width: 16px;
+  height: 16px;
+  fill: var(--text-tertiary);
   flex-shrink: 0;
-  transition: color var(--duration-fast), transform var(--duration-fast) var(--ease-spring);
+  transition: fill var(--duration-fast), transform var(--duration-fast) var(--ease-spring);
 }
 
-.link-card:hover .card-arrow .material-symbols-rounded {
-  color: var(--text-secondary);
+.link-card:hover .card-arrow svg {
+  fill: var(--text-secondary);
   transform: translate(1px, -1px);
 }
 
