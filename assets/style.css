@@ -71,8 +71,8 @@
   --border: rgba(0, 0, 0, 0.06);
   --border-hover: rgba(0, 0, 0, 0.10);
   --text-primary: #0f0f0e;
-  --text-secondary: #6b6b67;
-  --text-tertiary: #a8a8a3;
+  --text-secondary: #5e5e5b;
+  --text-tertiary: #71716e;
   --icon-color: #0f0f0e;
   --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.03);
   --shadow-hover: 0 3px 12px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
@@ -88,8 +88,8 @@
   --border: rgba(255, 255, 255, 0.05);
   --border-hover: rgba(255, 255, 255, 0.09);
   --text-primary: #f0efeb;
-  --text-secondary: #8a8a85;
-  --text-tertiary: #555552;
+  --text-secondary: #9c9c97;
+  --text-tertiary: #878783;
   --icon-color: #f0efeb;
   --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(0, 0, 0, 0.3);
   --shadow-hover: 0 3px 14px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.4);
@@ -106,8 +106,8 @@
     --border: rgba(255, 255, 255, 0.05);
     --border-hover: rgba(255, 255, 255, 0.09);
     --text-primary: #f0efeb;
-    --text-secondary: #8a8a85;
-    --text-tertiary: #555552;
+    --text-secondary: #9c9c97;
+    --text-tertiary: #878783;
     --icon-color: #f0efeb;
     --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(0, 0, 0, 0.3);
     --shadow-hover: 0 3px 14px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.4);
