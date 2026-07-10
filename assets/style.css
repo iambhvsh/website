@@ -1,3 +1,40 @@
+/* ── Fonts ──────────────────────────────────────────────── */
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/assets/fonts/instrument-serif-latin-400-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/assets/fonts/instrument-serif-latin-400-italic.woff2') format('woff2');
+}
+@font-face {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url('/assets/fonts/inter-latin-300-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/assets/fonts/inter-latin-400-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/assets/fonts/inter-latin-500-normal.woff2') format('woff2');
+}
+
 /* ── Tokens ─────────────────────────────────────────────── */
 :root {
   /* 8px grid */
@@ -34,8 +71,8 @@
   --border: rgba(0, 0, 0, 0.06);
   --border-hover: rgba(0, 0, 0, 0.10);
   --text-primary: #0f0f0e;
-  --text-secondary: #6b6b67;
-  --text-tertiary: #a8a8a3;
+  --text-secondary: #5e5e5b;
+  --text-tertiary: #71716e;
   --icon-color: #0f0f0e;
   --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.03);
   --shadow-hover: 0 3px 12px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
@@ -51,8 +88,8 @@
   --border: rgba(255, 255, 255, 0.05);
   --border-hover: rgba(255, 255, 255, 0.09);
   --text-primary: #f0efeb;
-  --text-secondary: #8a8a85;
-  --text-tertiary: #555552;
+  --text-secondary: #9c9c97;
+  --text-tertiary: #878783;
   --icon-color: #f0efeb;
   --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(0, 0, 0, 0.3);
   --shadow-hover: 0 3px 14px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.4);
@@ -69,8 +106,8 @@
     --border: rgba(255, 255, 255, 0.05);
     --border-hover: rgba(255, 255, 255, 0.09);
     --text-primary: #f0efeb;
-    --text-secondary: #8a8a85;
-    --text-tertiary: #555552;
+    --text-secondary: #9c9c97;
+    --text-tertiary: #878783;
     --icon-color: #f0efeb;
     --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(0, 0, 0, 0.3);
     --shadow-hover: 0 3px 14px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.4);
@@ -106,7 +143,7 @@ body {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
   background-color: var(--bg);
   color: var(--text-primary);
   min-height: 100dvh;
@@ -339,10 +376,10 @@ body::before {
   transition: background var(--duration-fast), border-color var(--duration-fast);
 }
 
-.card-icon-wrap .material-symbols-rounded {
-  font-size: 18px;
-  color: var(--icon-color);
-  font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' -25, 'opsz' 20;
+.card-icon-wrap svg {
+  width: 18px;
+  height: 18px;
+  fill: var(--icon-color);
 }
 
 /* Card text */
@@ -372,16 +409,16 @@ body::before {
 }
 
 /* External arrow */
-.card-arrow .material-symbols-rounded {
-  font-size: 16px;
-  color: var(--text-tertiary);
-  font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' -25, 'opsz' 20;
+.card-arrow svg {
+  width: 16px;
+  height: 16px;
+  fill: var(--text-tertiary);
   flex-shrink: 0;
-  transition: color var(--duration-fast), transform var(--duration-fast) var(--ease-spring);
+  transition: fill var(--duration-fast), transform var(--duration-fast) var(--ease-spring);
 }
 
-.link-card:hover .card-arrow .material-symbols-rounded {
-  color: var(--text-secondary);
+.link-card:hover .card-arrow svg {
+  fill: var(--text-secondary);
   transform: translate(1px, -1px);
 }
 
