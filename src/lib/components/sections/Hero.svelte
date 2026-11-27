@@ -112,7 +112,7 @@
         <img
           src={PROFILE_IMAGE}
           alt="Bhavesh Patil"
-          referrerpolicy="no-referrer"
+          crossorigin="anonymous"
           class="profile-img"
           class:visible={imgLoaded}
           onload={() => (imgLoaded = true)}
