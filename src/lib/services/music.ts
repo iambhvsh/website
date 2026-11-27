@@ -1,41 +1,16 @@
+import {
+  cleanTrackText,
+  LastFmFetchError,
+  readSafeText,
+  type NowPlayingTrack,
+} from './lastfm';
 import { createTimeoutSignal, sanitizeHttpsUrl } from './url';
 
-export interface NowPlayingTrack {
-  name: string;
-  artist: string;
-  album: string;
-  date: string;
-  url: string;
-  artworkUrl: string;
-  isLive: boolean;
-}
+export { LastFmFetchError, type NowPlayingTrack };
 
 export interface ItunesMedia {
   artworkUrl: string;
   previewUrl: string;
-}
-
-interface LastFmImage {
-  '#text'?: unknown;
-  size?: unknown;
-}
-
-interface RawLastFmTrack {
-  name?: unknown;
-  url?: unknown;
-  artist?: { '#text'?: unknown };
-  album?: { '#text'?: unknown };
-  date?: { '#text'?: unknown };
-  image?: LastFmImage[];
-  '@attr'?: { nowplaying?: unknown };
-}
-
-interface LastFmRecentTracksResponse {
-  error?: unknown;
-  message?: unknown;
-  recenttracks?: {
-    track?: RawLastFmTrack | RawLastFmTrack[];
-  };
 }
 
 interface ItunesResult {
@@ -44,77 +19,6 @@ interface ItunesResult {
   trackName?: unknown;
   artworkUrl100?: unknown;
   previewUrl?: unknown;
-}
-
-export class LastFmFetchError extends Error {
-  readonly rateLimited: boolean;
-
-  constructor(message: string, rateLimited = false) {
-    super(message);
-    this.rateLimited = rateLimited;
-  }
-}
-
-const LASTFM_USER = 'iambhvsh';
-const DEFAULT_LASTFM_PROFILE = `https://www.last.fm/user/${LASTFM_USER}`;
-const LASTFM_API_BASE = 'https://ws.audioscrobbler.com/2.0/';
-const MAX_FIELD_LENGTH = 300;
-
-function readSafeText(value: unknown, fallback = ''): string {
-  if (typeof value !== 'string') return fallback;
-  const trimmed = value.trim();
-  return trimmed ? trimmed.slice(0, MAX_FIELD_LENGTH) : fallback;
-}
-
-function stripBrackets(value: string): string {
-  let out = '';
-  let depth = 0;
-
-  for (const ch of value) {
-    if (ch === '(' || ch === '[') {
-      depth += 1;
-    } else if ((ch === ')' || ch === ']') && depth > 0) {
-      depth -= 1;
-    } else if (depth === 0) {
-      out += ch;
-    }
-  }
-
-  return out;
-}
-
-function cleanTrackText(value: string): string {
-  if (!value) return value;
-  const withoutBrackets = stripBrackets(value);
-  const lower = withoutBrackets.toLowerCase();
-
-  let cutoff = withoutBrackets.length;
-  for (const marker of [' feat.', ' feat ', ' ft.', ' ft ', ' featuring ']) {
-    const idx = lower.indexOf(marker);
-    if (idx > 0 && idx < cutoff) {
-      cutoff = idx;
-    }
-  }
-
-  const cleaned = withoutBrackets
-    .slice(0, cutoff)
-    .split(' ')
-    .filter(Boolean)
-    .join(' ')
-    .trim();
-
-  return cleaned || value;
-}
-
-function normalize(value: string): string {
-  return value.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
-}
-
-function splitArtistParts(artist: string): string[] {
-  return artist
-    .split(/[,&/]|\band\b/i)
-    .map((part) => normalize(part))
-    .filter(Boolean);
 }
 
 interface ItunesQuery {
@@ -127,6 +31,17 @@ interface ItunesMatchContext {
   artistParts: string[];
   normTrack: string;
   normAlbum: string;
+}
+
+function normalize(value: string): string {
+  return value.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+}
+
+function splitArtistParts(artist: string): string[] {
+  return artist
+    .split(/[,&/]|\band\b/i)
+    .map((part) => normalize(part))
+    .filter(Boolean);
 }
 
 function matchesTitle(candidate: string, target: string): boolean {
@@ -268,91 +183,37 @@ export async function fetchItunesMedia(
   return { artworkUrl, previewUrl };
 }
 
-function getLastFmEndpoint(): string {
-  const apiKey = import.meta.env.VITE_LASTFM_API_KEY?.trim();
-  if (!apiKey) {
-    throw new LastFmFetchError('Missing VITE_LASTFM_API_KEY');
-  }
-  const params = new URLSearchParams({
-    method: 'user.getrecenttracks',
-    user: LASTFM_USER,
-    api_key: apiKey,
-    format: 'json',
-    limit: '1',
-  });
-  return `${LASTFM_API_BASE}?${params.toString()}`;
-}
-
-const LASTFM_DEFAULT_ART_HASH = '2a96cbd8b46e442fc41c2b86b821562f';
-const LASTFM_IMAGE_SIZES = ['mega', 'extralarge', 'large', 'medium', 'small'] as const;
-
-function extractLastFmArtwork(images: LastFmImage[] | undefined): string {
-  if (!Array.isArray(images)) return '';
-
-  for (const size of LASTFM_IMAGE_SIZES) {
-    const match = images.find((img) => img?.size === size);
-    const raw = readSafeText(match?.['#text']).replace(/^http:/i, 'https:');
-    if (!raw || raw.includes(LASTFM_DEFAULT_ART_HASH)) continue;
-
-    const clean = sanitizeHttpsUrl(raw, ['freetls.fastly.net', 'akamaized.net']);
-    if (clean) return clean;
-  }
-
-  return '';
-}
-
-function extractRawTrack(json: LastFmRecentTracksResponse): RawLastFmTrack | undefined {
-  if (typeof json.error === 'number') {
-    const msg = readSafeText(json.message, `Last.fm error ${json.error}`);
-    throw new LastFmFetchError(msg, json.error === 29);
-  }
-  const raw = json?.recenttracks?.track;
-  return Array.isArray(raw) ? raw[0] : raw;
-}
-
 export async function fetchLatestTrack(
   timeoutMs = 10000,
   externalSignal?: AbortSignal
 ): Promise<NowPlayingTrack> {
-  const endpoint = getLastFmEndpoint();
   const req = createTimeoutSignal(timeoutMs, externalSignal);
 
   try {
-    const res = await fetch(endpoint, {
+    const res = await fetch('/api/music', {
       signal: req.signal,
       cache: 'no-store',
-      credentials: 'omit',
-      referrerPolicy: 'no-referrer',
     });
     if (res.status === 429) {
       throw new LastFmFetchError('Last.fm rate limit exceeded', true);
     }
     if (!res.ok) {
-      throw new LastFmFetchError(`Last.fm API returned ${res.status}`);
+      throw new LastFmFetchError(`Music API returned ${res.status}`);
     }
 
-    const json = (await res.json()) as LastFmRecentTracksResponse;
-    const t = extractRawTrack(json);
-    if (!t || typeof t !== 'object') {
+    const track = (await res.json()) as Partial<NowPlayingTrack>;
+    if (!track || typeof track !== 'object' || typeof track.name !== 'string') {
       throw new LastFmFetchError('No track data returned');
     }
 
-    const isLive = t['@attr']?.nowplaying === 'true';
-    const name = cleanTrackText(readSafeText(t.name, 'Unknown'));
-    const artist = cleanTrackText(readSafeText(t.artist?.['#text']));
-    const album = cleanTrackText(readSafeText(t.album?.['#text']));
-    const date = isLive ? '' : readSafeText(t.date?.['#text']);
-    const url = sanitizeHttpsUrl(t.url, ['last.fm'], DEFAULT_LASTFM_PROFILE);
-    const artworkUrl = extractLastFmArtwork(t.image);
-
     return {
-      name,
-      artist,
-      album,
-      date,
-      url,
-      artworkUrl,
-      isLive,
+      name: track.name,
+      artist: typeof track.artist === 'string' ? track.artist : '',
+      album: typeof track.album === 'string' ? track.album : '',
+      date: typeof track.date === 'string' ? track.date : '',
+      url: sanitizeHttpsUrl(track.url, ['last.fm'], 'https://www.last.fm/user/iambhvsh'),
+      artworkUrl: sanitizeHttpsUrl(track.artworkUrl, ['freetls.fastly.net', 'akamaized.net']),
+      isLive: Boolean(track.isLive),
     };
   } finally {
     req.cleanup();
