@@ -1,7 +1,7 @@
 :root {
   --font-sans: 'Google Sans Flex Variable', 'Google Sans Flex', 'Google Sans', system-ui, sans-serif;
 
-  /* Material 3 Expressive — Light palette */
+  /* Material 3 Expressive: Light palette */
   --bg: #fdf7ff;
   --sf-lowest: #ffffff;
   --sf: #f3edf7;

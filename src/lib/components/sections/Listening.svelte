@@ -1,13 +1,16 @@
 <script lang="ts">
   import { untrack } from "svelte";
-  import { Button, Section, Shape, Wave } from "$lib/components/ui";
+  import { Button, Scroll, Section, Shape, Wave } from "$lib/components/ui";
   import { SITE } from "$lib/data/site";
+  import CalendarTodayIcon from "~icons/material-symbols/calendar-today-rounded";
+  import CategoryIcon from "~icons/material-symbols/category-rounded";
   import LyricsIcon from "~icons/material-symbols/lyrics-rounded";
   import MusicNoteIcon from "~icons/material-symbols/music-note-rounded";
   import OpenInNewIcon from "~icons/material-symbols/open-in-new-rounded";
   import PauseIcon from "~icons/material-symbols/pause-rounded";
   import PlayArrowIcon from "~icons/material-symbols/play-arrow-rounded";
   import RefreshIcon from "~icons/material-symbols/refresh-rounded";
+  import ScheduleIcon from "~icons/material-symbols/schedule-rounded";
   import {
     fetchTrackLyrics,
     UnisonFetchError,
@@ -19,13 +22,19 @@
     LastFmFetchError,
     type NowPlayingTrack,
   } from "$lib/services/music";
-  import { ARTWORK_SHAPES, LOADING_SHAPES } from "$lib/shapes";
+  import {
+    ARTWORK_SHAPES,
+    LOADING_SHAPES,
+  } from "$lib/shapes";
 
   let track = $state<NowPlayingTrack | null>(null);
   let artworkSrc = $state("");
   let fallbackArtworkUrl = $state("");
   let artworkLoaded = $state(false);
   let previewUrl = $state("");
+  let trackGenre = $state("");
+  let trackYear = $state("");
+  let trackDuration = $state("");
   let loading = $state(false);
   let failed = $state(false);
 
@@ -285,6 +294,7 @@
         target.name,
         controller.signal,
         forceRefresh,
+        target.album,
       );
       if (seq !== lyricsSeq || controller.signal.aborted) return;
       lyrics = result;
@@ -294,8 +304,8 @@
       lyrics = null;
       lyricsError =
         err instanceof UnisonFetchError && err.rateLimited
-          ? "Rate limited by Unison, try again shortly."
-          : "Couldn’t load lyrics from Unison.";
+          ? "Rate limited, try again shortly."
+          : "Couldn’t load lyrics.";
       lyricsReady = true;
     } finally {
       if (seq === lyricsSeq) {
@@ -385,6 +395,9 @@
       fallbackArtworkUrl = "";
       artworkLoaded = false;
       previewUrl = "";
+      trackGenre = "";
+      trackYear = "";
+      trackDuration = "";
       lyrics = null;
       lyricsError = "";
       lyricsReady = false;
@@ -409,6 +422,9 @@
         artworkSrc = media.artworkUrl;
       }
       previewUrl = media.previewUrl;
+      trackGenre = media.genre ?? "";
+      trackYear = media.releaseYear ?? "";
+      trackDuration = media.durationText ?? "";
     } catch (err) {
       if (seq !== requestSeq || controller.signal.aborted) return;
       failureStreak =
@@ -423,6 +439,9 @@
         fallbackArtworkUrl = "";
         artworkLoaded = false;
         previewUrl = "";
+        trackGenre = "";
+        trackYear = "";
+        trackDuration = "";
         lyrics = null;
         lyricsError = "";
         lyricsReady = false;
@@ -524,49 +543,27 @@
   const lyricsOpen = $derived(lyricsEnabled && Boolean(track) && lyricsReady);
 </script>
 
-<Section id="now" title="Listening">
-  <div class="np-stack" bind:this={stackEl}>
-    <div class="np surface-morph" class:split-top={lyricsOpen}>
-    <div class="art-wrap" onpointerenter={cycleArtShape} role="presentation">
-      <Shape
-        shape={currentArtShape}
-        spring={loading ? "fast" : "slow"}
-        spin={loading}
-        masked
-        class="art"
-      >
-        {#if !artworkLoaded}
-          <span class="fallback-icon" aria-hidden="true">
-            <MusicNoteIcon />
+<Section id="now">
+  <div class="music-hero" bind:this={stackEl}>
+    <div class="hero-left">
+      <div class="music-head">
+        <div class="status-row">
+          <span class="status-pill label" class:live={track?.isLive}>
+            <span class="status-dot" aria-hidden="true"></span>
+            {track?.isLive ? "Now playing" : "Last played"}
           </span>
-        {/if}
-        {#if artworkSrc}
-          <img
-            src={artworkSrc}
-            alt="Album art"
-            referrerpolicy="no-referrer"
-            class:visible={artworkLoaded}
-            onload={() => (artworkLoaded = true)}
-            onerror={() => {
-              if (fallbackArtworkUrl && artworkSrc !== fallbackArtworkUrl) {
-                artworkSrc = fallbackArtworkUrl;
-                artworkLoaded = false;
-                return;
-              }
-              artworkSrc = "";
-              artworkLoaded = false;
-            }}
-          />
-        {/if}
-      </Shape>
-    </div>
-
-    <div class="npi">
-      <h3 class="flex600">{titleText}</h3>
-
-      {#if track?.artist}
-        <div class="tl sub">{track.artist}</div>
-      {/if}
+          {#if track?.date && !track.isLive}
+            <span class="time-pill label">{track.date}</span>
+          {/if}
+        </div>
+        <h1 class="hero music-title">{titleText}</h1>
+        <p class="tl music-sub">
+          {track?.artist ?? "Checking what’s playing right now."}
+          {#if track?.album}
+            <span class="album-sep"> · {track.album}</span>
+          {/if}
+        </p>
+      </div>
 
       {#if previewUrl}
         <audio
@@ -605,39 +602,38 @@
           }}
         ></audio>
 
-        <div class="player">
-          <Button
-            variant={previewPlaying ? "filled" : "tonal"}
-            tone="on-tertiary"
-            iconOnly
-            class="play-btn"
-            ariaLabel={previewPlaying ? "Pause preview" : "Play 30s preview"}
-            onclick={togglePreview}
-          >
-            {#snippet icon()}
+        <div class="player-card surface-morph">
+          <div class="player">
+            <button
+              type="button"
+              class="exp-play"
+              class:playing={previewPlaying}
+              aria-label={previewPlaying ? "Pause preview" : "Play 30s preview"}
+              onclick={togglePreview}
+            >
               {#if previewPlaying}
                 <PauseIcon />
               {:else}
                 <PlayArrowIcon />
               {/if}
-            {/snippet}
-          </Button>
+            </button>
 
-          <Wave
-            progress={previewProgress}
-            playing={previewPlaying}
-            ariaLabel="Song preview progress"
-            onseek={seekPreview}
-          />
-
-          <span class="bs sub time">
-            {formatClock(currentTime)} / {formatClock(duration)}
-          </span>
+            <div class="wave-wrap">
+              <span class="label time">{formatClock(currentTime)}</span>
+              <Wave
+                progress={previewProgress}
+                playing={previewPlaying}
+                ariaLabel="Song preview progress"
+                onseek={seekPreview}
+              />
+              <span class="label time">{formatClock(duration)}</span>
+            </div>
+          </div>
         </div>
       {/if}
 
       <div class="row acts">
-        <Button tone="on-tertiary" href={track?.url ?? SITE.lastfmUrl} external>
+        <Button href={track?.url ?? SITE.lastfmUrl} external>
           {#snippet icon()}
             <OpenInNewIcon />
           {/snippet}
@@ -646,7 +642,6 @@
 
         <Button
           variant={lyricsEnabled ? "filled" : "tonal"}
-          tone="on-tertiary"
           ariaPressed={lyricsEnabled}
           onclick={toggleLyrics}
         >
@@ -658,7 +653,6 @@
 
         <Button
           variant="tonal"
-          tone="on-tertiary"
           iconOnly
           spinning={loading}
           ariaLabel="Refresh"
@@ -670,11 +664,23 @@
         </Button>
       </div>
     </div>
-  </div>
 
-    <div class="lyrics-collapse" class:open={lyricsOpen} inert={!lyricsOpen}>
-      <div class="lyrics-clip">
-        <div class="lyrics-card">
+    <div
+      class="hero-visual"
+      class:lyrics-active={lyricsOpen}
+      onpointerenter={() => {
+        if (!lyricsOpen) cycleArtShape();
+      }}
+      role="presentation"
+    >
+      {#if lyricsOpen}
+        <div class="lyrics-card surface-morph">
+          <div class="lyrics-head">
+            <span class="label lyrics-eyebrow">Lyrics</span>
+            {#if track}
+              <span class="bm sub">{track.name} · {track.artist}</span>
+            {/if}
+          </div>
           {#if lyricsError}
             <p class="bs sub lyrics-state">{lyricsError}</p>
           {:else if lyrics && lyrics.lines.length > 0}
@@ -689,9 +695,9 @@
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Lyrics from Unison
+                Lyrics from {lyrics.source === "lrclib" ? "LRCLib" : "Unison"}
               </a>
-              {#if lyrics.submitterName && lyrics.submitterUrl}
+              {#if lyrics.source === "unison" && lyrics.submitterName && lyrics.submitterUrl}
                 <span> · submitted by </span>
                 <a
                   href={lyrics.submitterUrl}
@@ -703,62 +709,240 @@
               {/if}
             </div>
           {:else}
-            <p class="bs sub lyrics-state">No lyrics found on Unison.</p>
+            <p class="bs sub lyrics-state">No lyrics found.</p>
           {/if}
         </div>
-      </div>
+      {:else}
+        <div class="art-stage surface-morph">
+          <Shape
+            shape={currentArtShape}
+            spring={loading ? "fast" : "slow"}
+            spin={loading}
+            masked
+            class="art"
+          >
+            {#if !artworkLoaded}
+              <span class="fallback-icon" aria-hidden="true">
+                <MusicNoteIcon />
+              </span>
+            {/if}
+            {#if artworkSrc}
+              <img
+                src={artworkSrc}
+                alt="Album art"
+                referrerpolicy="no-referrer"
+                class:visible={artworkLoaded}
+                onload={() => (artworkLoaded = true)}
+                onerror={() => {
+                  if (fallbackArtworkUrl && artworkSrc !== fallbackArtworkUrl) {
+                    artworkSrc = fallbackArtworkUrl;
+                    artworkLoaded = false;
+                    return;
+                  }
+                  artworkSrc = "";
+                  artworkLoaded = false;
+                }}
+              />
+            {/if}
+          </Shape>
+
+          {#if trackGenre || trackYear || trackDuration}
+            <div class="art-pills">
+              {#if trackGenre}
+                <span class="label art-chip tonal-sec">
+                  <CategoryIcon aria-hidden="true" />
+                  <span>{trackGenre}</span>
+                </span>
+              {/if}
+
+              {#if trackYear}
+                <span class="label art-chip tonal-ter">
+                  <CalendarTodayIcon aria-hidden="true" />
+                  <span>{trackYear}</span>
+                </span>
+              {/if}
+
+              {#if trackDuration}
+                <span class="label art-chip tonal-pri">
+                  <ScheduleIcon aria-hidden="true" />
+                  <span>{trackDuration}</span>
+                </span>
+              {/if}
+            </div>
+          {/if}
+        </div>
+      {/if}
+    </div>
+
+    <div class="hero-scroll">
+      <Scroll href="#favorites" label="Favorites" />
     </div>
   </div>
 </Section>
 
 <style>
-  .np-stack {
+  :global(#now.page-section) {
+    padding-top: 48px !important;
+  }
+
+  .music-hero {
+    position: relative;
+    min-height: calc(100svh - 88px);
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    align-items: center;
+    align-content: center;
+    gap: 48px;
+    padding: 20px 0 80px;
+  }
+
+  .hero-left {
     display: flex;
     flex-direction: column;
-    width: 100%;
+    gap: 24px;
+    min-width: 0;
   }
 
-  .np {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 28px;
+  .music-head {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .status-row {
+    display: flex;
+    flex-wrap: wrap;
     align-items: center;
+    gap: 8px;
+  }
+
+  .status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    align-self: flex-start;
+    padding: 6px 14px;
+    border-radius: 9999px;
+    background: var(--sc);
+    color: var(--onsc);
+  }
+
+  .time-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    border-radius: 9999px;
+    background: var(--sf2);
+    color: var(--onv);
+  }
+
+  .status-pill.live {
     background: var(--tc);
     color: var(--ontc);
-    padding: 28px;
+  }
+
+  .status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  .music-title {
+    font-size: clamp(38px, 6vw, 68px);
+    line-height: 0.96;
+    letter-spacing: -0.025em;
+    overflow-wrap: anywhere;
+  }
+
+  .music-sub {
+    color: var(--onv);
+    max-width: 44ch;
+  }
+
+  .album-sep {
+    opacity: 0.72;
+  }
+
+  .hero-visual {
     width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
-  .np.split-top,
-  .np.split-top:hover {
-    border-bottom-left-radius: var(--r-md);
-    border-bottom-right-radius: var(--r-md);
+  .art-stage {
+    width: 100%;
+    max-width: 400px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 28px;
+    background: radial-gradient(
+        circle at 50% 35%,
+        color-mix(in srgb, var(--pc) 32%, transparent),
+        transparent 70%
+      ),
+      var(--sf);
+    border-radius: var(--r-xl);
   }
 
-  @media (max-width: 620px) {
-    .np {
-      grid-template-columns: 1fr;
-      justify-items: start;
-    }
+  .art-pills {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
   }
 
-  .art-wrap {
+  .art-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    max-width: 100%;
+    padding: 5px 12px;
+    border-radius: 9999px;
+  }
+
+  .art-chip span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .art-chip :global(.ms-icon) {
+    font-size: 15px;
     flex: none;
   }
 
-  .art-wrap :global(.art) {
+  .art-chip.tonal-sec {
+    background: var(--sc);
+    color: var(--onsc);
+  }
+
+  .art-chip.tonal-ter {
+    background: var(--tc);
+    color: var(--ontc);
+  }
+
+  .art-chip.tonal-pri {
+    background: var(--pc);
+    color: var(--onpc);
+  }
+
+  .hero-visual :global(.art) {
     position: relative;
-    width: 168px;
-    height: 168px;
-    background: var(--p);
-    color: var(--onp);
+    width: 280px;
+    height: 280px;
+    background: var(--pc);
+    color: var(--onpc);
+    cursor: pointer;
   }
 
-  .fallback-icon :global(.ms-icon) {
-    font-size: 56px;
-  }
-
-  .art-wrap img {
+  .hero-visual img {
     position: absolute;
     inset: 0;
     width: 100%;
@@ -768,91 +952,164 @@
     transition: opacity 0.3s ease;
   }
 
-  .art-wrap img.visible {
+  .hero-visual img.visible {
     opacity: 1;
   }
 
-  .npi {
-    min-width: 0;
+  .fallback-icon :global(.ms-icon) {
+    font-size: 72px;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    left: 50%;
+    bottom: 20px;
+    transform: translateX(-50%);
+  }
+
+  .player-card {
     width: 100%;
-  }
-
-  .npi h3 {
-    font-size: clamp(24px, 4vw, 32px);
-    line-height: 1.15;
-    margin-bottom: 4px;
-    overflow-wrap: anywhere;
-  }
-
-  .npi .sub,
-  .lyrics-card .sub {
-    opacity: 0.85;
+    max-width: 500px;
+    padding: 12px 16px;
+    background: var(--sf);
+    border-radius: var(--r-card);
   }
 
   .player {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-top: 16px;
-    max-width: 440px;
+    gap: 14px;
   }
 
-  .player :global(.play-btn) {
-    width: 40px;
-    height: 40px;
+  .exp-play {
+    width: 64px;
+    height: 48px;
     flex: none;
+    border: 0;
+    border-radius: 24px;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    background: var(--pc);
+    color: var(--onpc);
+    transition:
+      width var(--dur-spring-fast) var(--spring-fast),
+      border-radius var(--dur-spring-fast) var(--spring-fast),
+      background-color var(--dur-short4) var(--ease-emphasized),
+      color var(--dur-short4) var(--ease-emphasized);
+  }
+
+  .exp-play:hover {
+    width: 70px;
+    border-radius: 18px;
+  }
+
+  .exp-play.playing {
+    width: 70px;
+    border-radius: 16px;
+    background: var(--p);
+    color: var(--onp);
+  }
+
+  .exp-play:active {
+    width: 74px;
+    border-radius: 12px;
+  }
+
+  .wave-wrap {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--p);
   }
 
   .time {
+    color: var(--onv);
     flex: none;
     font-variant-numeric: tabular-nums;
-    white-space: nowrap;
   }
 
-  .npi .acts {
-    margin-top: 18px;
+  @media (max-width: 860px) {
+    .music-hero {
+      grid-template-columns: 1fr;
+      gap: 24px;
+      align-content: center;
+      padding: 16px 0 24px;
+    }
+
+    .hero-visual {
+      order: -1;
+      justify-content: center;
+    }
+
+    .art-stage,
+    .lyrics-card {
+      max-width: 100%;
+      height: 300px;
+      padding: 20px;
+    }
+
+    .hero-visual :global(.art) {
+      width: 188px;
+      height: 188px;
+    }
+
+    .fallback-icon :global(.ms-icon) {
+      font-size: 56px;
+    }
   }
 
-  .lyrics-collapse {
-    display: grid;
-    grid-template-rows: 0fr;
-    margin-top: 0;
-    opacity: 0;
-    pointer-events: none;
-    transition:
-      grid-template-rows var(--dur-med4) var(--ease-emphasized-decel),
-      margin-top var(--dur-med4) var(--ease-emphasized-decel),
-      opacity var(--dur-short4) var(--ease-emphasized);
+  @media (max-width: 640px) {
+    :global(#now.page-section) {
+      padding-top: 28px !important;
+    }
+
+    .music-hero {
+      min-height: calc(100svh - 64px);
+      gap: 20px;
+      padding: 8px 0 72px;
+    }
+
+    .hero-left {
+      gap: 14px;
+    }
   }
 
-  .lyrics-collapse.open {
-    grid-template-rows: 1fr;
-    margin-top: 4px;
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  .lyrics-clip {
-    min-height: 0;
-    overflow: hidden;
-    border-radius: var(--r-md) var(--r-md) var(--r-card) var(--r-card);
-    transition: border-radius var(--dur-spring) var(--spring);
-  }
-
-  .lyrics-clip:hover {
-    border-radius: var(--r-md) var(--r-md) var(--r-card-hover)
-      var(--r-card-hover);
+  .lyrics-card .sub {
+    opacity: 0.85;
   }
 
   .lyrics-card {
     width: 100%;
-    padding: 24px 28px;
-    background: var(--tc);
-    color: var(--ontc);
+    max-width: 400px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    background: var(--sf);
+    color: var(--on);
+    border-radius: var(--r-xl);
+  }
+
+  .lyrics-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 14px;
+    flex: none;
+  }
+
+  .lyrics-eyebrow {
+    color: var(--p);
   }
 
   .lyrics-lines {
-    max-height: 240px;
+    flex: 1;
+    min-height: 0;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
@@ -873,7 +1130,15 @@
   .lyrics-credit {
     margin-top: 14px;
     padding-top: 12px;
-    border-top: 1px solid color-mix(in srgb, var(--ontc) 14%, transparent);
+    border-top: 1px solid color-mix(in srgb, var(--onv) 16%, transparent);
+  }
+
+  @media (max-width: 860px) {
+    .hero-visual.lyrics-active {
+      padding: 0;
+      background: transparent;
+      min-height: 0;
+    }
   }
 
   .lyrics-credit a {

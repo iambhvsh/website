@@ -30,15 +30,6 @@ export const PROJECTS: readonly Project[] = [
     url: 'https://writings.iambhvsh.in/',
   },
   {
-    name: 'ytdl',
-    tag: 'Web',
-    category: 'Web',
-    description:
-      'A privacy-first YouTube downloader for the command line, built on yt-dlp. Everything is processed on your device, and it runs on Windows, macOS, Linux and Termux.',
-    stack: 'yt-dlp / CLI',
-    url: 'https://github.com/iambhvsh/ytdl',
-  },
-  {
     name: 'Atlas',
     tag: 'Web',
     category: 'Web',

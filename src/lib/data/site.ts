@@ -34,11 +34,12 @@ export const SITE = {
 } as const;
 
 export const NAV_ITEMS: readonly NavItem[] = [
-  { label: 'About', href: '#about', sectionId: 'about' },
-  { label: 'Work', href: '#work', sectionId: 'work' },
-  { label: 'Writing', href: '#writing', sectionId: 'writing' },
-  { label: 'Playing', href: '#now', sectionId: 'now' },
-  { label: 'Links', href: '#links', sectionId: 'links' },
+  { label: 'About', href: '/about', sectionId: 'about' },
+  { label: 'Work', href: '/work', sectionId: 'work' },
+  { label: 'Writing', href: '/writing', sectionId: 'writing' },
+  { label: 'Music', href: '/music', sectionId: 'music' },
+  { label: 'Mac', href: '/mac', sectionId: 'mac' },
+  { label: 'Phone', href: '/phone', sectionId: 'phone' },
 ];
 
 export const SCROLL_SPY_SECTIONS = [
@@ -64,7 +65,7 @@ export const SCROLL_SPY_ALIASES: Record<string, string> = {
 
 export const ABOUT_STATS: readonly StatItem[] = [
   {
-    value: '8',
+    value: '7',
     label: 'Projects in the archive',
     tone: 'primary',
   },
@@ -83,7 +84,7 @@ export const ABOUT_STATS: readonly StatItem[] = [
 
 export const FOOTER_LINKS: readonly FooterLink[] = [
   { label: 'GitHub', href: 'https://github.com/iambhvsh', external: true },
-  { label: 'Sponsor', href: '#sponsor' },
+  { label: 'Sponsor', href: '/#sponsor' },
   { label: 'Email', href: 'mailto:iambhvsh@proton.me' },
   { label: 'Résumé', href: 'https://iambhvsh.in/resume' },
   { label: 'Writing', href: 'https://writing.iambhvsh.in', external: true },

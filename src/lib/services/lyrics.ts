@@ -5,6 +5,7 @@ export interface TrackLyrics {
   songUrl: string;
   submitterName: string;
   submitterUrl: string;
+  source: 'unison' | 'lrclib';
 }
 
 interface UnisonSubmitter {
@@ -195,8 +196,82 @@ function mapUnisonData(data: UnisonLyricsData | undefined): TrackLyrics | null {
     songUrl,
     submitterName: rawName || (submitterUrl ? 'Unison contributor' : ''),
     submitterUrl,
+    source: 'unison' as const,
   };
 }
+
+// ── LRCLib ────────────────────────────────────────────────────────────────────
+
+const LRCLIB_BASE = 'https://lrclib.net';
+const LRCLIB_CLIENT = 'iambhvsh-portfolio v1.0 (https://iambhvsh.in)';
+
+interface LrclibRecord {
+  id?: unknown;
+  plainLyrics?: unknown;
+  syncedLyrics?: unknown;
+  instrumental?: unknown;
+}
+
+function parseLrclibLines(json: LrclibRecord): string[] {
+  if (typeof json.syncedLyrics === 'string' && json.syncedLyrics.trim()) {
+    return parseLrc(json.syncedLyrics);
+  }
+  if (typeof json.plainLyrics === 'string' && json.plainLyrics.trim()) {
+    return parsePlain(json.plainLyrics);
+  }
+  return [];
+}
+
+async function queryLrclib(
+  song: string,
+  artist: string,
+  album: string,
+  externalSignal?: AbortSignal,
+  timeoutMs = 8000
+): Promise<TrackLyrics | null> {
+  const req = createTimeoutSignal(timeoutMs, externalSignal);
+  try {
+    const params = new URLSearchParams({ track_name: song, artist_name: artist });
+    if (album) params.set('album_name', album);
+    const res = await fetch(`${LRCLIB_BASE}/api/get?${params.toString()}`, {
+      signal: req.signal,
+      credentials: 'omit',
+      referrerPolicy: 'no-referrer',
+      headers: { 'Lrclib-Client': LRCLIB_CLIENT },
+    });
+
+    if (res.status === 404) return null;
+    if (res.status === 429) throw new UnisonFetchError('LRCLib rate limit exceeded', true);
+    if (!res.ok) return null;
+
+    const json = (await res.json()) as LrclibRecord;
+    if (json?.instrumental === true) return null;
+
+    // Prefer synced (strip timestamps) → fall back to plain
+    const lines = parseLrclibLines(json);
+
+    if (!lines.length) return null;
+
+    const id = typeof json.id === 'number' ? json.id : null;
+    const submitterUrl = sanitizeHttpsUrl(
+      id ? `${LRCLIB_BASE}/api/get/${id}` : LRCLIB_BASE,
+      ['lrclib.net'],
+      LRCLIB_BASE
+    );
+
+    return {
+      lines,
+      songUrl: LRCLIB_BASE,
+      submitterName: 'LRCLib',
+      submitterUrl,
+      source: 'lrclib' as const,
+    };
+  } finally {
+    req.cleanup();
+  }
+}
+
+// ── Unison ────────────────────────────────────────────────────────────────────
 
 async function queryUnison(
   song: string,
@@ -231,14 +306,37 @@ async function queryUnison(
   }
 }
 
+function buildArtistCandidates(cleanArtist: string): string[] {
+  const primaryArtist = cleanArtist.split(/[,&/]/)[0]?.trim() || '';
+  if (primaryArtist && primaryArtist !== cleanArtist) {
+    return [cleanArtist, primaryArtist];
+  }
+  return [cleanArtist];
+}
+
+async function findFirstLyricsHit(
+  candidates: string[],
+  queryFn: (candidateArtist: string) => Promise<TrackLyrics | null>,
+  externalSignal?: AbortSignal
+): Promise<TrackLyrics | null> {
+  for (const candidateArtist of candidates) {
+    if (externalSignal?.aborted) return null;
+    const hit = await queryFn(candidateArtist);
+    if (hit) return hit;
+  }
+  return null;
+}
+
 export async function fetchTrackLyrics(
   artist: string,
   song: string,
   externalSignal?: AbortSignal,
-  forceRefresh = false
+  forceRefresh = false,
+  album = ''
 ): Promise<TrackLyrics | null> {
   const cleanArtist = artist.trim();
   const cleanSong = song.trim();
+  const cleanAlbum = album.trim();
   if (!cleanArtist || !cleanSong) return null;
 
   const key = cacheKey(cleanArtist, cleanSong);
@@ -246,21 +344,23 @@ export async function fetchTrackLyrics(
     return lyricsCache.get(key) ?? null;
   }
 
-  const primaryArtist = cleanArtist.split(/[,&/]/)[0]?.trim() || '';
-  const candidates = [cleanArtist];
-  if (primaryArtist && primaryArtist !== cleanArtist) {
-    candidates.push(primaryArtist);
-  }
+  const candidates = buildArtistCandidates(cleanArtist);
 
-  for (const candidateArtist of candidates) {
-    if (externalSignal?.aborted) return null;
-    const hit = await queryUnison(cleanSong, candidateArtist, externalSignal);
-    if (hit) {
-      setCachedLyrics(key, hit);
-      return hit;
-    }
-  }
+  // 1️⃣ Try Unison first (rich TTML/LRC support), then fall back to LRCLib
+  const hit =
+    (await findFirstLyricsHit(
+      candidates,
+      (candidateArtist) => queryUnison(cleanSong, candidateArtist, externalSignal),
+      externalSignal
+    )) ??
+    (await findFirstLyricsHit(
+      candidates,
+      (candidateArtist) => queryLrclib(cleanSong, candidateArtist, cleanAlbum, externalSignal),
+      externalSignal
+    ));
 
-  setCachedLyrics(key, null);
-  return null;
+  if (externalSignal?.aborted) return null;
+
+  setCachedLyrics(key, hit);
+  return hit;
 }

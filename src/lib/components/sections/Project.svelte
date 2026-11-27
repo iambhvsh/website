@@ -22,6 +22,13 @@
   const tone = $derived<"primary" | "secondary" | "tertiary">(
     index % 3 === 1 ? "secondary" : index % 3 === 2 ? "tertiary" : "primary",
   );
+  const stageTone = $derived(
+    index % 3 === 1
+      ? "stage-secondary"
+      : index % 3 === 2
+        ? "stage-tertiary"
+        : "stage-primary",
+  );
   const initial = $derived(project.name.replace("@iambhvsh/", "")[0]);
 
   let hoverCount = $state(0);
@@ -62,52 +69,109 @@
   </Item>
 {:else}
   <Card
+    compact
     href={project.url}
     external
-    onpointerenter={handlePointerEnter}
-    onpointerleave={handlePointerLeave}
+    class="setup-card"
   >
-    <Badge shape={displayedShape} {tone} spring="fast">
-      {initial}
-    </Badge>
-
-    <div>
-      <div class="label tag">{project.tag}</div>
-      <h3 class="tl flex600">{project.name}</h3>
+    <div class="project-stage {stageTone}">
+      <span class="project-mark hero" aria-hidden="true">{initial}</span>
     </div>
 
-    <p class="bm desc">{project.description}</p>
-    <div class="bs stack">{project.stack}</div>
-
-    <span class="go" aria-hidden="true">
-      <ArrowOutwardIcon />
-    </span>
+    <div class="project-meta">
+      <div class="project-top">
+        <span class="label project-cat">{project.tag}</span>
+        <ArrowOutwardIcon class="ext-icon" aria-hidden="true" />
+      </div>
+      <h3 class="tl flex600">{project.name}</h3>
+      <p class="bm project-desc">{project.description}</p>
+      <span class="label project-stack">{project.stack}</span>
+    </div>
   </Card>
 {/if}
 
 <style>
-  .tag {
-    color: var(--p);
+  :global(.card.setup-card) {
+    padding: 12px;
+    gap: 14px;
   }
 
-  .desc {
-    color: var(--onv);
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
+  .project-stage {
+    width: 100%;
+    height: 124px;
+    border-radius: var(--r-lg);
+    display: grid;
+    place-items: center;
     overflow: hidden;
   }
 
-  .stack {
-    color: var(--onv);
-    opacity: 0.8;
-    margin-top: auto;
+  .project-stage.stage-primary {
+    background: var(--pc);
+    color: var(--onpc);
   }
 
-  .go {
-    align-self: flex-end;
+  .project-stage.stage-secondary {
+    background: var(--sc);
+    color: var(--onsc);
+  }
+
+  .project-stage.stage-tertiary {
+    background: var(--tc);
+    color: var(--ontc);
+  }
+
+  .project-mark {
+    font-size: 40px;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .project-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 0 8px 8px;
+  }
+
+  .project-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .project-cat {
     display: inline-flex;
-    transition: transform 0.4s var(--spring);
+    align-items: center;
+    padding: 3px 10px;
+    border-radius: 9999px;
+    background: var(--sf2);
+    color: var(--onv);
+  }
+
+  :global(.card.setup-card .ext-icon) {
+    color: var(--onv);
+    font-size: 18px;
+    flex: none;
+    transition: color var(--dur-short4) var(--ease-emphasized);
+  }
+
+  :global(.card.setup-card:hover .ext-icon) {
+    color: var(--p);
+  }
+
+  .project-desc {
+    color: var(--onv);
+  }
+
+  .project-stack {
+    color: var(--p);
+    margin-top: 2px;
+  }
+
+  @media (max-width: 640px) {
+    .project-stage {
+      height: 96px;
+    }
   }
 </style>

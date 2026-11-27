@@ -2,11 +2,11 @@
   import { Button, Shape } from "$lib/components/ui";
   import { SITE } from "$lib/data/site";
   import Github from "$lib/components/ui/Github.svelte";
-  import GridViewIcon from "~icons/material-symbols/grid-view-outline-rounded";
+  import ArrowDownwardIcon from "~icons/material-symbols/arrow-downward-rounded";
   import MailIcon from "~icons/material-symbols/mail-outline-rounded";
   import { HERO_SHAPE_CYCLE, prewarmMorphCycle } from "$lib/shapes";
 
-  const PROFILE_IMAGE = 'https://github.com/iambhvsh.png';
+  const PROFILE_IMAGE = "https://github.com/iambhvsh.png";
   let imgLoaded = $state(false);
   let imgError = $state(false);
 
@@ -74,11 +74,11 @@
       Software, interfaces and <b>thoughtful systems</b>. {SITE.location}.
     </p>
     <div class="row">
-      <Button href="#work">
+      <Button href="#explore">
         {#snippet icon()}
-          <GridViewIcon />
+          <ArrowDownwardIcon />
         {/snippet}
-        See my work
+        Explore
       </Button>
       <Button variant="tonal" href="mailto:{SITE.email}">
         {#snippet icon()}
@@ -107,16 +107,18 @@
     onclick={handleClick}
     onpointerenter={handleHover}
   >
-    <Shape shape={activeShape} spring="default" class="hero-shape hero">
+    <Shape shape={activeShape} spring="default" masked class="hero-shape hero">
       {#if !imgError}
         <img
           src={PROFILE_IMAGE}
           alt="Bhavesh Patil"
-          crossorigin="anonymous"
+          referrerpolicy="no-referrer"
           class="profile-img"
           class:visible={imgLoaded}
           onload={() => (imgLoaded = true)}
-          onerror={() => { imgError = true; }}
+          onerror={() => {
+            imgError = true;
+          }}
         />
       {/if}
       {#if imgError || !imgLoaded}
@@ -174,7 +176,7 @@
     position: relative;
     aspect-ratio: 1;
     width: 100%;
-    max-width: 380px;
+    max-width: 280px;
     justify-self: center;
     cursor: pointer;
     border: 0;
@@ -192,14 +194,16 @@
   .shapeBox :global(.hero-shape) {
     width: 100%;
     height: 100%;
-    --shape-fill: var(--pc);
+    background: var(--pc);
     color: var(--onpc);
-    font-size: clamp(38px, 11vw, 120px);
-    transition: color var(--dur-med4) var(--ease-emphasized);
+    font-size: clamp(38px, 8vw, 96px);
+    transition:
+      background var(--dur-med4) var(--ease-emphasized),
+      color var(--dur-med4) var(--ease-emphasized);
   }
 
   .shapeBox:hover :global(.hero-shape) {
-    --shape-fill: var(--p);
+    background: var(--p);
     color: var(--onp);
   }
 

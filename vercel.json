@@ -8,6 +8,10 @@
     {
       "source": "/resume",
       "destination": "/assets/resume.pdf"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ],
   "headers": [

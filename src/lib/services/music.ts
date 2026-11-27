@@ -11,6 +11,9 @@ export { LastFmFetchError, type NowPlayingTrack };
 export interface ItunesMedia {
   artworkUrl: string;
   previewUrl: string;
+  genre?: string;
+  releaseYear?: string;
+  durationText?: string;
 }
 
 interface ItunesResult {
@@ -19,6 +22,9 @@ interface ItunesResult {
   trackName?: unknown;
   artworkUrl100?: unknown;
   previewUrl?: unknown;
+  primaryGenreName?: unknown;
+  releaseDate?: unknown;
+  trackTimeMillis?: unknown;
 }
 
 interface ItunesQuery {
@@ -93,6 +99,14 @@ function pickBestItunesHit(
   return bestHit;
 }
 
+function formatDurationMs(ms: unknown): string {
+  if (typeof ms !== 'number' || !Number.isFinite(ms) || ms <= 0) return '';
+  const totalSec = Math.round(ms / 1000);
+  const mins = Math.floor(totalSec / 60);
+  const secs = totalSec % 60;
+  return `${mins}:${String(secs).padStart(2, '0')}`;
+}
+
 function extractItunesMedia(hit: ItunesResult | undefined): ItunesMedia {
   if (!hit) return { artworkUrl: '', previewUrl: '' };
 
@@ -102,10 +116,15 @@ function extractItunesMedia(hit: ItunesResult | undefined): ItunesMedia {
       .replace(/^http:/i, 'https:')
       .replace(/\b\d{1,5}x\d{1,5}bb/, '600x600bb')
     : '';
+  const rawDate = readSafeText(hit.releaseDate);
+  const yearMatch = /^(\d{4})/.exec(rawDate);
 
   return {
     artworkUrl: sanitizeHttpsUrl(upgraded, ['mzstatic.com']),
     previewUrl: sanitizeHttpsUrl(readSafeText(hit.previewUrl), ['itunes.apple.com']),
+    genre: readSafeText(hit.primaryGenreName),
+    releaseYear: yearMatch ? yearMatch[1] : '',
+    durationText: formatDurationMs(hit.trackTimeMillis),
   };
 }
 
@@ -171,16 +190,22 @@ export async function fetchItunesMedia(
 
   let artworkUrl = '';
   let previewUrl = '';
+  let genre = '';
+  let releaseYear = '';
+  let durationText = '';
 
   for (const spec of queries) {
     if (!spec.query.trim() || externalSignal?.aborted) continue;
     const media = await queryItunesMedia(spec, ctx, externalSignal, timeoutMs);
     artworkUrl ||= media.artworkUrl;
     previewUrl ||= media.previewUrl;
-    if (artworkUrl && previewUrl) break;
+    genre ||= media.genre ?? '';
+    releaseYear ||= media.releaseYear ?? '';
+    durationText ||= media.durationText ?? '';
+    if (artworkUrl && previewUrl && genre) break;
   }
 
-  return { artworkUrl, previewUrl };
+  return { artworkUrl, previewUrl, genre, releaseYear, durationText };
 }
 
 export async function fetchLatestTrack(

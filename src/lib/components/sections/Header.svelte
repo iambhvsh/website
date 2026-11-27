@@ -2,7 +2,9 @@
   import { untrack } from "svelte";
   import { Button } from "$lib/components/ui";
   import { NAV_ITEMS, SITE } from "$lib/data/site";
+  import CloseIcon from "~icons/material-symbols/close-rounded";
   import ContrastIcon from "~icons/material-symbols/contrast";
+  import MenuIcon from "~icons/material-symbols/menu-rounded";
   import { themeStore } from "$lib/stores/theme.svelte";
 
   interface Props {
@@ -15,6 +17,7 @@
   let pillWidth = $state(0);
   let pillVisible = $state(false);
   let themeSpin = $state(0);
+  let mobileMenuOpen = $state(false);
 
   function syncIndicator() {
     if (!navEl || !activeSection) {
@@ -51,11 +54,15 @@
     themeSpin += 180;
     themeStore.toggle();
   }
+
+  function closeMobileMenu() {
+    mobileMenuOpen = false;
+  }
 </script>
 
 <header>
   <div class="bar">
-    <a href="#top" class="name hero">{SITE.brand}</a>
+    <a href="/" class="name hero" onclick={closeMobileMenu}>{SITE.brand}</a>
     <nav bind:this={navEl} class="label" aria-label="Primary">
       <span
         class="nav-pill"
@@ -69,24 +76,58 @@
           href={item.href}
           data-section={item.sectionId}
           class:on={activeSection === item.sectionId}
+          aria-current={activeSection === item.sectionId ? "page" : undefined}
         >
           {item.label}
         </a>
       {/each}
     </nav>
-    <Button
-      variant="tonal"
-      iconOnly
-      ariaLabel="Toggle theme"
-      onclick={handleThemeToggle}
-    >
-      {#snippet icon()}
-        <span class="theme-glyph" style:transform="rotate({themeSpin}deg)">
-          <ContrastIcon />
-        </span>
-      {/snippet}
-    </Button>
+    <div class="actions">
+      <Button
+        variant="tonal"
+        iconOnly
+        ariaLabel="Toggle theme"
+        onclick={handleThemeToggle}
+      >
+        {#snippet icon()}
+          <span class="theme-glyph" style:transform="rotate({themeSpin}deg)">
+            <ContrastIcon />
+          </span>
+        {/snippet}
+      </Button>
+      <Button
+        variant="tonal"
+        iconOnly
+        class="menu-btn"
+        ariaLabel={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+        ariaPressed={mobileMenuOpen}
+        onclick={() => (mobileMenuOpen = !mobileMenuOpen)}
+      >
+        {#snippet icon()}
+          {#if mobileMenuOpen}
+            <CloseIcon />
+          {:else}
+            <MenuIcon />
+          {/if}
+        {/snippet}
+      </Button>
+    </div>
   </div>
+
+  {#if mobileMenuOpen}
+    <nav class="mobile-nav label" aria-label="Mobile navigation">
+      {#each NAV_ITEMS as item (item.href)}
+        <a
+          href={item.href}
+          class:on={activeSection === item.sectionId}
+          aria-current={activeSection === item.sectionId ? "page" : undefined}
+          onclick={closeMobileMenu}
+        >
+          {item.label}
+        </a>
+      {/each}
+    </nav>
+  {/if}
 </header>
 
 <style>
@@ -185,9 +226,56 @@
     transition: transform var(--dur-spring) var(--spring);
   }
 
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .actions :global(.menu-btn) {
+    display: none;
+  }
+
+  .mobile-nav {
+    display: none;
+  }
+
   @media (max-width: 700px) {
-    nav {
+    .bar nav {
       display: none;
+    }
+
+    .actions :global(.menu-btn) {
+      display: inline-flex;
+    }
+
+    .mobile-nav {
+      pointer-events: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin: 8px 20px 0;
+      padding: 8px;
+      background: color-mix(in srgb, var(--sf2) 94%, transparent);
+      backdrop-filter: blur(20px) saturate(1.4);
+      border-radius: var(--r-xl-inc);
+      border: 1px solid color-mix(in srgb, var(--ol-v) 45%, transparent);
+    }
+
+    .mobile-nav a {
+      padding: 12px 16px;
+      border-radius: var(--r-lg-inc);
+      color: var(--onv);
+      text-decoration: none;
+      transition:
+        background-color var(--dur-short4) var(--ease-emphasized),
+        color var(--dur-short4) var(--ease-emphasized);
+    }
+
+    .mobile-nav a:hover,
+    .mobile-nav a.on {
+      background: var(--sc);
+      color: var(--onsc);
     }
   }
 </style>
