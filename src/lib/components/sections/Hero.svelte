@@ -6,6 +6,10 @@
   import MailIcon from "~icons/material-symbols/mail-outline-rounded";
   import { HERO_SHAPE_CYCLE, prewarmMorphCycle } from "$lib/shapes";
 
+  const PROFILE_IMAGE = 'https://db.iambhvsh.in/images/profile.webp';
+  let imgLoaded = $state(false);
+  let imgError = $state(false);
+
   let shapeIndex = $state(0);
   const activeShape = $derived(HERO_SHAPE_CYCLE[shapeIndex]);
 
@@ -104,7 +108,20 @@
     onpointerenter={handleHover}
   >
     <Shape shape={activeShape} spring="default" class="hero-shape hero">
-      {SITE.initials}
+      {#if !imgError}
+        <img
+          src={PROFILE_IMAGE}
+          alt="Bhavesh Patil"
+          referrerpolicy="no-referrer"
+          class="profile-img"
+          class:visible={imgLoaded}
+          onload={() => (imgLoaded = true)}
+          onerror={() => { imgError = true; }}
+        />
+      {/if}
+      {#if imgError || !imgLoaded}
+        <span class="initials" aria-hidden={!imgError}>{SITE.initials}</span>
+      {/if}
     </Shape>
   </button>
 </section>
@@ -184,5 +201,24 @@
   .shapeBox:hover :global(.hero-shape) {
     --shape-fill: var(--p);
     color: var(--onp);
+  }
+
+  .profile-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity var(--dur-med2) var(--ease-emphasized);
+  }
+
+  .profile-img.visible {
+    opacity: 1;
+  }
+
+  .initials {
+    position: relative;
+    z-index: 1;
   }
 </style>

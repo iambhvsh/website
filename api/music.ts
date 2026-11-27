@@ -1,5 +1,5 @@
 import { metric } from '@vercel/functions';
-import { fetchLastFmLatestTrack, LastFmFetchError } from '../src/lib/services/lastfm';
+import { fetchLastFmLatestTrack, LastFmFetchError } from '../src/lib/services/lastfm.js';
 
 /** Proxy Last.fm recent track lookups server-side so LASTFM_API_KEY stays secret. */
 export async function GET(request: Request): Promise<Response> {
