@@ -1,10 +1,19 @@
 <script lang="ts">
   import { untrack } from "svelte";
-  import { Button } from "$lib/components/ui";
+  import { Badge, Button } from "$lib/components/ui";
   import { NAV_ITEMS, SITE } from "$lib/data/site";
+  import { BADGE_REST_SHAPES } from "$lib/shapes";
+  import ArrowOutwardIcon from "~icons/material-symbols/arrow-outward-rounded";
   import CloseIcon from "~icons/material-symbols/close-rounded";
   import ContrastIcon from "~icons/material-symbols/contrast";
+  import EditNoteIcon from "~icons/material-symbols/edit-note-rounded";
+  import GridViewIcon from "~icons/material-symbols/grid-view-rounded";
+  import HomeIcon from "~icons/material-symbols/home-rounded";
+  import LaptopMacIcon from "~icons/material-symbols/laptop-mac-outline";
   import MenuIcon from "~icons/material-symbols/menu-rounded";
+  import MusicNoteIcon from "~icons/material-symbols/music-note-rounded";
+  import PersonIcon from "~icons/material-symbols/person-rounded";
+  import SmartphoneIcon from "~icons/material-symbols/smartphone-outline";
   import { themeStore } from "$lib/stores/theme.svelte";
 
   interface Props {
@@ -18,6 +27,21 @@
   let pillVisible = $state(false);
   let themeSpin = $state(0);
   let mobileMenuOpen = $state(false);
+
+  const MOBILE_ICONS: Record<string, typeof HomeIcon> = {
+    "": HomeIcon,
+    about: PersonIcon,
+    work: GridViewIcon,
+    writing: EditNoteIcon,
+    music: MusicNoteIcon,
+    mac: LaptopMacIcon,
+    phone: SmartphoneIcon,
+  };
+
+  const MOBILE_ITEMS = [
+    { label: "Home", href: "/", sectionId: "" },
+    ...NAV_ITEMS,
+  ];
 
   function syncIndicator() {
     if (!navEl || !activeSection) {
@@ -58,7 +82,24 @@
   function closeMobileMenu() {
     mobileMenuOpen = false;
   }
+
+  function handleKeydown(event: KeyboardEvent) {
+    if (event.key === "Escape" && mobileMenuOpen) {
+      mobileMenuOpen = false;
+    }
+  }
 </script>
+
+<svelte:window onkeydown={handleKeydown} />
+
+{#if mobileMenuOpen}
+  <button
+    type="button"
+    class="menu-scrim"
+    aria-label="Close navigation menu"
+    onclick={closeMobileMenu}
+  ></button>
+{/if}
 
 <header>
   <div class="bar">
@@ -96,41 +137,76 @@
         {/snippet}
       </Button>
       <Button
-        variant="tonal"
+        variant={mobileMenuOpen ? "filled" : "tonal"}
         iconOnly
-        class="menu-btn"
+        class={mobileMenuOpen ? "menu-btn open" : "menu-btn"}
         ariaLabel={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
         ariaPressed={mobileMenuOpen}
         onclick={() => (mobileMenuOpen = !mobileMenuOpen)}
       >
         {#snippet icon()}
-          {#if mobileMenuOpen}
-            <CloseIcon />
-          {:else}
-            <MenuIcon />
-          {/if}
+          <span class="menu-glyph" class:open={mobileMenuOpen}>
+            {#if mobileMenuOpen}
+              <CloseIcon />
+            {:else}
+              <MenuIcon />
+            {/if}
+          </span>
         {/snippet}
       </Button>
     </div>
   </div>
 
-  {#if mobileMenuOpen}
-    <nav class="mobile-nav label" aria-label="Mobile navigation">
-      {#each NAV_ITEMS as item (item.href)}
-        <a
-          href={item.href}
-          class:on={activeSection === item.sectionId}
-          aria-current={activeSection === item.sectionId ? "page" : undefined}
-          onclick={closeMobileMenu}
-        >
-          {item.label}
-        </a>
-      {/each}
-    </nav>
-  {/if}
+  <div
+    class="mobile-drawer"
+    class:open={mobileMenuOpen}
+    inert={!mobileMenuOpen}
+    aria-hidden={!mobileMenuOpen}
+  >
+    <div class="mobile-drawer-inner">
+      <nav class="mobile-nav" aria-label="Mobile navigation">
+        <div class="mobile-nav-head">
+          <span class="label mobile-eyebrow">Navigate</span>
+          <span class="bs mobile-handle">@{SITE.handle}</span>
+        </div>
+        <div class="mobile-list">
+          {#each MOBILE_ITEMS as item, i (item.href)}
+            {@const ItemIcon = MOBILE_ICONS[item.sectionId] ?? HomeIcon}
+            {@const isActive = activeSection === item.sectionId}
+            <a
+              href={item.href}
+              class="mobile-item"
+              class:on={isActive}
+              style:--item-delay="{i * 28}ms"
+              aria-current={isActive ? "page" : undefined}
+              onclick={closeMobileMenu}
+            >
+              <Badge
+                shape={BADGE_REST_SHAPES[i % BADGE_REST_SHAPES.length]}
+                tone={isActive ? "primary" : "secondary"}
+                spring="fast"
+              >
+                <ItemIcon />
+              </Badge>
+              <span class="tm flex600 mobile-label">{item.label}</span>
+              {#if isActive}
+                <span class="active-dot" aria-hidden="true"></span>
+              {:else}
+                <ArrowOutwardIcon class="mobile-arrow" aria-hidden="true" />
+              {/if}
+            </a>
+          {/each}
+        </div>
+      </nav>
+    </div>
+  </div>
 </header>
 
 <style>
+  .menu-scrim {
+    display: none;
+  }
+
   header {
     position: fixed;
     top: calc(env(safe-area-inset-top, 0px) + 12px);
@@ -138,6 +214,7 @@
     right: 0;
     z-index: 20;
     pointer-events: none;
+    view-transition-name: site-header;
   }
 
   .bar {
@@ -151,7 +228,6 @@
     backdrop-filter: blur(20px) saturate(1.4);
     padding: 8px 8px 8px 20px;
     border-radius: var(--r-xl-inc);
-    border: 1px solid color-mix(in srgb, var(--ol-v) 45%, transparent);
   }
 
   @media (min-width: 1140px) {
@@ -167,7 +243,7 @@
     text-decoration: none;
   }
 
-  nav {
+  .bar nav {
     position: relative;
     display: flex;
     gap: 2px;
@@ -194,7 +270,7 @@
     opacity: 1;
   }
 
-  nav a {
+  .bar nav a {
     position: relative;
     z-index: 1;
     padding: 10px 16px;
@@ -207,23 +283,32 @@
       color var(--dur-short4) var(--ease-emphasized);
   }
 
-  nav a:hover {
+  .bar nav a:hover {
     background: color-mix(in srgb, var(--sc) 45%, transparent);
     color: var(--onsc);
     border-radius: var(--r-md);
   }
 
-  nav a:active {
+  .bar nav a:active {
     border-radius: var(--r-sm);
   }
 
-  nav a.on {
+  .bar nav a.on {
     color: var(--onsc);
   }
 
   .theme-glyph {
     display: inline-flex;
     transition: transform var(--dur-spring) var(--spring);
+  }
+
+  .menu-glyph {
+    display: inline-flex;
+    transition: transform var(--dur-spring-fast) var(--spring-fast);
+  }
+
+  .menu-glyph.open {
+    transform: rotate(90deg);
   }
 
   .actions {
@@ -236,11 +321,23 @@
     display: none;
   }
 
-  .mobile-nav {
+  .mobile-drawer {
     display: none;
   }
 
   @media (max-width: 700px) {
+    .menu-scrim {
+      display: block;
+      position: fixed;
+      inset: 0;
+      z-index: 19;
+      border: 0;
+      padding: 0;
+      background: color-mix(in srgb, var(--bg) 52%, transparent);
+      backdrop-filter: blur(6px);
+      cursor: pointer;
+    }
+
     .bar nav {
       display: none;
     }
@@ -249,33 +346,153 @@
       display: inline-flex;
     }
 
-    .mobile-nav {
-      pointer-events: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
+    .mobile-drawer {
+      display: grid;
+      grid-template-rows: 0fr;
+      opacity: 0;
+      transform: translateY(-10px);
+      transform-origin: top center;
+      pointer-events: none;
       margin: 8px 20px 0;
-      padding: 8px;
-      background: color-mix(in srgb, var(--sf2) 94%, transparent);
-      backdrop-filter: blur(20px) saturate(1.4);
-      border-radius: var(--r-xl-inc);
-      border: 1px solid color-mix(in srgb, var(--ol-v) 45%, transparent);
+      transition:
+        grid-template-rows 220ms var(--ease-emphasized-accel),
+        opacity 180ms var(--ease-emphasized-accel),
+        transform 220ms var(--ease-emphasized-accel);
     }
 
-    .mobile-nav a {
-      padding: 12px 16px;
-      border-radius: var(--r-lg-inc);
-      color: var(--onv);
-      text-decoration: none;
+    .mobile-drawer.open {
+      grid-template-rows: 1fr;
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
       transition:
+        grid-template-rows 420ms var(--ease-emphasized-decel),
+        opacity 260ms var(--ease-emphasized-decel),
+        transform 420ms var(--spring-fast);
+    }
+
+    .mobile-drawer-inner {
+      overflow: hidden;
+      border-radius: var(--r-xl-inc);
+    }
+
+    .mobile-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 14px;
+      background: color-mix(in srgb, var(--sf2) 94%, transparent);
+      backdrop-filter: blur(22px) saturate(1.4);
+      border-radius: var(--r-xl-inc);
+    }
+
+    .mobile-nav-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2px 8px;
+    }
+
+    .mobile-eyebrow {
+      color: var(--p);
+    }
+
+    .mobile-handle {
+      color: var(--onv);
+    }
+
+    .mobile-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .mobile-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 14px 8px 8px;
+      border-radius: var(--r-lg);
+      background: var(--sf);
+      color: var(--on);
+      text-decoration: none;
+      opacity: 0;
+      transform: translateY(-6px);
+      transition:
+        opacity 180ms var(--ease-emphasized-accel),
+        transform 180ms var(--ease-emphasized-accel),
+        border-radius var(--dur-spring-fast) var(--spring-fast),
         background-color var(--dur-short4) var(--ease-emphasized),
         color var(--dur-short4) var(--ease-emphasized);
     }
 
-    .mobile-nav a:hover,
-    .mobile-nav a.on {
+    .mobile-drawer.open .mobile-item {
+      opacity: 1;
+      transform: translateY(0);
+      transition:
+        opacity 280ms var(--ease-emphasized-decel) var(--item-delay, 0ms),
+        transform 340ms var(--ease-emphasized-decel) var(--item-delay, 0ms),
+        border-radius var(--dur-spring-fast) var(--spring-fast),
+        background-color var(--dur-short4) var(--ease-emphasized),
+        color var(--dur-short4) var(--ease-emphasized);
+    }
+
+    .mobile-item :global(.badge.morph-shape) {
+      width: 38px;
+      height: 38px;
+      flex: none;
+    }
+
+    .mobile-item :global(.badge.morph-shape .ms-icon) {
+      font-size: 19px;
+    }
+
+    .mobile-label {
+      flex: 1;
+    }
+
+    .active-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: currentColor;
+      flex: none;
+    }
+
+    .mobile-item :global(.mobile-arrow) {
+      font-size: 18px;
+      color: var(--onv);
+      flex: none;
+      transition: color var(--dur-short4) var(--ease-emphasized);
+    }
+
+    .mobile-item:hover {
       background: var(--sc);
       color: var(--onsc);
+      border-radius: var(--r-xl);
+    }
+
+    .mobile-item:hover :global(.mobile-arrow) {
+      color: var(--onsc);
+    }
+
+    .mobile-item:active {
+      border-radius: var(--r-md);
+    }
+
+    .mobile-item.on {
+      background: var(--pc);
+      color: var(--onpc);
+      border-radius: var(--r-xl);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-drawer,
+    .mobile-drawer.open,
+    .mobile-item,
+    .mobile-drawer.open .mobile-item {
+      transition: none;
     }
   }
 </style>

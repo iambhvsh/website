@@ -1063,17 +1063,38 @@
 
   @media (max-width: 640px) {
     :global(#now.page-section) {
-      padding-top: 28px !important;
+      padding-top: 20px !important;
     }
 
     .music-hero {
-      min-height: calc(100svh - 64px);
-      gap: 20px;
-      padding: 8px 0 72px;
+      min-height: calc(100svh - 56px);
+      align-content: start;
+      gap: 18px;
+      padding: 20px 0 68px;
     }
 
     .hero-left {
       gap: 14px;
+    }
+
+    .acts {
+      flex-wrap: nowrap;
+      gap: 8px;
+    }
+
+    .acts :global(.btn) {
+      height: 42px;
+      padding: 0 14px;
+      gap: 6px;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .acts :global(.btn.icon-btn) {
+      width: 42px;
+      height: 42px;
+      padding: 0;
+      flex: none;
     }
   }
 

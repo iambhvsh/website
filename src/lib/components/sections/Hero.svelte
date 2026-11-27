@@ -144,7 +144,7 @@
     .heroSec {
       grid-template-columns: 1fr;
       gap: 20px;
-      padding: 92px 0 32px;
+      padding: 72px 0 28px;
     }
 
     .shapeBox {

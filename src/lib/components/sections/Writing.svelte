@@ -360,13 +360,14 @@
 
   @media (max-width: 640px) {
     :global(#writing.page-section) {
-      padding-top: 28px !important;
+      padding-top: 20px !important;
     }
 
     .writing-hero {
-      min-height: calc(100svh - 64px);
-      gap: 20px;
-      padding: 8px 0 72px;
+      min-height: calc(100svh - 56px);
+      align-content: start;
+      gap: 18px;
+      padding: 20px 0 68px;
     }
 
     .hero-left {

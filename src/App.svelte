@@ -7,7 +7,6 @@
     Header,
     Hero,
     Interests,
-    Links,
     Listening,
     Music,
     Projects,
@@ -59,7 +58,6 @@
       <Hero />
       <Explore />
       <Sponsor />
-      <Links />
     {:else if router.current.id === 'about'}
       <About />
       <Stack />
@@ -124,15 +122,93 @@
   main {
     flex: 1;
     width: 100%;
+    view-transition-name: route-main;
   }
 
   main.subpage {
     padding-top: 40px;
   }
 
+  @media (max-width: 640px) {
+    main.subpage {
+      padding-top: 28px;
+    }
+  }
+
   .not-found-copy {
     color: var(--onv);
     margin-bottom: 24px;
     max-width: 44ch;
+  }
+
+  @keyframes m3-slide-out-left {
+    from {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateX(-36px);
+    }
+  }
+
+  @keyframes m3-slide-in-right {
+    from {
+      opacity: 0;
+      transform: translateX(44px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes m3-slide-out-right {
+    from {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateX(36px);
+    }
+  }
+
+  @keyframes m3-slide-in-left {
+    from {
+      opacity: 0;
+      transform: translateX(-44px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  :global(::view-transition-old(route-main)) {
+    animation: m3-slide-out-left 160ms var(--ease-emphasized-accel) both;
+  }
+
+  :global(::view-transition-new(route-main)) {
+    animation: m3-slide-in-right 340ms var(--ease-emphasized-decel) 40ms both;
+  }
+
+  :global(:root[data-nav-dir='backward']::view-transition-old(route-main)) {
+    animation: m3-slide-out-right 160ms var(--ease-emphasized-accel) both;
+  }
+
+  :global(:root[data-nav-dir='backward']::view-transition-new(route-main)) {
+    animation: m3-slide-in-left 340ms var(--ease-emphasized-decel) 40ms both;
+  }
+
+  :global(::view-transition-group(site-header)) {
+    z-index: 30;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :global(::view-transition-old(route-main)),
+    :global(::view-transition-new(route-main)) {
+      animation: none;
+    }
   }
 </style>

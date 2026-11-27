@@ -1,3 +1,5 @@
+import { flushSync } from 'svelte';
+
 export type RouteId =
   | 'home'
   | 'about'
@@ -63,6 +65,17 @@ const ROUTES: Record<string, Omit<RouteMatch, 'path'>> = {
   },
 };
 
+const ROUTE_ORDER: Record<RouteId, number> = {
+  home: 0,
+  about: 1,
+  work: 2,
+  writing: 3,
+  music: 4,
+  mac: 5,
+  phone: 6,
+  'not-found': 7,
+};
+
 const NOT_FOUND_ROUTE: Omit<RouteMatch, 'path'> = {
   id: 'not-found',
   navId: '',
@@ -108,6 +121,32 @@ class RouterStore {
       : { ...ROUTES['/'], path: '/' }
   );
 
+  private commitRoute(nextPath: string, hash: string) {
+    const nextRoute = resolveRoute(nextPath);
+    const routeChanged = nextRoute.id !== this.current.id || nextRoute.path !== this.current.path;
+    const prefersReduced =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const doc = typeof document !== 'undefined' ? (document as Document & {
+      startViewTransition?: (cb: () => void) => { finished: Promise<void> };
+    }) : undefined;
+
+    if (routeChanged && doc?.startViewTransition && !prefersReduced) {
+      doc.documentElement.dataset.navDir =
+        ROUTE_ORDER[nextRoute.id] >= ROUTE_ORDER[this.current.id] ? 'forward' : 'backward';
+      doc.startViewTransition(() => {
+        flushSync(() => {
+          this.current = nextRoute;
+        });
+        scrollAfterNavigation(hash);
+      });
+      return;
+    }
+
+    this.current = nextRoute;
+    scrollAfterNavigation(hash);
+  }
+
   navigate(to: string, options: { replace?: boolean } = {}) {
     if (typeof window === 'undefined') return;
 
@@ -124,8 +163,7 @@ class RouterStore {
       }
     }
 
-    this.current = resolveRoute(nextPath);
-    scrollAfterNavigation(url.hash);
+    this.commitRoute(nextPath, url.hash);
   }
 
   listen(): () => void {
@@ -134,8 +172,7 @@ class RouterStore {
     }
 
     const onPopState = () => {
-      this.current = resolveRoute(window.location.pathname);
-      scrollAfterNavigation(window.location.hash);
+      this.commitRoute(window.location.pathname, window.location.hash);
     };
 
     const onDocumentClick = (event: MouseEvent) => {

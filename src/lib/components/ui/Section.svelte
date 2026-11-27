@@ -26,4 +26,10 @@
   .sec-h {
     margin-bottom: 24px;
   }
+
+  @media (max-width: 640px) {
+    .page-section {
+      padding: 48px 0 20px;
+    }
+  }
 </style>

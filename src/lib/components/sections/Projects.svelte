@@ -19,10 +19,7 @@
   import AppsIcon from "~icons/material-symbols/apps";
   import GridViewIcon from "~icons/material-symbols/grid-view-outline-rounded";
   import LanguageIcon from "~icons/material-symbols/language";
-  import ViewListIcon from "~icons/material-symbols/view-list-outline-rounded";
   import Project from "./Project.svelte";
-
-  type ViewMode = "grid" | "list";
 
   const CATEGORY_ICONS: Record<ProjectCategory, Component> = {
     All: AppsIcon,
@@ -31,7 +28,6 @@
   };
 
   let activeCategory = $state<ProjectCategory>("All");
-  let viewMode = $state<ViewMode>("grid");
   let hoveredChip = $state<number | null>(null);
   let chipHoverCount = $state(0);
   let heroShapeIdx = $state(1);
@@ -132,83 +128,29 @@
   </div>
 
   <div id="projects-list" class="projects-body">
-    <div class="toolbar">
-      <div class="filter-group" role="tablist" aria-label="Filter projects by category">
-        {#each PROJECT_CATEGORIES as category (category)}
-          {@const IconComponent = CATEGORY_ICONS[category]}
-          {@const isActive = activeCategory === category}
-          <button
-            type="button"
-            role="tab"
-            aria-selected={isActive}
-            class="filter-pill label"
-            class:active={isActive}
-            onclick={() => (activeCategory = category)}
-          >
-            <IconComponent aria-hidden="true" />
-            <span>{category}</span>
-            <span class="count">{countFor(category)}</span>
-          </button>
-        {/each}
-      </div>
-
-      <div class="toolbar-right">
-        <div class="view-group" role="group" aria-label="Switch project layout">
-          <button
-            type="button"
-            class="view-btn label"
-            class:active={viewMode === "grid"}
-            aria-pressed={viewMode === "grid"}
-            aria-label="Grid cards"
-            onclick={() => (viewMode = "grid")}
-          >
-            <GridViewIcon aria-hidden="true" />
-            <span>Grid</span>
-          </button>
-          <button
-            type="button"
-            class="view-btn label"
-            class:active={viewMode === "list"}
-            aria-pressed={viewMode === "list"}
-            aria-label="Expressive list"
-            onclick={() => (viewMode = "list")}
-          >
-            <ViewListIcon aria-hidden="true" />
-            <span>List</span>
-          </button>
-        </div>
-
-        <Split
-          label="More on GitHub"
-          href={SITE.githubUrl}
-          external
-          size="sm"
-          align="end"
-          menuLabel="More project links"
-          items={projectActionItems}
-        >
-          {#snippet leadingIcon()}
-            <Github />
-          {/snippet}
-        </Split>
-      </div>
+    <div class="projects-toolbar">
+      <h2 class="tl flex600">Projects</h2>
+      <Split
+        label="More on GitHub"
+        variant="tonal"
+        href={SITE.githubUrl}
+        external
+        menuLabel="More project links"
+        items={projectActionItems}
+      >
+        {#snippet leadingIcon()}
+          <Github />
+        {/snippet}
+      </Split>
     </div>
 
-    {#if viewMode === "grid"}
-      <div class="masonry">
-        {#each filteredProjects as project, i (project.name)}
-          <div class="masonry-item">
-            <Project {project} index={i} />
-          </div>
-        {/each}
-      </div>
-    {:else}
-      <div class="proj-list">
-        {#each filteredProjects as project, i (project.name)}
-          <Project {project} index={i} variant="list" />
-        {/each}
-      </div>
-    {/if}
+    <div class="masonry">
+      {#each filteredProjects as project, i (project.name)}
+        <div class="masonry-item">
+          <Project {project} index={i} />
+        </div>
+      {/each}
+    </div>
   </div>
 </Section>
 
@@ -329,108 +271,13 @@
     padding-top: 32px;
   }
 
-  .toolbar {
+  .projects-toolbar {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
     gap: 12px;
     margin-bottom: 24px;
-  }
-
-  .filter-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  .filter-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    height: 40px;
-    padding: 0 14px 0 12px;
-    border: 0;
-    border-radius: 9999px;
-    cursor: pointer;
-    background: var(--sf);
-    color: var(--onv);
-    transition:
-      border-radius var(--dur-spring-fast) var(--spring-fast),
-      background-color var(--dur-short4) var(--ease-emphasized),
-      color var(--dur-short4) var(--ease-emphasized);
-  }
-
-  .filter-pill:hover {
-    background: var(--sf2);
-    color: var(--on);
-    border-radius: var(--r-lg);
-  }
-
-  .filter-pill.active {
-    background: var(--pc);
-    color: var(--onpc);
-    border-radius: var(--r-lg);
-  }
-
-  .filter-pill:active {
-    border-radius: var(--r-md);
-  }
-
-  .filter-pill :global(.ms-icon) {
-    font-size: 18px;
-  }
-
-  .count {
-    padding: 2px 7px;
-    border-radius: 9999px;
-    background: color-mix(in srgb, currentColor 12%, transparent);
-    font-size: 11px;
-  }
-
-  .view-group {
-    display: inline-flex;
-    padding: 4px;
-    gap: 4px;
-    border-radius: 9999px;
-    background: var(--sf);
-  }
-
-  .view-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    height: 34px;
-    padding: 0 12px;
-    border: 0;
-    border-radius: 9999px;
-    cursor: pointer;
-    background: transparent;
-    color: var(--onv);
-    transition:
-      border-radius var(--dur-spring-fast) var(--spring-fast),
-      background-color var(--dur-short4) var(--ease-emphasized),
-      color var(--dur-short4) var(--ease-emphasized);
-  }
-
-  .view-btn:hover {
-    color: var(--on);
-  }
-
-  .view-btn.active {
-    background: var(--sc);
-    color: var(--onsc);
-  }
-
-  .view-btn :global(.ms-icon) {
-    font-size: 18px;
-  }
-
-  .toolbar-right {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 10px;
   }
 
   .masonry {
@@ -441,12 +288,6 @@
   .masonry-item {
     break-inside: avoid;
     margin-bottom: 16px;
-  }
-
-  .proj-list {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
   }
 
   @media (max-width: 860px) {
@@ -478,13 +319,14 @@
 
   @media (max-width: 640px) {
     :global(#work.page-section) {
-      padding-top: 28px !important;
+      padding-top: 20px !important;
     }
 
     .work-hero {
-      min-height: calc(100svh - 64px);
-      gap: 20px;
-      padding: 8px 0 72px;
+      min-height: calc(100svh - 56px);
+      align-content: start;
+      gap: 18px;
+      padding: 20px 0 68px;
     }
 
     .hero-left {
