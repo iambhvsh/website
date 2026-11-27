@@ -6,7 +6,7 @@
   import MailIcon from "~icons/material-symbols/mail-outline-rounded";
   import { HERO_SHAPE_CYCLE, prewarmMorphCycle } from "$lib/shapes";
 
-  const PROFILE_IMAGE = 'https://db.iambhvsh.in/images/profile.webp';
+  const PROFILE_IMAGE = 'https://github.com/iambhvsh.png';
   let imgLoaded = $state(false);
   let imgError = $state(false);
 
