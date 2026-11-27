@@ -1,0 +1,83 @@
+.flex400,
+.tl,
+.bm,
+.bs {
+  font-weight: 400;
+}
+
+.flex500 {
+  font-weight: 500;
+  font-variation-settings: 'ROND' 50;
+}
+
+.flex600,
+.display,
+.headline,
+.tm,
+.ts,
+.bl,
+.label {
+  font-weight: 600;
+  font-variation-settings: 'ROND' 100;
+}
+
+.hero {
+  font-weight: 900;
+  font-variation-settings: 'ROND' 40, 'wdth' 112.5;
+}
+
+.inline {
+  font-feature-settings: 'ss02', 'dlig';
+  font-weight: 400;
+}
+
+.inline b {
+  font-weight: 600;
+  font-variation-settings: 'ROND' 100;
+}
+
+.headline {
+  font-size: clamp(28px, 4vw, 36px);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.tl {
+  font-size: 22px;
+  line-height: 28px;
+}
+
+.tm {
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.15px;
+}
+
+.ts {
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.1px;
+}
+
+.bl {
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.label {
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.1px;
+}
+
+.bm {
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.25px;
+}
+
+.bs {
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.4px;
+}

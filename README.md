@@ -1,144 +1,89 @@
-# Bhavesh Patil
+# Bhavesh Patil — Svelte 5 Portfolio
 
-A personal website exploring software, interfaces and thoughtful digital systems.
+Modular Svelte 5 + TypeScript + Vite rewrite of the single-file portfolio using:
 
-Designed as a quiet and editorial digital space for selected work, writing, experiments and ideas.
+- **Shapes & Morphing**: [`material-shapes-ts`](https://github.com/ruanspies/material-shapes-ts) (`MaterialShapes`, `animateMorph`, `roundedPolygonToPath`) wrapped in a reusable `<Shape>` component and `<Badge>` primitive.
+- **Variable Font**: [`@fontsource-variable/google-sans-flex`](https://www.npmjs.com/package/@fontsource-variable/google-sans-flex) self-hosted via Vite with full `wght`, `wdth`, and `ROND` variable axis support.
+- **Tree-Shakeable Material Icons**: [`unplugin-icons`](https://github.com/unplugin/unplugin-icons) + `@iconify-json/material-symbols` compiling only statically imported icons (`src/lib/icons/index.ts`) into inline Svelte SVG components at build time.
 
----
+## Quick Start
 
-## Overview
+```bash
+npm install
+npm run dev
+```
 
-This website acts as a central hub for projects, notes, essays and ongoing explorations across design and technology.
+Other scripts:
 
-The experience is shaped around clarity, typography, interaction detail and spatial balance — combining modern interface design with a more editorial and human presentation style.
+```bash
+npm run check   # TypeScript + Svelte type checking
+npm run build   # Production build to dist/
+npm run preview # Preview production build locally
+```
 
-Rather than functioning as a traditional portfolio, the site is intended to feel more like a living digital environment: structured, intentional and continuously evolving over time.
+## Project Structure
 
----
-
-## Philosophy
-
-The overall direction of the website is influenced by a strong interest in interface systems, product design and the way software feels during use.
-
-Every section is approached with attention to rhythm, layout density, motion and readability. Small interaction details, transition timing and visual hierarchy are treated as part of the overall experience rather than decorative additions.
-
-The visual language draws inspiration from:
-
-- Editorial publishing systems
-- Industrial and aviation design
-- Minimal digital interfaces
-- Contemporary product design
-- Calm and focused software experiences
-
-The result is a website built around precision, restraint and thoughtful presentation.
-
----
-
-## Features
-
-### Interface & Experience
-
-- Responsive layout across devices
-- Automatic light and dark appearance support
-- Smooth transitions and refined interaction feedback
-- Carefully balanced spacing and typography system
-- Editorial-style content structure
-- Consistent visual hierarchy
-- Keyboard accessible interactions
-- Reduced motion support
-
-### Technical
-
-- Single-file architecture
-- Semantic HTML structure
-- Optimized rendering performance
-- SEO and social metadata support
-- Lightweight asset footprint
-- Modern browser compatibility
-
----
-
-## Tech Stack
-
-Built using a lightweight frontend stack focused on performance and simplicity.
-
-- HTML5
-- CSS3
-- Vanilla JavaScript
-- Google Fonts
-- Material Symbols
-
-No frameworks are used.
-
----
-
-## Site Structure
-
-The website is divided into a series of editorial sections designed to flow naturally while keeping navigation simple and direct.
-
-### Sections include:
-
-- Hero / introduction
-- About
-- Work and approach
-- Interests
-- Writing references
-- External links
-- Contact
-
-Additional subdomains extend the ecosystem into more focused spaces for projects and writing.
-
----
-
-## Design System
-
-The interface uses a custom design system built around:
-
-- 8px spacing grid
-- Fluid typography
-- Adaptive color tokens
-- Soft elevation and shadows
-- Rounded geometry
-- Motion curves tuned for natural interaction
-- System-aware theme handling
-
-The entire visual system is designed to remain consistent while adapting naturally across different screen sizes and environments.
-
----
-
-## Accessibility
-
-Accessibility is considered throughout the experience, including:
-
-- Semantic markup
-- Keyboard navigation support
-- Visible focus states
-- Reduced motion handling
-- Responsive scaling
-- Readable contrast ratios
-- Screen-reader friendly structure
-
----
-
-## Performance
-
-The website is designed with a strong focus on responsiveness and efficient rendering.
-
-Minimal JavaScript, optimized structure and lightweight assets help maintain a fast and fluid experience across modern devices.
-
----
-
-## Links
-
-- Main Website — https://iambhvsh.in
-- Work — https://work.iambhvsh.in
-- Writing — https://writing.iambhvsh.in
-- Links — https://links.iambhvsh.in
-
----
-
-## License
-
-Personal project.
-
-All rights reserved unless stated otherwise.
+```text
+├── index.html                      # Entry HTML + SEO & JSON-LD metadata
+├── package.json
+├── svelte.config.js
+├── tsconfig.json
+├── vite.config.ts                  # Svelte + unplugin-icons + path aliases
+└── src/
+    ├── main.ts                     # Loads Google Sans Flex + global CSS + mounts App
+    ├── App.svelte                  # Root layout + scroll spy
+    ├── env.d.ts               # Vite, Svelte & unplugin-icons types
+    ├── styles/
+    │   ├── tokens.css              # Material 3 Expressive light/dark palette & radii
+    │   ├── typography.css          # Google Sans Flex variable font classes
+    │   └── base.css                # Global resets, layout helpers, reduced motion
+    └── lib/
+        ├── shapes/
+        │   └── index.ts            # material-shapes-ts wrapper & M3E spring easing
+        ├── icons/
+        │   └── index.ts            # Tree-shakeable static Material Symbols imports
+        ├── stores/
+        │   ├── theme.svelte.ts     # Reactive light/dark theme toggle
+        │   └── spy.svelte.ts # Reusable IntersectionObserver scroll spy
+        ├── services/
+        │   ├── music.ts           # Last.fm latest-song + iTunes 600px artwork API
+        │   └── feed.ts              # Writing RSS feed parser
+        ├── data/                   # Typed content modules (easy to edit)
+        │   ├── site.ts
+        │   ├── projects.ts
+        │   ├── stack.ts
+        │   ├── devices.ts
+        │   ├── interests.ts
+        │   └── links.ts
+        └── components/
+            ├── ui/                 # Reusable M3E primitives
+            │   ├── Button.svelte
+            │   ├── Card.svelte
+            │   ├── Chip.svelte
+            │   ├── Github.svelte
+            │   ├── Shape.svelte
+            │   ├── Section.svelte
+            │   ├── Badge.svelte
+            │   ├── Stat.svelte
+            │   ├── Panel.svelte
+            │   ├── Pill.svelte
+            │   └── index.ts
+            └── sections/           # Modular page sections & cards
+                ├── Header.svelte
+                ├── Hero.svelte
+                ├── About.svelte
+                ├── Stack.svelte
+                ├── Project.svelte
+                ├── Projects.svelte
+                ├── Listening.svelte
+                ├── Device.svelte
+                ├── Devices.svelte
+                ├── Interests.svelte
+                ├── Post.svelte
+                ├── Writing.svelte
+                ├── Sponsor.svelte
+                ├── Link.svelte
+                ├── Links.svelte
+                ├── Footer.svelte
+                └── index.ts
+```

@@ -1,0 +1,107 @@
+html {
+  scroll-padding-top: calc(env(safe-area-inset-top, 0px) + 88px);
+  scroll-behavior: smooth;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  background: var(--bg);
+  color: var(--on);
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-variation-settings: 'ROND' 0;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+  transition:
+    background-color var(--dur-med2) var(--ease-emphasized),
+    color var(--dur-med2) var(--ease-emphasized);
+}
+
+.ms-icon {
+  font-size: 22px;
+  line-height: 1;
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  flex: none;
+}
+
+.wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.more {
+  margin-top: 20px;
+}
+
+.surface-morph {
+  border-radius: var(--r-card);
+  transition:
+    border-radius var(--dur-spring) var(--spring),
+    background-color var(--dur-med2) var(--ease-emphasized);
+}
+
+.surface-morph:hover {
+  border-radius: var(--r-card-hover);
+}
+
+.surface-morph.interactive:active {
+  border-radius: var(--r-card-press);
+}
+
+.badge.morph-shape {
+  width: 56px;
+  height: 56px;
+  font-size: 20px;
+  transition: color var(--dur-med2) var(--ease-emphasized);
+}
+
+.badge.morph-shape.primary {
+  --shape-fill: var(--pc);
+  color: var(--onpc);
+}
+
+.badge.morph-shape.secondary {
+  --shape-fill: var(--sc);
+  color: var(--onsc);
+}
+
+.badge.morph-shape.tertiary {
+  --shape-fill: var(--tc);
+  color: var(--ontc);
+}
+
+.badge.morph-shape .ms-icon {
+  font-size: 28px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+    scroll-behavior: auto !important;
+  }
+}

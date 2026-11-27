@@ -1,15 +1,15 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-
+  "framework": "vite",
+  "buildCommand": "pnpm build",
+  "outputDirectory": "dist",
   "cleanUrls": true,
-
   "rewrites": [
     {
       "source": "/resume",
       "destination": "/assets/resume.pdf"
     }
   ],
-
   "headers": [
     {
       "source": "/assets/(.*)",
