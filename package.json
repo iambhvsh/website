@@ -28,6 +28,9 @@
   "knip": {
     "entry": [
       "api/**/*.ts"
+    ],
+    "ignoredExports": [
+      "fetchLastFmLatestTrack"
     ]
   }
 }

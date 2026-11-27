@@ -1,4 +1,4 @@
-import { createTimeoutSignal, sanitizeHttpsUrl } from './url';
+import { createTimeoutSignal, sanitizeHttpsUrl } from './url.js';
 
 export interface NowPlayingTrack {
   name: string;

@@ -3,8 +3,8 @@ import {
   LastFmFetchError,
   readSafeText,
   type NowPlayingTrack,
-} from './lastfm';
-import { createTimeoutSignal, sanitizeHttpsUrl } from './url';
+} from './lastfm.js';
+import { createTimeoutSignal, sanitizeHttpsUrl } from './url.js';
 
 export { LastFmFetchError, type NowPlayingTrack };
 
