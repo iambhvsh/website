@@ -272,9 +272,9 @@
 
     .about-hero {
       min-height: calc(100svh - 56px);
-      align-content: start;
-      gap: 18px;
-      padding: 20px 0 68px;
+      align-content: center;
+      gap: 20px;
+      padding: 16px 0 68px;
     }
 
     .hero-left {
