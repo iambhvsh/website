@@ -214,7 +214,6 @@
     right: 0;
     z-index: 20;
     pointer-events: none;
-    view-transition-name: site-header;
   }
 
   .bar {
@@ -224,8 +223,9 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    background: color-mix(in srgb, var(--sf2) 86%, transparent);
-    backdrop-filter: blur(20px) saturate(1.4);
+    background: color-mix(in srgb, var(--sf2) 68%, transparent);
+    -webkit-backdrop-filter: blur(24px) saturate(1.6);
+    backdrop-filter: blur(24px) saturate(1.6);
     padding: 8px 8px 8px 20px;
     border-radius: var(--r-xl-inc);
   }
@@ -381,8 +381,9 @@
       flex-direction: column;
       gap: 10px;
       padding: 14px;
-      background: color-mix(in srgb, var(--sf2) 94%, transparent);
-      backdrop-filter: blur(22px) saturate(1.4);
+      background: color-mix(in srgb, var(--sf2) 74%, transparent);
+      -webkit-backdrop-filter: blur(24px) saturate(1.6);
+      backdrop-filter: blur(24px) saturate(1.6);
       border-radius: var(--r-xl-inc);
     }
 

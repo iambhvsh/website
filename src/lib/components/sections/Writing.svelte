@@ -1,12 +1,11 @@
 <script lang="ts">
-  import { Badge, Scroll, Section, Shape, Split } from '$lib/components/ui';
+  import { Badge, Loader, Scroll, Section, Shape, Split } from '$lib/components/ui';
   import type { SplitMenuItem } from '$lib/components/ui/Split.svelte';
   import { SITE } from '$lib/data/site';
   import {
     BADGE_HOVER_SHAPES,
     BADGE_REST_SHAPES,
     HERO_SHAPE_CYCLE,
-    LOADING_SHAPES,
     type ShapeName,
   } from '$lib/shapes';
   import EditNoteIcon from '~icons/material-symbols/edit-note-rounded';
@@ -32,7 +31,6 @@
   let posts = $state<WritingPost[]>([]);
   let error = $state(false);
   let loading = $state(true);
-  let loadShapeIndex = $state(0);
   let hoveredChip = $state<number | null>(null);
   let chipHoverCount = $state(0);
   let heroShapeIdx = $state(2);
@@ -43,14 +41,6 @@
     }
     return BADGE_REST_SHAPES[index % BADGE_REST_SHAPES.length];
   }
-
-  $effect(() => {
-    if (!loading) return;
-    const timer = setInterval(() => {
-      loadShapeIndex = (loadShapeIndex + 1) % LOADING_SHAPES.length;
-    }, 650);
-    return () => clearInterval(timer);
-  });
 
   $effect(() => {
     let cancelled = false;
@@ -156,15 +146,8 @@
     </div>
 
     {#if loading && posts.length === 0}
-      <div class="loading-row" role="status" aria-live="polite">
-        <Shape
-          shape={LOADING_SHAPES[loadShapeIndex]}
-          spring="fast"
-          spin
-          ariaHidden
-          class="writing-loader"
-        />
-        <span class="bm fallback">Loading latest writing…</span>
+      <div class="loading-row">
+        <Loader label="Loading latest writing…" />
       </div>
     {:else if posts.length > 0}
       <div class="masonry">
@@ -314,17 +297,7 @@
   }
 
   .loading-row {
-    display: flex;
-    align-items: center;
-    gap: 14px;
     padding: 16px 0;
-  }
-
-  .loading-row :global(.writing-loader) {
-    width: 44px;
-    height: 44px;
-    flex: none;
-    --shape-fill: var(--pc);
   }
 
   .fallback {
@@ -342,15 +315,32 @@
     .hero-visual {
       order: -1;
       justify-content: center;
+      width: 100%;
+      max-width: 360px;
+      margin: 0 auto;
       min-height: 220px;
-      padding: 28px 20px;
+      padding: 24px 20px;
       background: var(--sf);
-      border-radius: var(--r-card);
+      border-radius: 32px;
+    }
+
+    .hero-left,
+    .writing-head {
+      align-items: center;
+      text-align: center;
+    }
+
+    .chips-row {
+      justify-content: center;
+    }
+
+    .info-chip {
+      text-align: left;
     }
 
     .hero-visual :global(.visual-shape) {
-      width: 164px;
-      height: 164px;
+      width: 172px;
+      height: 172px;
     }
 
     .visual-icon :global(.ms-icon) {
@@ -367,7 +357,7 @@
       min-height: calc(100svh - 56px);
       align-content: center;
       gap: 20px;
-      padding: 16px 0 68px;
+      padding: 36px 0 68px;
     }
 
     .hero-left {

@@ -3,14 +3,13 @@
   "framework": "vite",
   "buildCommand": "pnpm build",
   "outputDirectory": "dist",
-  "cleanUrls": true,
   "rewrites": [
     {
       "source": "/resume",
       "destination": "/assets/resume.pdf"
     },
     {
-      "source": "/(.*)",
+      "source": "/((?!api/|assets/).*)",
       "destination": "/index.html"
     }
   ],

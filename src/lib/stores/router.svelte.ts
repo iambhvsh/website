@@ -114,12 +114,19 @@ function scrollAfterNavigation(hash: string) {
   window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
 }
 
+type ViewTransitionHandle = {
+  finished: Promise<void>;
+  skipTransition?: () => void;
+};
+
 class RouterStore {
   current = $state<RouteMatch>(
     typeof window !== 'undefined'
       ? resolveRoute(window.location.pathname)
       : { ...ROUTES['/'], path: '/' }
   );
+
+  private activeTransition: ViewTransitionHandle | undefined;
 
   private commitRoute(nextPath: string, hash: string) {
     const nextRoute = resolveRoute(nextPath);
@@ -128,19 +135,34 @@ class RouterStore {
       typeof window !== 'undefined' &&
       window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const doc = typeof document !== 'undefined' ? (document as Document & {
-      startViewTransition?: (cb: () => void) => { finished: Promise<void> };
+      startViewTransition?: (cb: () => void) => ViewTransitionHandle;
     }) : undefined;
 
     if (routeChanged && doc?.startViewTransition && !prefersReduced) {
-      doc.documentElement.dataset.navDir =
-        ROUTE_ORDER[nextRoute.id] >= ROUTE_ORDER[this.current.id] ? 'forward' : 'backward';
-      doc.startViewTransition(() => {
-        flushSync(() => {
-          this.current = nextRoute;
+      try {
+        this.activeTransition?.skipTransition?.();
+        doc.documentElement.dataset.navDir =
+          ROUTE_ORDER[nextRoute.id] >= ROUTE_ORDER[this.current.id] ? 'forward' : 'backward';
+        doc.documentElement.classList.add('vt-active');
+        const transition = doc.startViewTransition(() => {
+          flushSync(() => {
+            this.current = nextRoute;
+          });
+          scrollAfterNavigation(hash);
         });
-        scrollAfterNavigation(hash);
-      });
-      return;
+        this.activeTransition = transition;
+        void transition.finished
+          .catch(() => {})
+          .finally(() => {
+            if (this.activeTransition === transition) {
+              this.activeTransition = undefined;
+              doc.documentElement.classList.remove('vt-active');
+            }
+          });
+        return;
+      } catch {
+        doc.documentElement.classList.remove('vt-active');
+      }
     }
 
     this.current = nextRoute;
@@ -188,9 +210,15 @@ class RouterStore {
       }
 
       const target = event.target;
-      if (!(target instanceof Element)) return;
+      let el: Element | null = null;
+      if (target instanceof Element) {
+        el = target;
+      } else if (target instanceof Node) {
+        el = target.parentElement;
+      }
+      if (!el) return;
 
-      const anchor = target.closest('a[href]');
+      const anchor = el.closest('a[href]');
       if (!(anchor instanceof HTMLAnchorElement)) return;
       if (anchor.target === '_blank' || anchor.hasAttribute('download')) return;
 

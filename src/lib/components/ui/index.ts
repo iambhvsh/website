@@ -1,8 +1,8 @@
 export { default as Badge } from './Badge.svelte';
 export { default as Button } from './Button.svelte';
 export { default as Card } from './Card.svelte';
-export { default as Fab } from './Fab.svelte';
 export { default as Item } from './Item.svelte';
+export { default as Loader } from './Loader.svelte';
 export { default as Macbook } from './Macbook.svelte';
 export { default as Panel } from './Panel.svelte';
 export { default as Phone } from './Phone.svelte';

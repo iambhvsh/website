@@ -8,6 +8,7 @@
     Hero,
     Interests,
     Listening,
+    Missing,
     Music,
     Projects,
     Setup,
@@ -15,12 +16,10 @@
     Stack,
     Writing,
   } from '$lib/components/sections';
-  import { Button, Fab, Macbook, Phone, Section } from '$lib/components/ui';
+  import { Macbook, Phone } from '$lib/components/ui';
   import { MAC_APPS, MAC_SPECS } from '$lib/data/mac';
   import { PHONE_APPS, PHONE_SPECS } from '$lib/data/phone';
   import { router } from '$lib/stores/router.svelte';
-
-  let isScrolled = $state(false);
 
   $effect(() => {
     document.title = router.current.title;
@@ -29,22 +28,11 @@
   $effect(() => {
     const stopRouter = router.listen();
     const blockSelect = (event: Event) => event.preventDefault();
-    const onScroll = () => {
-      const y = window.scrollY;
-      if (!isScrolled && y > 360) {
-        isScrolled = true;
-      } else if (isScrolled && y < 240) {
-        isScrolled = false;
-      }
-    };
 
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
     document.addEventListener('selectstart', blockSelect);
 
     return () => {
       stopRouter();
-      window.removeEventListener('scroll', onScroll);
       document.removeEventListener('selectstart', blockSelect);
     };
   });
@@ -97,19 +85,12 @@
         {/snippet}
       </Setup>
     {:else}
-      <Section id="not-found" title="Page not found">
-        <p class="bm not-found-copy">
-          The page you’re looking for doesn’t exist or has moved.
-        </p>
-        <Button href="/">Go home</Button>
-      </Section>
+      <Missing />
     {/if}
   </main>
 
   <Footer />
 </div>
-
-<Fab visible={isScrolled} />
 
 <style>
   .page-shell {
@@ -122,6 +103,9 @@
   main {
     flex: 1;
     width: 100%;
+  }
+
+  :global(:root.vt-active) main {
     view-transition-name: route-main;
   }
 
@@ -133,12 +117,6 @@
     main.subpage {
       padding-top: 28px;
     }
-  }
-
-  .not-found-copy {
-    color: var(--onv);
-    margin-bottom: 24px;
-    max-width: 44ch;
   }
 
   @keyframes m3-slide-out-left {
@@ -185,6 +163,10 @@
     }
   }
 
+  :global(::view-transition) {
+    pointer-events: none;
+  }
+
   :global(::view-transition-old(route-main)) {
     animation: m3-slide-out-left 160ms var(--ease-emphasized-accel) both;
   }
@@ -199,10 +181,6 @@
 
   :global(:root[data-nav-dir='backward']::view-transition-new(route-main)) {
     animation: m3-slide-in-left 340ms var(--ease-emphasized-decel) 40ms both;
-  }
-
-  :global(::view-transition-group(site-header)) {
-    z-index: 30;
   }
 
   @media (prefers-reduced-motion: reduce) {

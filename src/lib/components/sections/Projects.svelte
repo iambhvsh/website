@@ -301,15 +301,32 @@
     .hero-visual {
       order: -1;
       justify-content: center;
+      width: 100%;
+      max-width: 360px;
+      margin: 0 auto;
       min-height: 220px;
-      padding: 28px 20px;
+      padding: 24px 20px;
       background: var(--sf);
-      border-radius: var(--r-card);
+      border-radius: 32px;
+    }
+
+    .hero-left,
+    .work-head {
+      align-items: center;
+      text-align: center;
+    }
+
+    .chips-row {
+      justify-content: center;
+    }
+
+    .info-chip {
+      text-align: left;
     }
 
     .hero-visual :global(.visual-shape) {
-      width: 164px;
-      height: 164px;
+      width: 172px;
+      height: 172px;
     }
 
     .visual-icon :global(.ms-icon) {
@@ -326,7 +343,7 @@
       min-height: calc(100svh - 56px);
       align-content: center;
       gap: 20px;
-      padding: 16px 0 68px;
+      padding: 36px 0 68px;
     }
 
     .hero-left {

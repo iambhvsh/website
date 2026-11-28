@@ -1,6 +1,6 @@
 <script lang="ts">
   import { untrack } from "svelte";
-  import { Button, Scroll, Section, Shape, Wave } from "$lib/components/ui";
+  import { Button, Loader, Scroll, Section, Shape, Wave } from "$lib/components/ui";
   import { SITE } from "$lib/data/site";
   import CalendarTodayIcon from "~icons/material-symbols/calendar-today-rounded";
   import CategoryIcon from "~icons/material-symbols/category-rounded";
@@ -540,22 +540,13 @@
   const titleText = $derived(
     failed ? "Couldn’t load Last.fm" : track ? track.name : "Loading…",
   );
-  const lyricsOpen = $derived(lyricsEnabled && Boolean(track) && lyricsReady);
+  const lyricsOpen = $derived(lyricsEnabled && Boolean(track));
 </script>
 
 <Section id="now">
   <div class="music-hero" bind:this={stackEl}>
     <div class="hero-left">
       <div class="music-head">
-        <div class="status-row">
-          <span class="status-pill label" class:live={track?.isLive}>
-            <span class="status-dot" aria-hidden="true"></span>
-            {track?.isLive ? "Now playing" : "Last played"}
-          </span>
-          {#if track?.date && !track.isLive}
-            <span class="time-pill label">{track.date}</span>
-          {/if}
-        </div>
         <h1 class="hero music-title">{titleText}</h1>
         <p class="tl music-sub">
           {track?.artist ?? "Checking what’s playing right now."}
@@ -681,7 +672,11 @@
               <span class="bm sub">{track.name} · {track.artist}</span>
             {/if}
           </div>
-          {#if lyricsError}
+          {#if lyricsLoading && !lyricsReady}
+            <div class="lyrics-loading">
+              <Loader size="sm" label="Loading lyrics…" />
+            </div>
+          {:else if lyricsError}
             <p class="bs sub lyrics-state">{lyricsError}</p>
           {:else if lyrics && lyrics.lines.length > 0}
             <div class="lyrics-lines">
@@ -722,9 +717,13 @@
             class="art"
           >
             {#if !artworkLoaded}
-              <span class="fallback-icon" aria-hidden="true">
-                <MusicNoteIcon />
-              </span>
+              {#if loading}
+                <Loader size="lg" contained={false} />
+              {:else}
+                <span class="fallback-icon" aria-hidden="true">
+                  <MusicNoteIcon />
+                </span>
+              {/if}
             {/if}
             {#if artworkSrc}
               <img
@@ -807,45 +806,6 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
-  }
-
-  .status-row {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .status-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    align-self: flex-start;
-    padding: 6px 14px;
-    border-radius: 9999px;
-    background: var(--sc);
-    color: var(--onsc);
-  }
-
-  .time-pill {
-    display: inline-flex;
-    align-items: center;
-    padding: 6px 12px;
-    border-radius: 9999px;
-    background: var(--sf2);
-    color: var(--onv);
-  }
-
-  .status-pill.live {
-    background: var(--tc);
-    color: var(--ontc);
-  }
-
-  .status-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: currentColor;
   }
 
   .music-title {
@@ -1044,16 +1004,44 @@
       justify-content: center;
     }
 
-    .art-stage,
+    .art-stage {
+      width: 100%;
+      max-width: 360px;
+      margin: 0 auto;
+      height: auto;
+      min-height: 264px;
+      padding: 24px 20px;
+      gap: 16px;
+      border-radius: 32px;
+    }
+
     .lyrics-card {
-      max-width: 100%;
-      height: 300px;
-      padding: 20px;
+      width: 100%;
+      max-width: 360px;
+      margin: 0 auto;
+      height: 280px;
+      padding: 24px 20px;
+      border-radius: 32px;
     }
 
     .hero-visual :global(.art) {
-      width: 188px;
-      height: 188px;
+      width: 172px;
+      height: 172px;
+    }
+
+    .hero-left {
+      align-items: center;
+      text-align: center;
+    }
+
+    .music-head,
+    .acts {
+      align-items: center;
+      justify-content: center;
+    }
+
+    .player-card {
+      max-width: 360px;
     }
 
     .fallback-icon :global(.ms-icon) {
@@ -1070,7 +1058,7 @@
       min-height: calc(100svh - 56px);
       align-content: center;
       gap: 20px;
-      padding: 16px 0 68px;
+      padding: 36px 0 68px;
     }
 
     .hero-left {
@@ -1146,6 +1134,12 @@
 
   .lyrics-state {
     margin: 0;
+  }
+
+  .lyrics-loading {
+    flex: 1;
+    display: grid;
+    place-items: center;
   }
 
   .lyrics-credit {

@@ -453,8 +453,9 @@
     align-items: center;
     gap: 2px 14px;
     padding: 12px 14px 12px 12px;
-    background: color-mix(in srgb, var(--sf2) 94%, transparent);
-    backdrop-filter: blur(24px) saturate(1.5);
+    background: color-mix(in srgb, var(--sf2) 68%, transparent);
+    -webkit-backdrop-filter: blur(24px) saturate(1.6);
+    backdrop-filter: blur(24px) saturate(1.6);
     border-radius: 32px;
     box-shadow:
       0 12px 32px rgba(0, 0, 0, 0.24),
@@ -464,12 +465,10 @@
 
   @keyframes pill-enter {
     from {
-      opacity: 0;
-      transform: translate3d(-50%, 24px, 0) scale(0.94);
+      transform: translate3d(-50%, 24px, 0);
     }
     to {
-      opacity: 1;
-      transform: translate3d(-50%, 0, 0) scale(1);
+      transform: translate3d(-50%, 0, 0);
     }
   }
 
